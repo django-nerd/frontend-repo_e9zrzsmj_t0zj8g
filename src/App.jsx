@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Navbar from './components/Navbar'
 import AnimatedBackground from './components/AnimatedBackground'
 import FAQ from './components/FAQ'
@@ -9,12 +9,27 @@ import LegalModal from './components/LegalModal'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000'
 
+function getSeason(date = new Date()) {
+  const m = date.getMonth() + 1
+  if (m === 12 || m <= 2) return 'winter'
+  if (m >= 3 && m <= 5) return 'spring'
+  if (m >= 6 && m <= 8) return 'summer'
+  return 'autumn'
+}
+
 export default function App() {
   const [status, setStatus] = useState(null)
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
 
   const [legalOpen, setLegalOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('contact')
+
+  // Season state: defaults to detected season, can be changed manually via Navbar wheel
+  const [season, setSeason] = useState(getSeason())
+  // keep auto-detection on first mount; if user changes later, we keep manual selection
+  useEffect(() => {
+    setSeason(getSeason())
+  }, [])
 
   useEffect(() => {
     const handler = (e) => {
@@ -50,8 +65,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen text-slate-100">
-      <AnimatedBackground />
-      <Navbar />
+      <AnimatedBackground season={season} />
+      <Navbar season={season} setSeason={setSeason} />
 
       <main className="pt-16">
         {/* Hero / Intro */}

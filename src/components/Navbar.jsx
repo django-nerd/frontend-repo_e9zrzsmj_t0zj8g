@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Menu } from 'lucide-react'
 
+const SEASONS = ['winter', 'spring', 'summer', 'autumn']
+
 function getSeason(date = new Date()) {
   const m = date.getMonth() + 1
   if (m === 12 || m <= 2) return 'winter'
@@ -41,10 +43,49 @@ function WinterIcicles() {
   )
 }
 
-export default function Navbar() {
+function SeasonWheel({ season, onChange }) {
+  const order = SEASONS
+  const activeIndex = order.indexOf(season)
+  // positions around the wheel: top is active, others rotate around
+  return (
+    <div className="relative hidden md:flex items-center ml-3">
+      <div className="relative w-24 h-24 select-none" aria-label="Saison-Umschalter">
+        <div className="absolute inset-0 rounded-full bg-white/60 backdrop-blur-sm border border-white/50 shadow-inner" />
+        <div className="absolute inset-2 rounded-full bg-gradient-to-b from-white/70 to-white/30" />
+        {/* markers */}
+        {order.map((s, i) => {
+          const angle = ((i - activeIndex + order.length) % order.length) * 90 // 4 items
+          const rad = (angle - 90) * (Math.PI / 180)
+          const r = 36
+          const cx = 48 + Math.cos(rad) * r
+          const cy = 48 + Math.sin(rad) * r
+          const isActive = i === activeIndex
+          const labelMap = { winter: '❄️', spring: '🌸', summer: '🔥', autumn: '🍁' }
+          return (
+            <button
+              key={s}
+              onClick={() => onChange(s)}
+              className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center transition-all ${isActive ? 'w-9 h-9 bg-slate-800 text-white shadow-lg' : 'w-8 h-8 bg-white text-slate-700 shadow'}`}
+              style={{ left: cx, top: cy }}
+              title={s}
+              aria-pressed={isActive}
+            >
+              <span className="text-base" aria-hidden>{labelMap[s]}</span>
+              <span className="sr-only">{s}</span>
+            </button>
+          )
+        })}
+        {/* pointer */}
+        <div className="absolute left-1/2 -translate-x-1/2 -top-1 w-0 h-0 border-l-4 border-r-4 border-b-8 border-transparent border-b-slate-800" />
+      </div>
+      <span className="ml-2 text-xs text-slate-700 capitalize">{season}</span>
+    </div>
+  )
+}
+
+export default function Navbar({ season, setSeason }) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
-  const season = useMemo(() => getSeason(), [])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
@@ -87,6 +128,7 @@ export default function Navbar() {
             <LinkItem href="#contact" label="Kontakt" onClick={(e) => { e.preventDefault(); document.dispatchEvent(new CustomEvent('open-legal', { detail: { tab: 'contact' } })) }} />
             <LinkItem href="#impressum" label="Impressum" onClick={(e) => { e.preventDefault(); document.dispatchEvent(new CustomEvent('open-legal', { detail: { tab: 'impressum' } })) }} />
             <LinkItem href="#datenschutz" label="Datenschutz" onClick={(e) => { e.preventDefault(); document.dispatchEvent(new CustomEvent('open-legal', { detail: { tab: 'datenschutz' } })) }} />
+            <SeasonWheel season={season} onChange={setSeason} />
           </div>
 
           <button className="md:hidden p-2 rounded-md hover:bg-white/70" onClick={() => setOpen(!open)} aria-label="Menü">
@@ -102,6 +144,12 @@ export default function Navbar() {
             <LinkItem href="#contact" label="Kontakt" onClick={(e) => { e.preventDefault(); document.dispatchEvent(new CustomEvent('open-legal', { detail: { tab: 'contact' } })) }} />
             <LinkItem href="#impressum" label="Impressum" onClick={(e) => { e.preventDefault(); document.dispatchEvent(new CustomEvent('open-legal', { detail: { tab: 'impressum' } })) }} />
             <LinkItem href="#datenschutz" label="Datenschutz" onClick={(e) => { e.preventDefault(); document.dispatchEvent(new CustomEvent('open-legal', { detail: { tab: 'datenschutz' } })) }} />
+            {/* Mobile season selector as simple row */}
+            <div className="flex items-center gap-2 pt-2">
+              {SEASONS.map((s) => (
+                <button key={s} onClick={() => setSeason(s)} className={`px-2 py-1 rounded-full text-xs border ${season===s ? 'bg-slate-800 text-white' : 'bg-white/80 text-slate-700'}`}>{s}</button>
+              ))}
+            </div>
           </div>
         )}
 

@@ -8,7 +8,7 @@ function getSeason(date = new Date()) {
   return 'autumn'
 }
 
-export default function AnimatedBackground() {
+export default function AnimatedBackground({ season: controlledSeason }) {
   const canvasRef = useRef(null)
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function AnimatedBackground() {
     resize()
     window.addEventListener('resize', resize)
 
-    const season = getSeason()
+    const season = controlledSeason || getSeason()
 
     // Particles per season
     let particles = []
@@ -219,7 +219,7 @@ export default function AnimatedBackground() {
       cancelAnimationFrame(raf)
       window.removeEventListener('resize', resize)
     }
-  }, [])
+  }, [controlledSeason])
 
   return (
     <canvas ref={canvasRef} className="fixed inset-0 -z-10 w-full h-full"/>
