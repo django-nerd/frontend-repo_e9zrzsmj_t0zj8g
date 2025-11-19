@@ -114,10 +114,13 @@ export default function App() {
               <div className="rounded-2xl border border-slate-700/60 bg-slate-900/60 p-6">{/* opacity increased for readability */}
                 <h3 className="font-medium mb-3">FAQ</h3>
                 <FAQ />
-                {/* HiEvents widget directly below FAQ */}
-                <h4 className="mt-6 mb-2 text-sm uppercase tracking-wide opacity-80">Nächste Events</h4>
-                <HiEventsEmbed />
               </div>
+            </div>
+
+            {/* Separate Events block below FAQ */}
+            <div className="mt-8 rounded-2xl border border-slate-700/60 bg-slate-900/60 p-6">
+              <h4 className="mb-2 text-sm uppercase tracking-wide opacity-80">Nächste Events</h4>
+              <HiEventsEmbed />
             </div>
           </section>
         </Reveal>
