@@ -1,10 +1,52 @@
-import { useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 
 const Link = ({ href, children }) => (
   <a href={href} target={href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" className="underline decoration-slate-300/70 hover:decoration-white text-slate-100 hover:text-white">
     {children}
   </a>
 )
+
+function Collapsible({ isOpen, children }) {
+  const ref = useRef(null)
+  const [height, setHeight] = useState(0)
+
+  useEffect(() => {
+    if (!ref.current) return
+    if (isOpen) {
+      const el = ref.current
+      const next = el.scrollHeight
+      setHeight(next)
+      const onEnd = () => setHeight('auto')
+      el.addEventListener('transitionend', onEnd, { once: true })
+      return () => el.removeEventListener('transitionend', onEnd)
+    } else {
+      // If currently auto, first set to current height then to 0 to animate up
+      if (height === 'auto' && ref.current) {
+        const current = ref.current.scrollHeight
+        setHeight(current)
+        // next frame
+        requestAnimationFrame(() => setHeight(0))
+      } else {
+        setHeight(0)
+      }
+    }
+  }, [isOpen])
+
+  // Whenever content changes while open, recalc height
+  useEffect(() => {
+    if (isOpen && ref.current) setHeight(ref.current.scrollHeight)
+  })
+
+  return (
+    <div
+      ref={ref}
+      style={{ maxHeight: isOpen ? height : 0 }}
+      className="transition-[max-height] duration-300 ease-in-out overflow-hidden"
+    >
+      {children}
+    </div>
+  )
+}
 
 const categories = [
   {
@@ -134,14 +176,13 @@ const categories = [
 ]
 
 export default function FAQ() {
-  // Alle Kategorien sind standardmäßig eingeklappt
   const [openCat, setOpenCat] = useState(-1)
   const [openItem, setOpenItem] = useState({})
 
   return (
     <div id="faq" className="space-y-4">
       {categories.map((cat, ci) => (
-        <div key={ci} className="rounded-2xl border border-slate-700/60 bg-slate-900/70 overflow-hidden">{/* higher opacity for readability */}
+        <div key={ci} className="rounded-2xl border border-slate-700/60 bg-slate-900/70 overflow-hidden">
           <button
             onClick={() => setOpenCat(openCat === ci ? -1 : ci)}
             className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-slate-800/60"
@@ -149,7 +190,8 @@ export default function FAQ() {
             <span className="font-semibold text-slate-100">{cat.title}</span>
             <span className="text-slate-300 text-sm">{openCat === ci ? '–' : '+'}</span>
           </button>
-          {openCat === ci && (
+
+          <Collapsible isOpen={openCat === ci}>
             <div className="divide-y divide-slate-700/60">
               {cat.items.map((it, ii) => {
                 const isOpen = openItem[ci] === ii
@@ -162,16 +204,17 @@ export default function FAQ() {
                       <span className="text-slate-100">{it.q}</span>
                       <span className="text-slate-300 text-sm">{isOpen ? '–' : '+'}</span>
                     </button>
-                    {isOpen && (
+
+                    <Collapsible isOpen={isOpen}>
                       <div className="px-4 pb-4 text-slate-200 text-sm leading-relaxed">
                         {it.a}
                       </div>
-                    )}
+                    </Collapsible>
                   </div>
                 )
               })}
             </div>
-          )}
+          </Collapsible>
         </div>
       ))}
     </div>

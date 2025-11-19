@@ -59,6 +59,7 @@ export default function App() {
     }
   }
 
+  // In Spring, invert text outside boxes to dark for contrast; otherwise light
   const baseTextClass = season === 'spring' ? 'text-slate-900' : 'text-slate-100'
 
   return (
@@ -83,8 +84,8 @@ export default function App() {
             </p>
             <div className="mt-6 flex items-center gap-3 text-sm justify-center md:justify-start">
               <a href="https://events.westside-furs.com/events/1/westside-furs-ev" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white">Zu unseren Events</a>
-              <a href="https://cloud.westside-furs.com/index.php/apps/memories/s/galerie" target="_blank" rel="noopener noreferrer" className={`${season === 'spring' ? 'bg-black/5 border-black/10 text-slate-900' : 'bg-white/10 border-white/20'} px-4 py-2 rounded-lg border hover:bg-white/20`}>Galerie</a>
-              <a href="https://socials.westside-furs.com/" target="_blank" rel="noopener noreferrer" className={`${season === 'spring' ? 'bg-black/5 border-black/10 text-slate-900' : 'bg-white/10 border-white/20'} px-4 py-2 rounded-lg border hover:bg-white/20`}>weitere Links</a>
+              <a href="https://cloud.westside-furs.com/index.php/apps/memories/s/galerie" target="_blank" rel="noopener noreferrer" className={`${season === 'spring' ? 'bg-black/5 border-black/10 text-slate-900 hover:bg-black/10' : 'bg-white/10 border-white/20 hover:bg-white/20'} px-4 py-2 rounded-lg border`}>Galerie</a>
+              <a href="https://socials.westside-furs.com/" target="_blank" rel="noopener noreferrer" className={`${season === 'spring' ? 'bg-black/5 border-black/10 text-slate-900 hover:bg-black/10' : 'bg-white/10 border-white/20 hover:bg-white/20'} px-4 py-2 rounded-lg border`}>weitere Links</a>
             </div>
             {/* cue to scroll */}
             <div className="mt-10 flex flex-col items-center text-slate-2 00/80">
@@ -110,16 +111,14 @@ export default function App() {
               </p>
             </div>
 
-            {/* Grid: left = values, right = FAQ aligned to values top; equal height */}
-            <div className="mt-8 grid md:grid-cols-2 gap-10 items-stretch">
-              <div className="h-full">
+            {/* Grid: left = values, right = FAQ aligned to values top; dynamic height */}
+            <div className="mt-8 grid md:grid-cols-2 gap-10 items-start">
+              <div>
                 <ValuesGoals />
               </div>
-              <div className="h-full rounded-2xl border border-slate-700/60 bg-slate-900/60 p-6 flex flex-col">
+              <div className="rounded-2xl border border-slate-700/60 bg-slate-900/60 p-6">
                 <h3 className="font-medium mb-3">FAQ</h3>
-                <div className="flex-1 min-h-0">
-                  <FAQ />
-                </div>
+                <FAQ />
               </div>
             </div>
           </section>
