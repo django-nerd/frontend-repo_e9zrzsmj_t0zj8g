@@ -9,6 +9,7 @@ import LegalModal from './components/LegalModal'
 import SeasonDock from './components/SeasonDock'
 import BackToTop from './components/BackToTop'
 import Reveal from './components/Reveal'
+import HiEventsEmbed from './components/HiEvents'
 import logo from './assets/westside-furs.svg'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000'
@@ -83,8 +84,8 @@ export default function App() {
             </p>
             <div className="mt-6 flex items-center gap-3 text-sm justify-center md:justify-start">
               <a href="https://events.westside-furs.com/events/1/westside-furs-ev" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white">Zu unseren Events</a>
-              <a href="https://cloud.westside-furs.com/index.php/apps/memories/s/galerie" target="_blank" rel="noopener noreferrer" className={`px-4 py-2 rounded-lg border hover:bg-white/20 ${season === 'spring' ? 'bg-black/5 border-black/10 text-slate-900' : 'bg-white/10 border-white/20'}`}>Galerie</a>
-              <a href="https://socials.westside-furs.com/" target="_blank" rel="noopener noreferrer" className={`px-4 py-2 rounded-lg border hover:bg-white/20 ${season === 'spring' ? 'bg-black/5 border-black/10 text-slate-900' : 'bg-white/10 border-white/20'}`}>weitere Links</a>
+              <a href="https://cloud.westside-furs.com/index.php/apps/memories/s/galerie" target="_blank" rel="noopener noreferrer" className={`${season === 'spring' ? 'bg-black/5 border-black/10 text-slate-900' : 'bg-white/10 border-white/20'} px-4 py-2 rounded-lg border hover:bg-white/20`}>Galerie</a>
+              <a href="https://socials.westside-furs.com/" target="_blank" rel="noopener noreferrer" className={`${season === 'spring' ? 'bg-black/5 border-black/10 text-slate-900' : 'bg-white/10 border-white/20'} px-4 py-2 rounded-lg border hover:bg-white/20`}>weitere Links</a>
             </div>
             {/* cue to scroll */}
             <div className="mt-10 flex flex-col items-center text-slate-2 00/80">
@@ -113,6 +114,8 @@ export default function App() {
               <div className="rounded-2xl border border-slate-700/60 bg-slate-900/60 p-6">{/* opacity increased for readability */}
                 <h3 className="font-medium mb-3">FAQ</h3>
                 <FAQ />
+                {/* HiEvents widget directly below FAQ */}
+                <HiEventsEmbed />
               </div>
             </div>
           </section>
