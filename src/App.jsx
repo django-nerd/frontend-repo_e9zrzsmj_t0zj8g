@@ -1,16 +1,35 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Navbar from './components/Navbar'
 import AnimatedBackground from './components/AnimatedBackground'
 import FAQ from './components/FAQ'
 import Footer from './components/Footer'
 import ValuesGoals from './components/ValuesGoals'
 import Reviews from './components/Reviews'
+import LegalModal from './components/LegalModal'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000'
 
 export default function App() {
   const [status, setStatus] = useState(null)
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
+
+  const [legalOpen, setLegalOpen] = useState(false)
+  const [activeTab, setActiveTab] = useState('contact')
+
+  useEffect(() => {
+    const handler = (e) => {
+      const tab = e.detail?.tab || 'contact'
+      setActiveTab(tab)
+      setLegalOpen(true)
+    }
+    document.addEventListener('open-legal', handler)
+    return () => document.removeEventListener('open-legal', handler)
+  }, [])
+
+  const openLegal = (tab) => {
+    setActiveTab(tab)
+    setLegalOpen(true)
+  }
 
   const onSubmit = async (e) => {
     e.preventDefault()
@@ -44,7 +63,7 @@ export default function App() {
             </p>
             <div className="mt-6 flex items-center gap-3 text-sm">
               <a href="#about" className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white">Mehr erfahren</a>
-              <a href="#contact" className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20">Kontakt</a>
+              <button onClick={() => openLegal('contact')} className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20">Kontakt</button>
             </div>
           </div>
         </section>
@@ -73,47 +92,40 @@ export default function App() {
 
         <Reviews />
 
-        {/* Contact */}
+        {/* Contact trigger section */}
         <section id="contact" className="max-w-6xl mx-auto px-6 py-16">
-          <h2 className="text-2xl font-semibold mb-6">Kontakt</h2>
-          <form onSubmit={onSubmit} className="grid md:grid-cols-2 gap-4">
-            <div className="md:col-span-1">
-              <label className="block text-sm mb-1">Name</label>
-              <input required value={form.name} onChange={e=>setForm({...form, name:e.target.value})} className="w-full bg-slate-900/60 border border-slate-700/60 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Dein Name" />
-            </div>
-            <div className="md:col-span-1">
-              <label className="block text-sm mb-1">E‑Mail</label>
-              <input type="email" required value={form.email} onChange={e=>setForm({...form, email:e.target.value})} className="w-full bg-slate-900/60 border border-slate-700/60 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="name@beispiel.de" />
-            </div>
-            <div className="md:col-span-2">
-              <label className="block text-sm mb-1">Betreff</label>
-              <input value={form.subject} onChange={e=>setForm({...form, subject:e.target.value})} className="w-full bg-slate-900/60 border border-slate-700/60 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Worum geht es?" />
-            </div>
-            <div className="md:col-span-2">
-              <label className="block text-sm mb-1">Nachricht</label>
-              <textarea required rows={6} value={form.message} onChange={e=>setForm({...form, message:e.target.value})} className="w-full bg-slate-900/60 border border-slate-700/60 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Schreib uns eine Nachricht..." />
-            </div>
-            <div className="md:col-span-2 flex items-center gap-3">
-              <button type="submit" className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500">Absenden</button>
-              {status === 'sending' && <span className="text-slate-300 text-sm">Wird gesendet…</span>}
-              {status === 'ok' && <span className="text-green-300 text-sm">Danke! Wir melden uns bald.</span>}
-              {status === 'error' && <span className="text-red-300 text-sm">Leider ist ein Fehler aufgetreten.</span>}
-            </div>
-          </form>
+          <h2 className="text-2xl font-semibold mb-4">Kontakt</h2>
+          <p className="text-slate-300 mb-4">Öffne das Kontaktformular im Popup.</p>
+          <div className="flex gap-3">
+            <button onClick={() => openLegal('contact')} className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500">Kontakt öffnen</button>
+            <button onClick={() => openLegal('impressum')} className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20">Impressum</button>
+            <button onClick={() => openLegal('datenschutz')} className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20">Datenschutz</button>
+          </div>
         </section>
 
-        {/* Legal sections */}
+        {/* Legal sections become triggers only */}
         <section id="impressum" className="max-w-6xl mx-auto px-6 py-16">
           <h2 className="text-2xl font-semibold mb-3">Impressum</h2>
-          <p className="text-slate-200/90 text-sm leading-relaxed">Angaben gemäß § 5 TMG – Platzhalter. Sobald du mir die offiziellen Daten sendest, trage ich alles ein.</p>
+          <p className="text-slate-200/90 text-sm leading-relaxed">Dieser Bereich öffnet nun als großes Popup. <button onClick={() => openLegal('impressum')} className="underline hover:text-white">Impressum anzeigen</button></p>
         </section>
         <section id="datenschutz" className="max-w-6xl mx-auto px-6 py-16">
           <h2 className="text-2xl font-semibold mb-3">Datenschutz</h2>
-          <p className="text-slate-200/90 text-sm leading-relaxed">Hinweise nach DSGVO – Platzhalter. Ich übernehme den Text aus deiner bisherigen Seite, sobald du ihn freigibst.</p>
+          <p className="text-slate-200/90 text-sm leading-relaxed">Dieser Bereich öffnet nun als großes Popup. <button onClick={() => openLegal('datenschutz')} className="underline hover:text-white">Datenschutzhinweise anzeigen</button></p>
         </section>
 
         <Footer />
       </main>
+
+      <LegalModal
+        open={legalOpen}
+        onClose={() => setLegalOpen(false)}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        onSubmitContact={onSubmit}
+        status={status}
+        form={form}
+        setForm={setForm}
+      />
     </div>
   )
 }

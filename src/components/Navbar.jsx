@@ -12,10 +12,19 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const LinkItem = ({ href, label }) => (
+  useEffect(() => {
+    const handler = (e) => {
+      const tab = e.detail?.tab || 'contact'
+      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+    document.addEventListener('open-legal', handler)
+    return () => document.removeEventListener('open-legal', handler)
+  }, [])
+
+  const LinkItem = ({ href, label, onClick }) => (
     <a
       href={href}
-      onClick={() => setOpen(false)}
+      onClick={(e) => { onClick?.(e); setOpen(false) }}
       className="px-3 py-2 text-sm rounded-md text-slate-700 hover:text-slate-900 hover:bg-white/70 md:text-slate-600"
     >
       {label}
@@ -35,8 +44,9 @@ export default function Navbar() {
             <LinkItem href="#about" label="Über uns" />
             <LinkItem href="#faq" label="FAQ" />
             <LinkItem href="#reviews" label="Rezensionen" />
-            <LinkItem href="#contact" label="Kontakt" />
-            <LinkItem href="#impressum" label="Impressum" />
+            <LinkItem href="#contact" label="Kontakt" onClick={(e) => { e.preventDefault(); document.dispatchEvent(new CustomEvent('open-legal', { detail: { tab: 'contact' } })) }} />
+            <LinkItem href="#impressum" label="Impressum" onClick={(e) => { e.preventDefault(); document.dispatchEvent(new CustomEvent('open-legal', { detail: { tab: 'impressum' } })) }} />
+            <LinkItem href="#datenschutz" label="Datenschutz" onClick={(e) => { e.preventDefault(); document.dispatchEvent(new CustomEvent('open-legal', { detail: { tab: 'datenschutz' } })) }} />
           </div>
 
           <button className="md:hidden p-2 rounded-md hover:bg-white/70" onClick={() => setOpen(!open)} aria-label="Menü">
@@ -49,8 +59,9 @@ export default function Navbar() {
             <LinkItem href="#about" label="Über uns" />
             <LinkItem href="#faq" label="FAQ" />
             <LinkItem href="#reviews" label="Rezensionen" />
-            <LinkItem href="#contact" label="Kontakt" />
-            <LinkItem href="#impressum" label="Impressum" />
+            <LinkItem href="#contact" label="Kontakt" onClick={(e) => { e.preventDefault(); document.dispatchEvent(new CustomEvent('open-legal', { detail: { tab: 'contact' } })) }} />
+            <LinkItem href="#impressum" label="Impressum" onClick={(e) => { e.preventDefault(); document.dispatchEvent(new CustomEvent('open-legal', { detail: { tab: 'impressum' } })) }} />
+            <LinkItem href="#datenschutz" label="Datenschutz" onClick={(e) => { e.preventDefault(); document.dispatchEvent(new CustomEvent('open-legal', { detail: { tab: 'datenschutz' } })) }} />
           </div>
         )}
       </nav>
