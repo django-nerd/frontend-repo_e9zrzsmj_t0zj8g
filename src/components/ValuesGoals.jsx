@@ -33,15 +33,13 @@ export default function ValuesGoals() {
     <div className="mt-8 grid md:grid-cols-2 gap-6">
       {values.map((v, i) => (
         <Reveal key={v.title} delay={i * 60}>
-          <div className="rounded-2xl border border-slate-700/50 bg-slate-900/60 p-5">
-            <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-white/10 grid place-items-center border border-white/20">
-                <v.Icon className="w-5 h-5 text-slate-100" />
+          <div className="rounded-2xl border border-slate-700/50 bg-slate-900/60 p-6">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-12 h-12 rounded-2xl bg-white/10 grid place-items-center border border-white/20 mb-3">
+                <v.Icon className="w-6 h-6 text-slate-100" aria-hidden="true" />
               </div>
-              <div>
-                <h3 className="text-base md:text-lg font-semibold mb-1 text-white">{v.title}</h3>
-                <p className="text-slate-200 text-sm leading-relaxed">{v.desc}</p>
-              </div>
+              <h3 className="text-base md:text-lg font-semibold mb-2 text-white">{v.title}</h3>
+              <p className="text-slate-200 text-sm leading-relaxed max-w-prose">{v.desc}</p>
             </div>
           </div>
         </Reveal>
