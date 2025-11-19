@@ -1,49 +1,70 @@
 import { useState } from 'react'
 
-const items = [
+const categories = [
   {
-    q: 'Was ist ein Furry Verein?',
-    a: 'Wir sind ein gemeinnütziger Zusammenschluss von Menschen, die Anthropomorphie und die kreative Furry‑Kultur lieben – von Kostümen (Fursuits) über Kunst bis hin zu Community‑Events.'
+    title: 'Eventbuchungen',
+    items: [
+      { q: 'Wie buche ich ein Event?', a: 'Eventausschreibungen mit Datum/Ort findest du auf unseren Kanälen. Melde dich über das Formular im Event-Post oder per E-Mail. Du erhältst danach eine Bestätigung.' },
+      { q: 'Gibt es Wartelisten?', a: 'Ja, wenn Events ausgebucht sind, führen wir eine Warteliste und rücken nach Absage nach. Wir informieren dich per E-Mail.' },
+      { q: 'Kosten & Bezahlung', a: 'Eintritte/Spenden werden in der Eventbeschreibung genannt. Bezahlung meist vor Ort oder per Überweisung laut Ankündigung.' },
+    ]
   },
   {
-    q: 'Muss ich einen Fursuit haben?',
-    a: 'Nein. Viele unserer Mitglieder haben keinen Fursuit. Mitmachen kannst du auch als Künstler:in, Autor:in, Orga‑Helfer:in oder einfach als Fan.'
+    title: 'Furries allgemein',
+    items: [
+      { q: 'Muss ich einen Fursuit haben?', a: 'Nein. Mitmachen kannst du auch ohne Suit – als Künstler:in, Orga-Helfer:in oder einfach als Fan.' },
+      { q: 'Ab welchem Alter?', a: 'Öffentliche Treffen sind in der Regel ab 16, Vereinsbeitritt ab 18. Details stehen in der jeweiligen Eventbeschreibung.' },
+      { q: 'Ist Fotografieren erlaubt?', a: 'Nur mit Zustimmung. Respektiere Privatsphäre und frage vor dem Foto – insbesondere ohne Suit.' },
+    ]
   },
   {
-    q: 'Ab welchem Alter kann ich teilnehmen?',
-    a: 'Öffentliche Treffen sind in der Regel ab 16, Vereinsbeitritt ab 18 Jahren. Details stehen jeweils in den Event‑Infos.'
-  },
-  {
-    q: 'Wie kann ich mithelfen?',
-    a: 'Wir freuen uns über helfende Pfoten! Schreib uns einfach über das Kontaktformular – wir melden uns mit Möglichkeiten für Orga, Social Media oder Event‑Support.'
+    title: 'Regeln beim Suitwalk',
+    items: [
+      { q: 'Für Fursuiter', a: 'Bleib hydrated, achte auf Hitze, nutze Spotter bei Bedarf und halte dich an Treffpunkt- und Aufstellhinweise.' },
+      { q: 'Für Spotter', a: 'Achte auf Wege, Verkehr und Passant:innen, begleite die Gruppe und hilf bei kurzen Pausen und Fotos.' },
+      { q: 'Für Zuschauer', a: 'Frag vor Umarmungen oder Fotos, dränge dich nicht auf und respektiere Grenzen. Kinder nur mit Einverständnis der Eltern fotografieren.' },
+    ]
   }
 ]
 
 export default function FAQ() {
-  const [open, setOpen] = useState(0)
+  const [openCat, setOpenCat] = useState(0)
+  const [openItem, setOpenItem] = useState({ 0: 0 })
 
   return (
-    <div className="space-y-3">
-      {items.map((it, i) => {
-        const isOpen = open === i
-        return (
-          <div key={i} className="border border-slate-700/60 rounded-xl overflow-hidden bg-slate-800/50">
-            <button
-              onClick={() => setOpen(isOpen ? -1 : i)}
-              className="w-full flex items-center justify-between gap-4 px-4 py-3 text-left hover:bg-slate-800/70 transition-colors"
-              aria-expanded={isOpen}
-            >
-              <span className="font-medium text-slate-100">{it.q}</span>
-              <span className="text-slate-300 text-sm">{isOpen ? '–' : '+'}</span>
-            </button>
-            {isOpen && (
-              <div className="px-4 pb-4 text-slate-300 leading-relaxed">
-                {it.a}
-              </div>
-            )}
-          </div>
-        )
-      })}
+    <div id="faq" className="space-y-4">
+      {categories.map((cat, ci) => (
+        <div key={ci} className="rounded-2xl border border-slate-700/60 bg-slate-900/40 overflow-hidden">
+          <button
+            onClick={() => setOpenCat(openCat === ci ? -1 : ci)}
+            className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-slate-800/60"
+          >
+            <span className="font-semibold text-slate-100">{cat.title}</span>
+            <span className="text-slate-300 text-sm">{openCat === ci ? '–' : '+'}</span>
+          </button>
+          {openCat === ci && (
+            <div className="divide-y divide-slate-700/60">
+              {cat.items.map((it, ii) => {
+                const isOpen = openItem[ci] === ii
+                return (
+                  <div key={ii} className="">
+                    <button
+                      onClick={() => setOpenItem({ ...openItem, [ci]: isOpen ? -1 : ii })}
+                      className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-slate-800/70"
+                    >
+                      <span className="text-slate-100">{it.q}</span>
+                      <span className="text-slate-300 text-sm">{isOpen ? '–' : '+'}</span>
+                    </button>
+                    {isOpen && (
+                      <div className="px-4 pb-4 text-slate-300 text-sm leading-relaxed">{it.a}</div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   )
 }
