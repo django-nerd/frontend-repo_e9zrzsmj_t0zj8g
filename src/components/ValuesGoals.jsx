@@ -30,7 +30,7 @@ export default function ValuesGoals() {
   ]
 
   return (
-    <div className="mt-8 grid md:grid-cols-2 gap-6">
+    <div className="mt-0 grid md:grid-cols-2 gap-6">
       {values.map((v, i) => (
         <Reveal key={v.title} delay={i * 60}>
           <div className="rounded-2xl border border-slate-700/50 bg-slate-900/60 p-6">

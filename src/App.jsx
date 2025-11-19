@@ -105,7 +105,7 @@ export default function App() {
                 Wir sind ein eingetragener Verein aus der Furry-Szene. Unser Fokus liegt auf Gemeinschaft, Sicherheit und Spaß –
                 von Suitwalks über Stammtische bis hin zu Workshops und Charity-Aktionen.
               </p>
-              <p className={`mt-4 ${season === 'spring' ? 'text-slate-800/90' : 'text-slate-200/90'} leading-relaxed`}>
+              <p className={`mt-4 mb-[35px] ${season === 'spring' ? 'text-slate-800/90' : 'text-slate-200/90'} leading-relaxed`}>
                 Bei uns sind Fursuiter, Spotter, Künstler:innen, Organisator:innen und Fans willkommen. Vielfalt und Respekt
                 stehen im Mittelpunkt.
               </p>
