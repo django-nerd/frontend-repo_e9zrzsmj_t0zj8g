@@ -115,6 +115,7 @@ export default function App() {
                 <h3 className="font-medium mb-3">FAQ</h3>
                 <FAQ />
                 {/* HiEvents widget directly below FAQ */}
+                <h4 className="mt-6 mb-2 text-sm uppercase tracking-wide opacity-80">Nächste Events</h4>
                 <HiEventsEmbed />
               </div>
             </div>
