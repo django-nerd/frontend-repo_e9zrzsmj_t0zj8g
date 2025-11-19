@@ -1,10 +1,11 @@
-import { PlayCircle } from 'lucide-react'
+import { PlayCircle, ExternalLink } from 'lucide-react'
 
 export default function Reviews({ season }) {
   const isSpring = season === 'spring'
-  const cardText = isSpring ? 'text-slate-900' : 'text-white'
-  const subText = isSpring ? 'text-slate-700/80' : 'text-slate-300/80'
-  const iconColor = isSpring ? 'text-slate-800' : 'text-slate-200'
+  // Increase contrast in spring: use light text and brighter icons
+  const cardText = isSpring ? 'text-slate-100' : 'text-white'
+  const subText = isSpring ? 'text-slate-300/90' : 'text-slate-300/80'
+  const iconColor = isSpring ? 'text-white' : 'text-slate-200'
 
   const reviews = [
     { name: 'Kai (Fursuiter)', text: 'Tolle Organisation und super Stimmung – ich habe mich sofort willkommen gefühlt.' },
@@ -25,13 +26,22 @@ export default function Reviews({ season }) {
           <span className="absolute -inset-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{
             background: 'radial-gradient(120px 80px at var(--x,50%) var(--y,50%), rgba(255,255,255,0.12), transparent 60%)'
           }} aria-hidden="true" />
+
+          {/* Extern Badge */}
+          <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/10 px-2 py-1 text-[10px] font-medium text-white/90 ring-1 ring-inset ring-white/20">
+            <ExternalLink className="h-3 w-3" aria-hidden="true" />
+            Extern
+          </span>
+
           <span className="relative block text-lg font-medium">
             <span className="bg-gradient-to-r from-pink-300 via-rose-200 to-amber-200 bg-clip-text text-transparent">
               Teilnehmer Videos
             </span>
           </span>
-          <span className={`relative mt-1 block text-xs ${subText}`}>Hinweis: Wir sind nicht für den Inhalt der verlinkten Videos verantwortlich.</span>
-          <PlayCircle className={`mx-auto mt-4 h-12 w-12 ${iconColor} opacity-90 group-hover:scale-105 transition-transform duration-500`} aria-hidden="true" />
+          <span className={`relative mt-1 block text-xs ${subText}`}>
+            Hinweis: Die Links führen zu einem externen Anbieter. Wir sind nicht für den Inhalt der verlinkten Videos verantwortlich.
+          </span>
+          <PlayCircle className={`mx-auto mt-4 h-12 w-12 ${iconColor} opacity-95 drop-shadow-[0_0_12px_rgba(255,255,255,0.25)] group-hover:scale-105 transition-transform duration-500`} aria-hidden="true" />
           {/* idle float */}
           <span className="pointer-events-none absolute inset-0 animate-[float_6s_ease-in-out_infinite] opacity-0 group-hover:opacity-0" />
         </a>
@@ -45,12 +55,22 @@ export default function Reviews({ season }) {
           <span className="absolute -inset-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{
             background: 'radial-gradient(120px 80px at var(--x,50%) var(--y,50%), rgba(255,255,255,0.12), transparent 60%)'
           }} aria-hidden="true" />
+
+          {/* Extern Badge */}
+          <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/10 px-2 py-1 text-[10px] font-medium text-white/90 ring-1 ring-inset ring-white/20">
+            <ExternalLink className="h-3 w-3" aria-hidden="true" />
+            Extern
+          </span>
+
           <span className="relative block text-lg font-medium">
             <span className="bg-gradient-to-r from-sky-300 via-emerald-200 to-lime-200 bg-clip-text text-transparent">
               WDR Beitrag vom 12.06.2023
             </span>
           </span>
-          <PlayCircle className={`mx-auto mt-4 h-12 w-12 ${iconColor} opacity-90 group-hover:scale-105 transition-transform duration-500`} aria-hidden="true" />
+          <span className={`relative mt-1 block text-xs ${subText}`}>
+            Hinweis: Die Links führen zu einem externen Anbieter. Wir sind nicht für den Inhalt der verlinkten Videos verantwortlich.
+          </span>
+          <PlayCircle className={`mx-auto mt-4 h-12 w-12 ${iconColor} opacity-95 drop-shadow-[0_0_12px_rgba(255,255,255,0.25)] group-hover:scale-105 transition-transform duration-500`} aria-hidden="true" />
           <span className="pointer-events-none absolute inset-0 animate-[float_6s_ease-in-out_infinite] [animation-delay:1.5s] opacity-0 group-hover:opacity-0" />
         </a>
       </div>
