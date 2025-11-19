@@ -8,6 +8,7 @@ import Reviews from './components/Reviews'
 import LegalModal from './components/LegalModal'
 import SeasonDock from './components/SeasonDock'
 import BackToTop from './components/BackToTop'
+import Reveal from './components/Reveal'
 import logo from './assets/westside-furs.svg'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000'
@@ -66,10 +67,10 @@ export default function App() {
       {/* Align the desktop Season switch with the hero logo height by adjusting margins in SeasonDock */}
       <SeasonDock season={season} setSeason={setSeason} />
 
-      <main className="pt-14">{/* safe offset for fixed mobile header */}
+      <main className="pt-0">{/* safe offset removed as requested */}
         {/* Hero / Intro */}
         <section id="start" className="relative">
-          <div className="relative max-w-6xl mx-auto px-6 pt-8 md:pt-8 lg:pt-8 pb-16">{/* tighter top padding so logo aligns near Season switch */}
+          <div className="relative max-w-6xl mx-auto px-6 pt-0 md:pt-0 lg:pt-0 pb-16">{/* top padding removed */}
             {/* Large logo above heading */}
             <div className="flex md:items-center md:min-h-[7rem] lg:min-h-[8rem] xl:min-h-[10rem]">
               <img src={logo} alt="Westside-Furs Logo" className="h-20 md:h-28 lg:h-32 xl:h-40 w-auto object-contain drop-shadow-sm" />
@@ -84,7 +85,7 @@ export default function App() {
               <a href="https://socials.westside-furs.com/" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20">weitere Links</a>
             </div>
             {/* cue to scroll */}
-            <div className="mt-10 flex flex-col items-center text-slate-200/80">
+            <div className="mt-10 flex flex-col items-center text-slate-2 00/80">
               <span className="text-xs uppercase tracking-widest">Scroll</span>
               <span className="mt-1 inline-block w-0.5 h-6 bg-slate-200/60 rounded-full animate-pulse" />
             </div>
@@ -92,28 +93,32 @@ export default function App() {
         </section>
 
         {/* About + Werte */}
-        <section id="about" className="max-w-6xl mx-auto px-6 py-14">{/* slightly less padding to move up */}
-          <div className="grid md:grid-cols-2 gap-10 items-start">
-            <div>
-              <h2 className="text-2xl font-semibold mb-3">Wer wir sind</h2>
-              <p className="text-slate-200/90 leading-relaxed">
-                Wir sind ein eingetragener Verein aus der Furry-Szene. Unser Fokus liegt auf Gemeinschaft, Sicherheit und Spaß –
-                von Suitwalks über Stammtische bis hin zu Workshops und Charity-Aktionen.
-              </p>
-              <p className="mt-4 text-slate-200/90 leading-relaxed">
-                Bei uns sind Fursuiter, Spotter, Künstler:innen, Organisator:innen und Fans willkommen. Vielfalt und Respekt
-                stehen im Mittelpunkt.
-              </p>
-              <ValuesGoals />
+        <Reveal>
+          <section id="about" className="max-w-6xl mx-auto px-6 py-14">
+            <div className="grid md:grid-cols-2 gap-10 items-start">
+              <div>
+                <h2 className="text-2xl font-semibold mb-3">Wer wir sind</h2>
+                <p className="text-slate-200/90 leading-relaxed">
+                  Wir sind ein eingetragener Verein aus der Furry-Szene. Unser Fokus liegt auf Gemeinschaft, Sicherheit und Spaß –
+                  von Suitwalks über Stammtische bis hin zu Workshops und Charity-Aktionen.
+                </p>
+                <p className="mt-4 text-slate-200/90 leading-relaxed">
+                  Bei uns sind Fursuiter, Spotter, Künstler:innen, Organisator:innen und Fans willkommen. Vielfalt und Respekt
+                  stehen im Mittelpunkt.
+                </p>
+                <ValuesGoals />
+              </div>
+              <div className="rounded-2xl border border-slate-700/60 bg-slate-900/60 p-6">{/* opacity increased for readability */}
+                <h3 className="font-medium mb-3">FAQ</h3>
+                <FAQ />
+              </div>
             </div>
-            <div className="rounded-2xl border border-slate-700/60 bg-slate-900/40 p-6">
-              <h3 className="font-medium mb-3">FAQ</h3>
-              <FAQ />
-            </div>
-          </div>
-        </section>
+          </section>
+        </Reveal>
 
-        <Reviews />
+        <Reveal delay={100}>
+          <Reviews />
+        </Reveal>
 
         <Footer />
       </main>
