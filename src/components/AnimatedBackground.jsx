@@ -60,19 +60,23 @@ export default function AnimatedBackground({ season: controlledSeason }) {
           color: colors[Math.floor(Math.random() * colors.length)],
         }))
       } else if (season === 'spring') {
-        const colors = ['#fbcfe8', '#f9a8d4', '#f472b6', '#fda4af']
-        const count = Math.floor(80 * (W() / 1440))
+        const colors = [
+          '#fbcfe8', '#f9a8d4', '#f472b6', '#fda4af',
+          '#a7f3d0', '#86efac', '#bef264', '#fde68a',
+          '#93c5fd', '#c4b5fd', '#e9d5ff'
+        ]
+        const count = Math.floor(120 * (W() / 1440))
         particles = Array.from({ length: count }).map(() => ({
           x: Math.random() * W(),
           y: Math.random() * H(),
-          w: rand(6, 12) * DPR,
-          h: rand(3, 6) * DPR,
-          vy: rand(0.2, 0.7) * DPR,
-          vx: rand(-0.3, 0.3) * DPR,
+          w: rand(7, 14) * DPR,
+          h: rand(3, 7) * DPR,
+          vy: rand(0.25, 0.8) * DPR,
+          vx: rand(-0.35, 0.35) * DPR,
           rot: rand(0, Math.PI * 2),
-          rotSpeed: rand(-0.015, 0.015),
+          rotSpeed: rand(-0.02, 0.02),
           color: colors[Math.floor(Math.random() * colors.length)],
-          alpha: rand(0.6, 0.95),
+          alpha: rand(0.7, 1),
         }))
       } else {
         // summer: fireflies
@@ -102,8 +106,10 @@ export default function AnimatedBackground({ season: controlledSeason }) {
         g.addColorStop(0, 'rgba(30,27,75,1)') // indigo-950
         g.addColorStop(1, 'rgba(88,28,135,1)') // purple-900
       } else if (season === 'spring') {
-        g.addColorStop(0, 'rgba(12,74,110,1)') // sky-900
-        g.addColorStop(1, 'rgba(8,47,73,1)') // sky-950
+        // brighter, colorful spring gradient
+        g.addColorStop(0, 'rgba(16,185,129,1)')   // emerald-500
+        g.addColorStop(0.5, 'rgba(56,189,248,1)') // sky-400
+        g.addColorStop(1, 'rgba(244,114,182,1)')  // pink-400
       } else {
         g.addColorStop(0, 'rgba(7,89,133,1)') // cyan-800
         g.addColorStop(1, 'rgba(2,44,34,1)') // emerald-950
@@ -185,11 +191,13 @@ export default function AnimatedBackground({ season: controlledSeason }) {
           ctx.rotate(p.rot)
           const grd = ctx.createLinearGradient(-p.w, -p.h, p.w, p.h)
           grd.addColorStop(0, `${p.color}`)
-          grd.addColorStop(1, 'rgba(255,255,255,0.8)')
+          grd.addColorStop(1, 'rgba(255,255,255,0.9)')
           ctx.fillStyle = grd
           ctx.globalAlpha = p.alpha
           ctx.beginPath()
           ctx.ellipse(0, 0, p.w, p.h, 0, 0, Math.PI * 2)
+          ctx.shadowColor = 'rgba(255,255,255,0.35)'
+          ctx.shadowBlur = 6
           ctx.fill()
           ctx.restore()
         }
