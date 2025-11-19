@@ -35,15 +35,16 @@ export default function AnimatedBackground({ season: controlledSeason }) {
 
     function initParticles() {
       if (season === 'winter') {
-        const count = Math.floor(120 * (W() / 1440))
+        const count = Math.floor(140 * (W() / 1440))
         particles = Array.from({ length: count }).map(() => ({
           x: Math.random() * W(),
           y: Math.random() * H(),
-          r: rand(1, 3) * DPR,
-          vy: rand(0.3, 0.9) * DPR,
-          vx: rand(-0.3, 0.3) * DPR,
+          r: rand(0.8, 2.4) * DPR,
+          vy: rand(0.25, 0.8) * DPR,
+          vx: rand(-0.25, 0.25) * DPR,
           angle: Math.random() * Math.PI * 2,
-          swing: rand(0.2, 0.6) * DPR,
+          swing: rand(0.2, 0.5) * DPR,
+          alpha: rand(0.6, 0.95),
         }))
       } else if (season === 'autumn') {
         const colors = ['#f97316', '#ea580c', '#d97706', '#b45309']
@@ -94,8 +95,9 @@ export default function AnimatedBackground({ season: controlledSeason }) {
       const w = W(), h = H()
       const g = ctx.createLinearGradient(0, 0, 0, h)
       if (season === 'winter') {
-        g.addColorStop(0, 'rgba(15,23,42,1)') // slate-900
-        g.addColorStop(1, 'rgba(2,6,23,1)') // slate-950
+        // frostier, icier blues
+        g.addColorStop(0, 'rgba(30, 58, 138, 1)') // blue-800
+        g.addColorStop(1, 'rgba(15, 23, 42, 1)') // slate-900
       } else if (season === 'autumn') {
         g.addColorStop(0, 'rgba(30,27,75,1)') // indigo-950
         g.addColorStop(1, 'rgba(88,28,135,1)') // purple-900
@@ -108,6 +110,22 @@ export default function AnimatedBackground({ season: controlledSeason }) {
       }
       ctx.fillStyle = g
       ctx.fillRect(0, 0, w, h)
+
+      if (season === 'winter') {
+        // subtle frosty vignette
+        const radial = ctx.createRadialGradient(w/2, h/2, Math.min(w,h)*0.2, w/2, h/2, Math.max(w,h)*0.7)
+        radial.addColorStop(0, 'rgba(255,255,255,0)')
+        radial.addColorStop(1, 'rgba(148,163,184,0.15)')
+        ctx.fillStyle = radial
+        ctx.fillRect(0, 0, w, h)
+
+        // cold haze
+        const haze = ctx.createLinearGradient(0, 0, 0, h)
+        haze.addColorStop(0, 'rgba(255,255,255,0.08)')
+        haze.addColorStop(1, 'rgba(255,255,255,0)')
+        ctx.fillStyle = haze
+        ctx.fillRect(0, 0, w, h)
+      }
     }
 
     function draw() {
@@ -115,14 +133,7 @@ export default function AnimatedBackground({ season: controlledSeason }) {
       drawBackground()
 
       if (season === 'winter') {
-        // light sparkle stars in the back
-        ctx.fillStyle = 'rgba(203,213,225,0.08)'
-        for (let i = 0; i < 40; i++) {
-          const x = (i * 97) % W()
-          const y = (i * 53) % H()
-          ctx.beginPath(); ctx.arc(x, y, 1 * DPR, 0, Math.PI * 2); ctx.fill()
-        }
-        // snowflakes
+        // shimmering snow
         for (const p of particles) {
           p.angle += 0.01
           p.x += p.vx + Math.cos(p.angle) * p.swing * 0.2
@@ -132,9 +143,9 @@ export default function AnimatedBackground({ season: controlledSeason }) {
           if (p.x > W() + 10) p.x = -10
           ctx.beginPath()
           ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-          ctx.fillStyle = 'rgba(255,255,255,0.9)'
-          ctx.shadowColor = 'rgba(255,255,255,0.7)'
-          ctx.shadowBlur = 6
+          ctx.fillStyle = `rgba(240, 249, 255, ${p.alpha})` // icy white-blue
+          ctx.shadowColor = 'rgba(191, 219, 254, 0.8)'
+          ctx.shadowBlur = 8
           ctx.fill()
         }
       } else if (season === 'autumn') {
@@ -149,7 +160,6 @@ export default function AnimatedBackground({ season: controlledSeason }) {
           ctx.translate(p.x, p.y)
           ctx.rotate(p.rot)
           ctx.fillStyle = p.color
-          // simple leaf shape: diamond
           ctx.beginPath()
           ctx.moveTo(0, -p.size)
           ctx.lineTo(p.size * 0.7, 0)
@@ -178,14 +188,12 @@ export default function AnimatedBackground({ season: controlledSeason }) {
           grd.addColorStop(1, 'rgba(255,255,255,0.8)')
           ctx.fillStyle = grd
           ctx.globalAlpha = p.alpha
-          // petal (oval)
           ctx.beginPath()
           ctx.ellipse(0, 0, p.w, p.h, 0, 0, Math.PI * 2)
           ctx.fill()
           ctx.restore()
         }
       } else {
-        // summer fireflies + subtle lines
         for (const p of particles) {
           p.x += p.vx
           p.y += p.vy
@@ -195,12 +203,11 @@ export default function AnimatedBackground({ season: controlledSeason }) {
           const a = 0.4 + Math.sin(p.t) * 0.4
           ctx.beginPath()
           ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-          ctx.fillStyle = `rgba(250, 204, 21, ${a})` // amber
+          ctx.fillStyle = `rgba(250, 204, 21, ${a})`
           ctx.shadowColor = 'rgba(250, 204, 21, 0.8)'
           ctx.shadowBlur = 12
           ctx.fill()
         }
-        // soft diagonal beams
         ctx.save()
         ctx.globalCompositeOperation = 'lighter'
         const beam = ctx.createLinearGradient(0, 0, W(), H())

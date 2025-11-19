@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Navbar from './components/Navbar'
 import AnimatedBackground from './components/AnimatedBackground'
 import FAQ from './components/FAQ'
@@ -27,10 +27,7 @@ export default function App() {
 
   // Season state: defaults to detected season, can be changed manually via Navbar wheel
   const [season, setSeason] = useState(getSeason())
-  // keep auto-detection on first mount; if user changes later, we keep manual selection
-  useEffect(() => {
-    setSeason(getSeason())
-  }, [])
+  useEffect(() => { setSeason(getSeason()) }, [])
 
   useEffect(() => {
     const handler = (e) => {
@@ -41,11 +38,6 @@ export default function App() {
     document.addEventListener('open-legal', handler)
     return () => document.removeEventListener('open-legal', handler)
   }, [])
-
-  const openLegal = (tab) => {
-    setActiveTab(tab)
-    setLegalOpen(true)
-  }
 
   const onSubmit = async (e) => {
     e.preventDefault()
@@ -80,13 +72,13 @@ export default function App() {
               Wir vernetzen die Furry-Community im Westen: mit Events, kreativen Projekten und einem starken Miteinander.
             </p>
             <div className="mt-6 flex items-center gap-3 text-sm">
-              <a href="#about" className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white">Mehr erfahren</a>
-              <button onClick={() => openLegal('contact')} className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20">Kontakt</button>
+              <a href="https://events.westside-furs.com/events/1/westside-furs-ev" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white">Zu unseren Events</a>
+              <a href="https://cloud.westside-furs.com/index.php/apps/memories/s/galerie" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20">Galerie</a>
             </div>
           </div>
         </section>
 
-        {/* About + Werte/Ziele */}
+        {/* About + Werte */}
         <section id="about" className="max-w-6xl mx-auto px-6 py-16">
           <div className="grid md:grid-cols-2 gap-10 items-start">
             <div>
@@ -110,26 +102,7 @@ export default function App() {
 
         <Reviews />
 
-        {/* Contact trigger section */}
-        <section id="contact" className="max-w-6xl mx-auto px-6 py-16">
-          <h2 className="text-2xl font-semibold mb-4">Kontakt</h2>
-          <p className="text-slate-300 mb-4">Öffne das Kontaktformular im Popup.</p>
-          <div className="flex gap-3">
-            <button onClick={() => openLegal('contact')} className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500">Kontakt öffnen</button>
-            <button onClick={() => openLegal('impressum')} className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20">Impressum</button>
-            <button onClick={() => openLegal('datenschutz')} className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20">Datenschutz</button>
-          </div>
-        </section>
-
-        {/* Legal sections become triggers only */}
-        <section id="impressum" className="max-w-6xl mx-auto px-6 py-16">
-          <h2 className="text-2xl font-semibold mb-3">Impressum</h2>
-          <p className="text-slate-200/90 text-sm leading-relaxed">Dieser Bereich öffnet nun als großes Popup. <button onClick={() => openLegal('impressum')} className="underline hover:text-white">Impressum anzeigen</button></p>
-        </section>
-        <section id="datenschutz" className="max-w-6xl mx-auto px-6 py-16">
-          <h2 className="text-2xl font-semibold mb-3">Datenschutz</h2>
-          <p className="text-slate-200/90 text-sm leading-relaxed">Dieser Bereich öffnet nun als großes Popup. <button onClick={() => openLegal('datenschutz')} className="underline hover:text-white">Datenschutzhinweise anzeigen</button></p>
-        </section>
+        {/* Removed separate legal/contact sections; available exclusively via Footer modal triggers */}
 
         <Footer />
       </main>

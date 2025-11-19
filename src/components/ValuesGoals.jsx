@@ -1,37 +1,35 @@
 export default function ValuesGoals() {
   const values = [
-    { title: 'Gemeinschaft', desc: 'Wir schaffen sichere und inklusive Räume für Begegnung und Freundschaft.' },
-    { title: 'Kreativität', desc: 'Wir fördern Kunst, Performance und Projekte aus der Community.' },
-    { title: 'Verantwortung', desc: 'Wir handeln respektvoll, nachhaltig und transparent.' },
-  ]
-
-  const goals = [
-    'Regelmäßige Treffpunkte und Suitwalks mit klaren Guidelines',
-    'Workshops und Mentoring für Künstler:innen und Newcomer',
-    'Charity- und Inklusionsprojekte, die etwas bewirken',
+    {
+      title: 'Förderung von Toleranz und Akzeptanz',
+      desc:
+        'Durch den Austausch mit Menschen verschiedener Hintergründe und Perspektiven fördern unsere Events Toleranz und Akzeptanz. Wir schaffen eine Umgebung, in der Vielfalt geschätzt wird.'
+    },
+    {
+      title: 'Soziale Vernetzung',
+      desc:
+        'Unsere Events sind nicht nur Unterhaltung, sondern bieten auch die Möglichkeit, neue Freundschaften zu schließen und bestehende zu vertiefen. So entsteht ein starkes soziales Netzwerk.'
+    },
+    {
+      title: 'Austausch von Erfahrungen',
+      desc:
+        'Wir teilen Geschichten, Kenntnisse und Skills. Das ist eine großartige Chance, voneinander zu lernen und die persönliche Entwicklung zu fördern.'
+    },
+    {
+      title: 'Gemeinschaftsgefühl',
+      desc:
+        'Unsere Treffen bringen Furrys zusammen, stärken das Wir-Gefühl und geben Raum, sich mit anderen auszutauschen, die dieselbe Leidenschaft teilen.'
+    }
   ]
 
   return (
-    <div className="mt-8 grid lg:grid-cols-2 gap-8">
-      <div className="rounded-2xl border border-slate-700/50 bg-slate-900/40 p-6">
-        <h3 className="text-lg font-semibold mb-3">Unsere Werte</h3>
-        <ul className="space-y-3">
-          {values.map((v) => (
-            <li key={v.title} className="">
-              <div className="font-medium text-slate-100">{v.title}</div>
-              <div className="text-slate-300 text-sm">{v.desc}</div>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="rounded-2xl border border-slate-700/50 bg-slate-900/40 p-6">
-        <h3 className="text-lg font-semibold mb-3">Unsere Ziele</h3>
-        <ul className="list-disc list-inside space-y-2 text-slate-300 text-sm">
-          {goals.map((g, i) => (
-            <li key={i}>{g}</li>
-          ))}
-        </ul>
-      </div>
+    <div className="mt-8 grid md:grid-cols-2 gap-6">
+      {values.map((v) => (
+        <div key={v.title} className="rounded-2xl border border-slate-700/50 bg-slate-900/50 p-5">
+          <h3 className="text-base md:text-lg font-semibold mb-2 text-white">{v.title}</h3>
+          <p className="text-slate-300 text-sm leading-relaxed">{v.desc}</p>
+        </div>
+      ))}
     </div>
   )
 }

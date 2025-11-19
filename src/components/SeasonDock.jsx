@@ -6,8 +6,8 @@ export default function SeasonDock({ season, setSeason }) {
   return (
     <div className="pointer-events-none">
       <div className="max-w-6xl mx-auto px-4 md:px-6">
-        <div className="pointer-events-auto flex justify-end md:justify-center">
-          <div className="mt-4 md:mt-6">
+        <div className="pointer-events-auto flex justify-end">
+          <div className="mt-8 md:mt-10">
             <SeasonWheel season={season} onChange={setSeason} />
           </div>
         </div>
