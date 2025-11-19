@@ -64,10 +64,10 @@ export default function App() {
       {/* Dock season switch aligned with intro heading and overall higher */}
       <SeasonDock season={season} setSeason={setSeason} />
 
-      <main className="pt-14">{/* slightly less top padding to move content up */}
+      <main className="pt-14">{/* keep safe offset for fixed header */}
         {/* Hero / Intro */}
         <section id="start" className="relative">
-          <div className="relative max-w-6xl mx-auto px-6 py-16 md:py-22">{/* pull up hero spacing */}
+          <div className="relative max-w-6xl mx-auto px-6 pt-8 md:pt-10 lg:pt-12 pb-16">{/* reduced top padding on desktop to cut empty space */}
             {/* Large logo above heading */}
             <div className="flex justify-center">
               <img src={logo} alt="Westside-Furs Logo" className="h-20 md:h-28 lg:h-32 xl:h-40 w-auto object-contain drop-shadow-sm" />
