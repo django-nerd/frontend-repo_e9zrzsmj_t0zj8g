@@ -7,6 +7,7 @@ import ValuesGoals from './components/ValuesGoals'
 import Reviews from './components/Reviews'
 import LegalModal from './components/LegalModal'
 import SeasonDock from './components/SeasonDock'
+import logo from './assets/westside-furs.svg'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000'
 
@@ -67,11 +68,15 @@ export default function App() {
         {/* Hero / Intro */}
         <section id="start" className="relative">
           <div className="relative max-w-6xl mx-auto px-6 py-16 md:py-22">{/* pull up hero spacing */}
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white drop-shadow-sm">Westside-Furs e. V.</h1>
-            <p className="mt-4 text-lg text-slate-200/90 max-w-2xl">
+            {/* Large logo above heading */}
+            <div className="flex justify-center">
+              <img src={logo} alt="Westside-Furs Logo" className="h-20 md:h-28 lg:h-32 xl:h-40 w-auto object-contain drop-shadow-sm" />
+            </div>
+            <h1 className="mt-6 text-4xl md:text-6xl font-bold tracking-tight text-white drop-shadow-sm text-center md:text-left">Westside-Furs e. V.</h1>
+            <p className="mt-4 text-lg text-slate-200/90 max-w-2xl md:text-left mx-auto md:mx-0 text-center">
               Wir vernetzen die Furry-Community im Westen: mit Events, kreativen Projekten und einem starken Miteinander.
             </p>
-            <div className="mt-6 flex items-center gap-3 text-sm">
+            <div className="mt-6 flex items-center gap-3 text-sm justify-center md:justify-start">
               <a href="https://events.westside-furs.com/events/1/westside-furs-ev" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white">Zu unseren Events</a>
               <a href="https://cloud.westside-furs.com/index.php/apps/memories/s/galerie" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20">Galerie</a>
               <a href="https://socials.westside-furs.com/" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20">weitere Links</a>

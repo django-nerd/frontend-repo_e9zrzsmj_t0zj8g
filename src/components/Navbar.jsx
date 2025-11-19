@@ -74,42 +74,40 @@ export default function Navbar({ season, setSeason }) {
   return (
     <header className={`fixed top-0 inset-x-0 z-40 transition-all ${scrolled ? 'backdrop-blur bg-white/80 shadow-sm' : 'backdrop-blur-sm bg-white/30'} `}>
       <nav className="relative max-w-6xl mx-auto px-4 md:px-6">
-        <div className="flex items-center justify-between h-14">
-          <a href="#start" className="flex items-center gap-2">
-            {/* Mark-only on very small screens */}
-            <img src={logoMark} alt="Westside-Furs Bildmarke" className={`h-9 w-auto object-contain align-middle shrink-0 md:hidden`} />
-            {/* Full logo on md+ (no dynamic invert in dark mode) */}
-            <img src={logo} alt="Westside-Furs Logo" className={`hidden md:block h-12 lg:h-14 xl:h-16 w-auto object-contain align-middle shrink-0`} />
-            {/* Title only on md+ to keep tiny displays clean */}
-            <span className="hidden md:inline font-semibold text-slate-800 text-sm md:text-base">Westside-Furs e. V.</span>
+        <div className="relative flex items-center justify-between h-14">
+          {/* Left area (desktop title only). On mobile it's empty to allow centered logo */}
+          <a href="#start" className="hidden md:flex items-center gap-2">
+            {/* Removed logo from navigation on md+ */}
+            <span className="font-semibold text-slate-800 text-sm md:text-base">Westside-Furs e. V.</span>
           </a>
 
-          <div className="hidden md:flex items-center gap-1">
+          {/* Centered logo on mobile only */}
+          <div className="absolute inset-0 flex items-center justify-center md:hidden pointer-events-none">
+            <img src={logoMark} alt="Westside-Furs" className="h-9 w-auto object-contain" />
+          </div>
+
+          {/* Right area */}
+          <div className="hidden md:flex items-center gap-1 ml-auto">
             <LinkItem href="#about" label="Über uns" />
             <LinkItem href="#faq" label="FAQ" />
             <LinkItem href="#reviews" label="Rezensionen" />
             <LinkItem href="#events" label="Events" onClick={(e) => { e.preventDefault(); window.open('https://events.westside-furs.com/events/1/westside-furs-ev', '_blank', 'noopener,noreferrer') }} />
             <LinkItem href="#gallery" label="Galerie" onClick={(e) => { e.preventDefault(); window.open('https://cloud.westside-furs.com/index.php/apps/memories/s/galerie', '_blank', 'noopener,noreferrer') }} />
-            {/* Legal links only via footer now */}
           </div>
 
-          <button className="md:hidden p-2 rounded-md hover:bg-white/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-800/30" onClick={() => setOpen(!open)} aria-label="Menü">
+          <button className="md:hidden p-2 rounded-md hover:bg-white/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-800/30 ml-auto" onClick={() => setOpen(!open)} aria-label="Menü">
             <Menu className="w-5 h-5 text-slate-700" />
           </button>
         </div>
 
         {open && (
           <div className="md:hidden pb-3 flex flex-col gap-1">
-            <div className="flex items-center gap-2 px-1 py-1">
-              <img src={logoMark} alt="Westside-Furs Bildmarke" className={`h-8 w-auto object-contain align-middle shrink-0`} />
-              <span className="font-semibold text-slate-800">Westside-Furs e. V.</span>
-            </div>
+            {/* Removed extra logo in mobile dropdown to keep header as the only logo in nav */}
             <LinkItem href="#about" label="Über uns" />
             <LinkItem href="#faq" label="FAQ" />
             <LinkItem href="#reviews" label="Rezensionen" />
             <a href="https://events.westside-furs.com/events/1/westside-furs-ev" target="_blank" rel="noopener noreferrer" className="px-3 py-2 text-sm rounded-md text-slate-700 hover:text-slate-900 hover:bg-white/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-800/30">Events</a>
             <a href="https://cloud.westside-furs.com/index.php/apps/memories/s/galerie" target="_blank" rel="noopener noreferrer" className="px-3 py-2 text-sm rounded-md text-slate-700 hover:text-slate-900 hover:bg-white/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-800/30">Galerie</a>
-            {/* Legal accessible only via footer */}
             {/* Mobile season selector as simple row */}
             <div className="flex items-center gap-2 pt-2">
               {SEASONS.map((s) => (
