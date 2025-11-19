@@ -112,7 +112,7 @@ export default function App() {
             </div>
 
             {/* Grid: left = values, right = FAQ aligned to values top; dynamic height */}
-            <div className="mt-8 grid md:grid-cols-2 gap-10 items-start">
+            <div className="mt-0 grid md:grid-cols-2 gap-10 items-start">
               <div>
                 <ValuesGoals />
               </div>
