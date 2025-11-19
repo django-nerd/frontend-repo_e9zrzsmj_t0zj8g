@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Menu } from 'lucide-react'
+import logo from '../assets/westside-furs.svg'
 
 const SEASONS = ['winter', 'spring', 'summer', 'autumn']
 
@@ -65,7 +66,7 @@ function SeasonWheel({ season, onChange }) {
             <button
               key={s}
               onClick={() => onChange(s)}
-              className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center transition-all ${isActive ? 'w-9 h-9 bg-slate-800 text-white shadow-lg' : 'w-8 h-8 bg-white text-slate-700 shadow'}`}
+              className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-800/40 ${isActive ? 'w-9 h-9 bg-slate-800 text-white shadow-lg' : 'w-8 h-8 bg-white text-slate-700 shadow'}`}
               style={{ left: cx, top: cy }}
               title={s}
               aria-pressed={isActive}
@@ -106,20 +107,18 @@ export default function Navbar({ season, setSeason }) {
     <a
       href={href}
       onClick={(e) => { onClick?.(e); setOpen(false) }}
-      className="px-3 py-2 text-sm rounded-md text-slate-700 hover:text-slate-900 hover:bg-white/70 md:text-slate-600"
+      className="px-3 py-2 text-sm rounded-md text-slate-700 hover:text-slate-900 hover:bg-white/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-800/30 md:text-slate-600"
     >
       {label}
     </a>
   )
-
-  const logoUrl = 'https://drive.google.com/uc?export=view&id=1r0GYlcswWPxzsd6BH7BHmjmaeNctF5lH'
 
   return (
     <header className={`fixed top-0 inset-x-0 z-40 transition-all ${scrolled ? 'backdrop-blur bg-white/70 shadow-sm' : 'backdrop-blur-sm bg-white/40'} `}>
       <nav className="relative max-w-6xl mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-14">
           <a href="#start" className="flex items-center gap-2">
-            <img src={logoUrl} alt="Westside-Furs Logo" className="h-7 w-auto md:h-8 lg:h-9 object-contain" />
+            <img src={logo} alt="Westside-Furs Logo" className="h-7 md:h-8 lg:h-9 w-auto object-contain align-middle shrink-0" />
             <span className="font-semibold text-slate-800 text-sm md:text-base">Westside-Furs e. V.</span>
           </a>
 
@@ -133,7 +132,7 @@ export default function Navbar({ season, setSeason }) {
             <SeasonWheel season={season} onChange={setSeason} />
           </div>
 
-          <button className="md:hidden p-2 rounded-md hover:bg-white/70" onClick={() => setOpen(!open)} aria-label="Menü">
+          <button className="md:hidden p-2 rounded-md hover:bg-white/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-800/30" onClick={() => setOpen(!open)} aria-label="Menü">
             <Menu className="w-5 h-5 text-slate-700" />
           </button>
         </div>
@@ -141,7 +140,7 @@ export default function Navbar({ season, setSeason }) {
         {open && (
           <div className="md:hidden pb-3 flex flex-col gap-1">
             <div className="flex items-center gap-2 px-1 py-1">
-              <img src={logoUrl} alt="Westside-Furs Logo" className="h-7 w-auto object-contain" />
+              <img src={logo} alt="Westside-Furs Logo" className="h-7 w-auto object-contain align-middle shrink-0" />
               <span className="font-semibold text-slate-800">Westside-Furs e. V.</span>
             </div>
             <LinkItem href="#about" label="Über uns" />
@@ -153,7 +152,14 @@ export default function Navbar({ season, setSeason }) {
             {/* Mobile season selector as simple row */}
             <div className="flex items-center gap-2 pt-2">
               {SEASONS.map((s) => (
-                <button key={s} onClick={() => setSeason(s)} className={`px-2 py-1 rounded-full text-xs border ${season===s ? 'bg-slate-800 text-white' : 'bg-white/80 text-slate-700'}`}>{s}</button>
+                <button
+                  key={s}
+                  onClick={() => setSeason(s)}
+                  className={`px-2 py-1 rounded-full text-xs border focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-800/30 ${season===s ? 'bg-slate-800 text-white' : 'bg-white/80 text-slate-700'}`}
+                  aria-pressed={season===s}
+                >
+                  {s}
+                </button>
               ))}
             </div>
           </div>
