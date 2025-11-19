@@ -59,8 +59,10 @@ export default function App() {
     }
   }
 
+  const baseTextClass = season === 'spring' ? 'text-slate-900' : 'text-slate-100'
+
   return (
-    <div className="min-h-screen text-slate-100">
+    <div className={`min-h-screen ${baseTextClass}`}>
       <AnimatedBackground season={season} />
       {/* Mobile-only header (desktop nav removed) */}
       <Navbar season={season} setSeason={setSeason} />
@@ -75,19 +77,19 @@ export default function App() {
             <div className="flex md:items-center md:min-h-[7rem] lg:min-h-[8rem] xl:min-h-[10rem]">
               <img src={logo} alt="Westside-Furs Logo" className="h-20 md:h-28 lg:h-32 xl:h-40 w-auto object-contain drop-shadow-sm" />
             </div>
-            <h1 className="mt-6 text-4xl md:text-6xl font-bold tracking-tight text-white drop-shadow-sm text-center md:text-left">Westside-Furs e. V.</h1>
-            <p className="mt-4 text-lg text-slate-200/90 max-w-2xl md:text-left mx-auto md:mx-0 text-center">
+            <h1 className={`mt-6 text-4xl md:text-6xl font-bold tracking-tight drop-shadow-sm text-center md:text-left ${season === 'spring' ? 'text-slate-900' : 'text-white'}`}>Westside-Furs e. V.</h1>
+            <p className={`mt-4 text-lg max-w-2xl md:text-left mx-auto md:mx-0 text-center ${season === 'spring' ? 'text-slate-800/90' : 'text-slate-200/90'}`}>
               Wir vernetzen die Furry-Community im Westen: mit Events, kreativen Projekten und einem starken Miteinander.
             </p>
             <div className="mt-6 flex items-center gap-3 text-sm justify-center md:justify-start">
               <a href="https://events.westside-furs.com/events/1/westside-furs-ev" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white">Zu unseren Events</a>
-              <a href="https://cloud.westside-furs.com/index.php/apps/memories/s/galerie" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20">Galerie</a>
-              <a href="https://socials.westside-furs.com/" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20">weitere Links</a>
+              <a href="https://cloud.westside-furs.com/index.php/apps/memories/s/galerie" target="_blank" rel="noopener noreferrer" className={`px-4 py-2 rounded-lg border hover:bg-white/20 ${season === 'spring' ? 'bg-black/5 border-black/10 text-slate-900' : 'bg-white/10 border-white/20'}`}>Galerie</a>
+              <a href="https://socials.westside-furs.com/" target="_blank" rel="noopener noreferrer" className={`px-4 py-2 rounded-lg border hover:bg-white/20 ${season === 'spring' ? 'bg-black/5 border-black/10 text-slate-900' : 'bg-white/10 border-white/20'}`}>weitere Links</a>
             </div>
             {/* cue to scroll */}
             <div className="mt-10 flex flex-col items-center text-slate-2 00/80">
               <span className="text-xs uppercase tracking-widest">Scroll</span>
-              <span className="mt-1 inline-block w-0.5 h-6 bg-slate-200/60 rounded-full animate-pulse" />
+              <span className={`mt-1 inline-block w-0.5 h-6 rounded-full animate-pulse ${season === 'spring' ? 'bg-slate-700/60' : 'bg-slate-200/60'}`} />
             </div>
           </div>
         </section>
@@ -98,11 +100,11 @@ export default function App() {
             <div className="grid md:grid-cols-2 gap-10 items-start">
               <div>
                 <h2 className="text-2xl font-semibold mb-3">Wer wir sind</h2>
-                <p className="text-slate-200/90 leading-relaxed">
+                <p className={`${season === 'spring' ? 'text-slate-800/90' : 'text-slate-200/90'} leading-relaxed`}>
                   Wir sind ein eingetragener Verein aus der Furry-Szene. Unser Fokus liegt auf Gemeinschaft, Sicherheit und Spaß –
                   von Suitwalks über Stammtische bis hin zu Workshops und Charity-Aktionen.
                 </p>
-                <p className="mt-4 text-slate-200/90 leading-relaxed">
+                <p className={`mt-4 ${season === 'spring' ? 'text-slate-800/90' : 'text-slate-200/90'} leading-relaxed`}>
                   Bei uns sind Fursuiter, Spotter, Künstler:innen, Organisator:innen und Fans willkommen. Vielfalt und Respekt
                   stehen im Mittelpunkt.
                 </p>
@@ -117,7 +119,7 @@ export default function App() {
         </Reveal>
 
         <Reveal delay={100}>
-          <Reviews />
+          <Reviews season={season} />
         </Reveal>
 
         <Footer />

@@ -1,6 +1,11 @@
-import { PlayCircle, ExternalLink } from 'lucide-react'
+import { PlayCircle } from 'lucide-react'
 
-export default function Reviews() {
+export default function Reviews({ season }) {
+  const isSpring = season === 'spring'
+  const cardText = isSpring ? 'text-slate-900' : 'text-white'
+  const subText = isSpring ? 'text-slate-700/80' : 'text-slate-300/80'
+  const iconColor = isSpring ? 'text-slate-800' : 'text-slate-200'
+
   const reviews = [
     { name: 'Kai (Fursuiter)', text: 'Tolle Organisation und super Stimmung – ich habe mich sofort willkommen gefühlt.' },
     { name: 'Mira (Spotterin)', text: 'Klare Regeln und respektvoller Umgang. Die Walks machen richtig Spaß!' },
@@ -15,7 +20,7 @@ export default function Reviews() {
           href="https://youtube.com/playlist?list=PLy1oTjXDjwe0etIxZGWF8Cxc5nclxfPNt&si=vKokqLuvb5JMoa1g"
           target="_blank"
           rel="noopener noreferrer"
-          className="group relative overflow-hidden rounded-2xl border border-slate-700/50 bg-slate-900/60 px-6 py-6 text-center text-white shadow-sm backdrop-blur-sm transition-all duration-500 ease-out hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-400/40"
+          className={`group relative overflow-hidden rounded-2xl border border-slate-700/50 bg-slate-900/60 px-6 py-6 text-center ${cardText} shadow-sm backdrop-blur-sm transition-all duration-500 ease-out hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-400/40`}
         >
           <span className="absolute -inset-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{
             background: 'radial-gradient(120px 80px at var(--x,50%) var(--y,50%), rgba(255,255,255,0.12), transparent 60%)'
@@ -25,8 +30,8 @@ export default function Reviews() {
               Teilnehmer Videos
             </span>
           </span>
-          <span className="relative mt-1 block text-xs text-slate-300/80">Hinweis: Wir sind nicht für den Inhalt der verlinkten Videos verantwortlich.</span>
-          <PlayCircle className="mx-auto mt-4 h-6 w-6 text-slate-200 opacity-90 group-hover:scale-105 transition-transform duration-500" aria-hidden="true" />
+          <span className={`relative mt-1 block text-xs ${subText}`}>Hinweis: Wir sind nicht für den Inhalt der verlinkten Videos verantwortlich.</span>
+          <PlayCircle className={`mx-auto mt-4 h-12 w-12 ${iconColor} opacity-90 group-hover:scale-105 transition-transform duration-500`} aria-hidden="true" />
           {/* idle float */}
           <span className="pointer-events-none absolute inset-0 animate-[float_6s_ease-in-out_infinite] opacity-0 group-hover:opacity-0" />
         </a>
@@ -35,7 +40,7 @@ export default function Reviews() {
           href="https://youtu.be/InO0BFGzZ6Y"
           target="_blank"
           rel="noopener noreferrer"
-          className="group relative overflow-hidden rounded-2xl border border-slate-700/50 bg-slate-900/60 px-6 py-6 text-center text-white shadow-sm backdrop-blur-sm transition-all duration-500 ease-out hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-sky-400/40"
+          className={`group relative overflow-hidden rounded-2xl border border-slate-700/50 bg-slate-900/60 px-6 py-6 text-center ${cardText} shadow-sm backdrop-blur-sm transition-all duration-500 ease-out hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-sky-400/40`}
         >
           <span className="absolute -inset-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{
             background: 'radial-gradient(120px 80px at var(--x,50%) var(--y,50%), rgba(255,255,255,0.12), transparent 60%)'
@@ -45,7 +50,7 @@ export default function Reviews() {
               WDR Beitrag vom 12.06.2023
             </span>
           </span>
-          <ExternalLink className="mx-auto mt-4 h-6 w-6 text-slate-200 opacity-90 group-hover:scale-105 transition-transform duration-500" aria-hidden="true" />
+          <PlayCircle className={`mx-auto mt-4 h-12 w-12 ${iconColor} opacity-90 group-hover:scale-105 transition-transform duration-500`} aria-hidden="true" />
           <span className="pointer-events-none absolute inset-0 animate-[float_6s_ease-in-out_infinite] [animation-delay:1.5s] opacity-0 group-hover:opacity-0" />
         </a>
       </div>
