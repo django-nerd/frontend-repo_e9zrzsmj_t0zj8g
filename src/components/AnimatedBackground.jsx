@@ -33,6 +33,15 @@ export default function AnimatedBackground({ season: controlledSeason }) {
 
     function rand(min, max) { return Math.random() * (max - min) + min }
 
+    function hexToRgba(hex, a = 1) {
+      const v = hex.replace('#', '')
+      const bigint = parseInt(v, 16)
+      const r = (bigint >> 16) & 255
+      const g = (bigint >> 8) & 255
+      const b = bigint & 255
+      return `rgba(${r}, ${g}, ${b}, ${a})`
+    }
+
     function initParticles() {
       if (season === 'winter') {
         const count = Math.floor(140 * (W() / 1440))
@@ -60,10 +69,11 @@ export default function AnimatedBackground({ season: controlledSeason }) {
           color: colors[Math.floor(Math.random() * colors.length)],
         }))
       } else if (season === 'spring') {
+        // softer, pastel palette
         const colors = [
-          '#fbcfe8', '#f9a8d4', '#f472b6', '#fda4af',
-          '#a7f3d0', '#86efac', '#bef264', '#fde68a',
-          '#93c5fd', '#c4b5fd', '#e9d5ff'
+          '#fce7f3', '#fbcfe8', '#fae8ff', '#e9d5ff',
+          '#d1fae5', '#bbf7d0', '#fef9c3', '#fde68a',
+          '#e0f2fe', '#bfdbfe', '#c7d2fe'
         ]
         const count = Math.floor(120 * (W() / 1440))
         particles = Array.from({ length: count }).map(() => ({
@@ -71,12 +81,13 @@ export default function AnimatedBackground({ season: controlledSeason }) {
           y: Math.random() * H(),
           w: rand(7, 14) * DPR,
           h: rand(3, 7) * DPR,
-          vy: rand(0.25, 0.8) * DPR,
-          vx: rand(-0.35, 0.35) * DPR,
+          vy: rand(0.2, 0.6) * DPR,
+          vx: rand(-0.3, 0.3) * DPR,
           rot: rand(0, Math.PI * 2),
-          rotSpeed: rand(-0.02, 0.02),
+          rotSpeed: rand(-0.015, 0.015),
           color: colors[Math.floor(Math.random() * colors.length)],
-          alpha: rand(0.7, 1),
+          alpha: rand(0.6, 0.85),
+          sheen: rand(0.2, 0.4),
         }))
       } else {
         // summer: fireflies
@@ -106,10 +117,10 @@ export default function AnimatedBackground({ season: controlledSeason }) {
         g.addColorStop(0, 'rgba(30,27,75,1)') // indigo-950
         g.addColorStop(1, 'rgba(88,28,135,1)') // purple-900
       } else if (season === 'spring') {
-        // brighter, colorful spring gradient
-        g.addColorStop(0, 'rgba(16,185,129,1)')   // emerald-500
-        g.addColorStop(0.5, 'rgba(56,189,248,1)') // sky-400
-        g.addColorStop(1, 'rgba(244,114,182,1)')  // pink-400
+        // pastel spring gradient
+        g.addColorStop(0, 'rgba(110, 231, 183, 1)')   // emerald-300
+        g.addColorStop(0.5, 'rgba(186, 230, 253, 1)') // sky-200
+        g.addColorStop(1, 'rgba(251, 207, 232, 1)')  // pink-200
       } else {
         g.addColorStop(0, 'rgba(7,89,133,1)') // cyan-800
         g.addColorStop(1, 'rgba(2,44,34,1)') // emerald-950
@@ -191,13 +202,13 @@ export default function AnimatedBackground({ season: controlledSeason }) {
           ctx.rotate(p.rot)
           const grd = ctx.createLinearGradient(-p.w, -p.h, p.w, p.h)
           grd.addColorStop(0, `${p.color}`)
-          grd.addColorStop(1, 'rgba(255,255,255,0.9)')
+          grd.addColorStop(1, hexToRgba(p.color, 0.35))
           ctx.fillStyle = grd
           ctx.globalAlpha = p.alpha
           ctx.beginPath()
           ctx.ellipse(0, 0, p.w, p.h, 0, 0, Math.PI * 2)
-          ctx.shadowColor = 'rgba(255,255,255,0.35)'
-          ctx.shadowBlur = 6
+          ctx.shadowColor = 'rgba(255,255,255,0.25)'
+          ctx.shadowBlur = 4
           ctx.fill()
           ctx.restore()
         }

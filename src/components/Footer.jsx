@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="mt-24 border-t border-slate-700/60 py-10 text-slate-300" id="footer">
+    <footer className="mt-24 border-t border-slate-700/60 py-10 text-slate-300 bg-slate-900/70 backdrop-blur-sm" id="footer">
       <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8">
         <div>
           <h4 className="text-slate-100 font-semibold mb-3">Westside-Furs e. V.</h4>
