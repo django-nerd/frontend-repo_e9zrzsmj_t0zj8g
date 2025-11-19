@@ -69,7 +69,7 @@ export default function AnimatedBackground({ season: controlledSeason }) {
           color: colors[Math.floor(Math.random() * colors.length)],
         }))
       } else if (season === 'spring') {
-        // softer, pastel palette (darker backdrop later)
+        // softer, pastel palette on a darker backdrop
         const colors = [
           '#fce7f3', '#fbcfe8', '#fae8ff', '#e9d5ff',
           '#d1fae5', '#bbf7d0', '#fef9c3', '#fde68a',
@@ -117,10 +117,10 @@ export default function AnimatedBackground({ season: controlledSeason }) {
         g.addColorStop(0, 'rgba(30,27,75,1)') // indigo-950
         g.addColorStop(1, 'rgba(88,28,135,1)') // purple-900
       } else if (season === 'spring') {
-        // darker spring gradient for better contrast
-        g.addColorStop(0, 'rgba(16, 185, 129, 0.6)')   // emerald-500 @ 60%
-        g.addColorStop(0.5, 'rgba(59, 130, 246, 0.5)') // blue-500 @ 50%
-        g.addColorStop(1, 'rgba(236, 72, 153, 0.5)')   // pink-500 @ 50%
+        // make spring darker for better contrast: deep slate with subtle emerald
+        g.addColorStop(0, 'rgba(2, 6, 23, 1)')   // slate-950
+        g.addColorStop(0.6, 'rgba(15, 23, 42, 1)') // slate-900
+        g.addColorStop(1, 'rgba(20, 83, 45, 1)')  // emerald-800
       } else {
         g.addColorStop(0, 'rgba(7,89,133,1)') // cyan-800
         g.addColorStop(1, 'rgba(2,44,34,1)') // emerald-950
