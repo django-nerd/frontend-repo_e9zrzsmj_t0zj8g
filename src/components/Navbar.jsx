@@ -71,17 +71,15 @@ export default function Navbar({ season, setSeason }) {
     </a>
   )
 
-  const logoFilter = scrolled ? '' : 'invert'
-
   return (
     <header className={`fixed top-0 inset-x-0 z-40 transition-all ${scrolled ? 'backdrop-blur bg-white/80 shadow-sm' : 'backdrop-blur-sm bg-white/30'} `}>
       <nav className="relative max-w-6xl mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-14">
           <a href="#start" className="flex items-center gap-2">
             {/* Mark-only on very small screens */}
-            <img src={logoMark} alt="Westside-Furs Bildmarke" className={`h-8 w-auto object-contain align-middle shrink-0 md:hidden ${logoFilter}`} />
-            {/* Full logo on md+ with dynamic light/dark */}
-            <img src={logo} alt="Westside-Furs Logo" className={`hidden md:block h-10 lg:h-12 w-auto object-contain align-middle shrink-0 ${logoFilter}`} />
+            <img src={logoMark} alt="Westside-Furs Bildmarke" className={`h-9 w-auto object-contain align-middle shrink-0 md:hidden`} />
+            {/* Full logo on md+ (no dynamic invert in dark mode) */}
+            <img src={logo} alt="Westside-Furs Logo" className={`hidden md:block h-12 lg:h-14 xl:h-16 w-auto object-contain align-middle shrink-0`} />
             {/* Title only on md+ to keep tiny displays clean */}
             <span className="hidden md:inline font-semibold text-slate-800 text-sm md:text-base">Westside-Furs e. V.</span>
           </a>
@@ -103,7 +101,7 @@ export default function Navbar({ season, setSeason }) {
         {open && (
           <div className="md:hidden pb-3 flex flex-col gap-1">
             <div className="flex items-center gap-2 px-1 py-1">
-              <img src={logoMark} alt="Westside-Furs Bildmarke" className={`h-7 w-auto object-contain align-middle shrink-0 ${logoFilter}`} />
+              <img src={logoMark} alt="Westside-Furs Bildmarke" className={`h-8 w-auto object-contain align-middle shrink-0`} />
               <span className="font-semibold text-slate-800">Westside-Furs e. V.</span>
             </div>
             <LinkItem href="#about" label="Über uns" />

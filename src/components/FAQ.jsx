@@ -28,8 +28,9 @@ const categories = [
 ]
 
 export default function FAQ() {
-  const [openCat, setOpenCat] = useState(0)
-  const [openItem, setOpenItem] = useState({ 0: 0 })
+  // All closed by default
+  const [openCat, setOpenCat] = useState(-1)
+  const [openItem, setOpenItem] = useState({})
 
   return (
     <div id="faq" className="space-y-4">

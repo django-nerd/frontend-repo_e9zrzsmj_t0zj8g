@@ -60,13 +60,13 @@ export default function App() {
     <div className="min-h-screen text-slate-100">
       <AnimatedBackground season={season} />
       <Navbar season={season} setSeason={setSeason} />
-      {/* Dock season switch below header so the wheel is fully visible */}
+      {/* Dock season switch aligned with intro heading and overall higher */}
       <SeasonDock season={season} setSeason={setSeason} />
 
-      <main className="pt-16">
+      <main className="pt-14">{/* slightly less top padding to move content up */}
         {/* Hero / Intro */}
         <section id="start" className="relative">
-          <div className="relative max-w-6xl mx-auto px-6 py-20 md:py-28">
+          <div className="relative max-w-6xl mx-auto px-6 py-16 md:py-22">{/* pull up hero spacing */}
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white drop-shadow-sm">Westside-Furs e. V.</h1>
             <p className="mt-4 text-lg text-slate-200/90 max-w-2xl">
               Wir vernetzen die Furry-Community im Westen: mit Events, kreativen Projekten und einem starken Miteinander.
@@ -74,12 +74,18 @@ export default function App() {
             <div className="mt-6 flex items-center gap-3 text-sm">
               <a href="https://events.westside-furs.com/events/1/westside-furs-ev" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white">Zu unseren Events</a>
               <a href="https://cloud.westside-furs.com/index.php/apps/memories/s/galerie" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20">Galerie</a>
+              <a href="https://socials.westside-furs.com/" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 hover:bg-white/20">weitere Links</a>
+            </div>
+            {/* cue to scroll */}
+            <div className="mt-10 flex flex-col items-center text-slate-200/80">
+              <span className="text-xs uppercase tracking-widest">Scroll</span>
+              <span className="mt-1 inline-block w-0.5 h-6 bg-slate-200/60 rounded-full animate-pulse" />
             </div>
           </div>
         </section>
 
         {/* About + Werte */}
-        <section id="about" className="max-w-6xl mx-auto px-6 py-16">
+        <section id="about" className="max-w-6xl mx-auto px-6 py-14">{/* slightly less padding to move up */}
           <div className="grid md:grid-cols-2 gap-10 items-start">
             <div>
               <h2 className="text-2xl font-semibold mb-3">Wer wir sind</h2>
