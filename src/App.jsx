@@ -7,6 +7,7 @@ import ValuesGoals from './components/ValuesGoals'
 import Reviews from './components/Reviews'
 import LegalModal from './components/LegalModal'
 import SeasonDock from './components/SeasonDock'
+import BackToTop from './components/BackToTop'
 import logo from './assets/westside-furs.svg'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000'
@@ -60,16 +61,17 @@ export default function App() {
   return (
     <div className="min-h-screen text-slate-100">
       <AnimatedBackground season={season} />
+      {/* Mobile-only header (desktop nav removed) */}
       <Navbar season={season} setSeason={setSeason} />
-      {/* Dock season switch aligned with intro heading and overall higher */}
+      {/* Align the desktop Season switch with the hero logo height by adjusting margins in SeasonDock */}
       <SeasonDock season={season} setSeason={setSeason} />
 
-      <main className="pt-14">{/* keep safe offset for fixed header */}
+      <main className="pt-14">{/* safe offset for fixed mobile header */}
         {/* Hero / Intro */}
         <section id="start" className="relative">
-          <div className="relative max-w-6xl mx-auto px-6 pt-8 md:pt-10 lg:pt-12 pb-16">{/* reduced top padding on desktop to cut empty space */}
+          <div className="relative max-w-6xl mx-auto px-6 pt-8 md:pt-8 lg:pt-8 pb-16">{/* tighter top padding so logo aligns near Season switch */}
             {/* Large logo above heading */}
-            <div className="flex justify-center">
+            <div className="flex md:items-center md:min-h-[7rem] lg:min-h-[8rem] xl:min-h-[10rem]">
               <img src={logo} alt="Westside-Furs Logo" className="h-20 md:h-28 lg:h-32 xl:h-40 w-auto object-contain drop-shadow-sm" />
             </div>
             <h1 className="mt-6 text-4xl md:text-6xl font-bold tracking-tight text-white drop-shadow-sm text-center md:text-left">Westside-Furs e. V.</h1>
@@ -113,8 +115,6 @@ export default function App() {
 
         <Reviews />
 
-        {/* Removed separate legal/contact sections; available exclusively via Footer modal triggers */}
-
         <Footer />
       </main>
 
@@ -128,6 +128,9 @@ export default function App() {
         form={form}
         setForm={setForm}
       />
+
+      {/* Back to top button */}
+      <BackToTop />
     </div>
   )
 }
