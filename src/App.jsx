@@ -9,7 +9,6 @@ import LegalModal from './components/LegalModal'
 import SeasonDock from './components/SeasonDock'
 import BackToTop from './components/BackToTop'
 import Reveal from './components/Reveal'
-import HiEventsEmbed from './components/HiEvents'
 import logo from './assets/westside-furs.svg'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000'
@@ -95,32 +94,33 @@ export default function App() {
           </div>
         </section>
 
-        {/* About + Werte */}
+        {/* About + Werte / FAQ */}
         <Reveal>
           <section id="about" className="max-w-6xl mx-auto px-6 py-14">
-            <div className="grid md:grid-cols-2 gap-10 items-start">
-              <div>
-                <h2 className="text-2xl font-semibold mb-3">Wer wir sind</h2>
-                <p className={`${season === 'spring' ? 'text-slate-800/90' : 'text-slate-200/90'} leading-relaxed`}>
-                  Wir sind ein eingetragener Verein aus der Furry-Szene. Unser Fokus liegt auf Gemeinschaft, Sicherheit und Spaß –
-                  von Suitwalks über Stammtische bis hin zu Workshops und Charity-Aktionen.
-                </p>
-                <p className={`mt-4 ${season === 'spring' ? 'text-slate-800/90' : 'text-slate-200/90'} leading-relaxed`}>
-                  Bei uns sind Fursuiter, Spotter, Künstler:innen, Organisator:innen und Fans willkommen. Vielfalt und Respekt
-                  stehen im Mittelpunkt.
-                </p>
-                <ValuesGoals />
-              </div>
-              <div className="rounded-2xl border border-slate-700/60 bg-slate-900/60 p-6">{/* opacity increased for readability */}
-                <h3 className="font-medium mb-3">FAQ</h3>
-                <FAQ />
-              </div>
+            {/* Keep the heading left-aligned above the values */}
+            <div className="max-w-3xl">
+              <h2 className="text-2xl font-semibold mb-3">Wer wir sind</h2>
+              <p className={`${season === 'spring' ? 'text-slate-800/90' : 'text-slate-200/90'} leading-relaxed`}>
+                Wir sind ein eingetragener Verein aus der Furry-Szene. Unser Fokus liegt auf Gemeinschaft, Sicherheit und Spaß –
+                von Suitwalks über Stammtische bis hin zu Workshops und Charity-Aktionen.
+              </p>
+              <p className={`mt-4 ${season === 'spring' ? 'text-slate-800/90' : 'text-slate-200/90'} leading-relaxed`}>
+                Bei uns sind Fursuiter, Spotter, Künstler:innen, Organisator:innen und Fans willkommen. Vielfalt und Respekt
+                stehen im Mittelpunkt.
+              </p>
             </div>
 
-            {/* Separate Events block below FAQ */}
-            <div className="mt-8 rounded-2xl border border-slate-700/60 bg-slate-900/60 p-6">
-              <h4 className="mb-2 text-sm uppercase tracking-wide opacity-80">Nächste Events</h4>
-              <HiEventsEmbed />
+            {/* Grid: left = values, right = FAQ aligned to values top; equal height */}
+            <div className="mt-8 grid md:grid-cols-2 gap-10 items-stretch">
+              <div className="h-full">
+                <ValuesGoals />
+              </div>
+              <div className="h-full rounded-2xl border border-slate-700/60 bg-slate-900/60 p-6 flex flex-col">
+                <h3 className="font-medium mb-3">FAQ</h3>
+                <div className="flex-1 min-h-0">
+                  <FAQ />
+                </div>
+              </div>
             </div>
           </section>
         </Reveal>

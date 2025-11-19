@@ -69,7 +69,7 @@ export default function AnimatedBackground({ season: controlledSeason }) {
           color: colors[Math.floor(Math.random() * colors.length)],
         }))
       } else if (season === 'spring') {
-        // softer, pastel palette
+        // softer, pastel palette (darker backdrop later)
         const colors = [
           '#fce7f3', '#fbcfe8', '#fae8ff', '#e9d5ff',
           '#d1fae5', '#bbf7d0', '#fef9c3', '#fde68a',
@@ -117,10 +117,10 @@ export default function AnimatedBackground({ season: controlledSeason }) {
         g.addColorStop(0, 'rgba(30,27,75,1)') // indigo-950
         g.addColorStop(1, 'rgba(88,28,135,1)') // purple-900
       } else if (season === 'spring') {
-        // pastel spring gradient
-        g.addColorStop(0, 'rgba(110, 231, 183, 1)')   // emerald-300
-        g.addColorStop(0.5, 'rgba(186, 230, 253, 1)') // sky-200
-        g.addColorStop(1, 'rgba(251, 207, 232, 1)')  // pink-200
+        // darker spring gradient for better contrast
+        g.addColorStop(0, 'rgba(16, 185, 129, 0.6)')   // emerald-500 @ 60%
+        g.addColorStop(0.5, 'rgba(59, 130, 246, 0.5)') // blue-500 @ 50%
+        g.addColorStop(1, 'rgba(236, 72, 153, 0.5)')   // pink-500 @ 50%
       } else {
         g.addColorStop(0, 'rgba(7,89,133,1)') // cyan-800
         g.addColorStop(1, 'rgba(2,44,34,1)') // emerald-950
@@ -160,7 +160,7 @@ export default function AnimatedBackground({ season: controlledSeason }) {
           if (p.x > W() + 10) p.x = -10
           ctx.beginPath()
           ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-          ctx.fillStyle = `rgba(240, 249, 255, ${p.alpha})` // icy white-blue
+          ctx.fillStyle = `rgba(240, 249, 255, ${p.alpha})`
           ctx.shadowColor = 'rgba(191, 219, 254, 0.8)'
           ctx.shadowBlur = 8
           ctx.fill()
@@ -207,8 +207,8 @@ export default function AnimatedBackground({ season: controlledSeason }) {
           ctx.globalAlpha = p.alpha
           ctx.beginPath()
           ctx.ellipse(0, 0, p.w, p.h, 0, 0, Math.PI * 2)
-          ctx.shadowColor = 'rgba(255,255,255,0.25)'
-          ctx.shadowBlur = 4
+          ctx.shadowColor = 'rgba(255,255,255,0.2)'
+          ctx.shadowBlur = 3
           ctx.fill()
           ctx.restore()
         }
