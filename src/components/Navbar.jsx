@@ -112,13 +112,15 @@ export default function Navbar({ season, setSeason }) {
     </a>
   )
 
+  const logoUrl = 'https://drive.google.com/uc?export=view&id=1r0GYlcswWPxzsd6BH7BHmjmaeNctF5lH'
+
   return (
     <header className={`fixed top-0 inset-x-0 z-40 transition-all ${scrolled ? 'backdrop-blur bg-white/70 shadow-sm' : 'backdrop-blur-sm bg-white/40'} `}>
       <nav className="relative max-w-6xl mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-14">
           <a href="#start" className="flex items-center gap-2">
-            <img src="/flame-icon.svg" alt="Logo" className="w-7 h-7" />
-            <span className="font-semibold text-slate-800">Westside-Furs e. V.</span>
+            <img src={logoUrl} alt="Westside-Furs Logo" className="h-7 w-auto md:h-8 lg:h-9 object-contain" />
+            <span className="font-semibold text-slate-800 text-sm md:text-base">Westside-Furs e. V.</span>
           </a>
 
           <div className="hidden md:flex items-center gap-1">
@@ -138,6 +140,10 @@ export default function Navbar({ season, setSeason }) {
 
         {open && (
           <div className="md:hidden pb-3 flex flex-col gap-1">
+            <div className="flex items-center gap-2 px-1 py-1">
+              <img src={logoUrl} alt="Westside-Furs Logo" className="h-7 w-auto object-contain" />
+              <span className="font-semibold text-slate-800">Westside-Furs e. V.</span>
+            </div>
             <LinkItem href="#about" label="Über uns" />
             <LinkItem href="#faq" label="FAQ" />
             <LinkItem href="#reviews" label="Rezensionen" />
