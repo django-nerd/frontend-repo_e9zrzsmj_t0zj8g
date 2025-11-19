@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import { useState } from 'react'
 
 const Link = ({ href, children }) => (
   <a href={href} target={href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" className="underline decoration-slate-300/70 hover:decoration-white text-slate-100 hover:text-white">
@@ -6,38 +6,16 @@ const Link = ({ href, children }) => (
   </a>
 )
 
+// Simplified collapsible: no measurements, purely CSS-based smooth open/close
 function Collapsible({ isOpen, children }) {
-  const ref = useRef(null)
-  const [maxH, setMaxH] = useState(0)
-
-  // Measure content height and update max-height to enable smooth transitions,
-  // including when nested content changes size while open.
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-
-    const measure = () => {
-      // Use scrollHeight to capture full content height
-      setMaxH(el.scrollHeight)
-    }
-
-    if (isOpen) {
-      measure()
-      const ro = new ResizeObserver(measure)
-      ro.observe(el)
-      return () => ro.disconnect()
-    } else {
-      setMaxH(0)
-    }
-  }, [isOpen, children])
-
   return (
     <div
-      ref={ref}
-      style={{ maxHeight: isOpen ? `${maxH}px` : 0 }}
-      className="transition-[max-height] duration-300 ease-in-out overflow-hidden"
+      className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
+      aria-hidden={!isOpen}
     >
-      {children}
+      <div className="overflow-hidden">
+        {children}
+      </div>
     </div>
   )
 }
