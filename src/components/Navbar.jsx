@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Menu } from 'lucide-react'
 import logo from '../assets/westside-furs.svg'
+import logoMark from '../assets/westside-furs-mark.svg'
 
 const SEASONS = ['winter', 'spring', 'summer', 'autumn']
 
@@ -44,7 +45,7 @@ function WinterIcicles() {
   )
 }
 
-function SeasonWheel({ season, onChange }) {
+export function SeasonWheel({ season, onChange }) {
   const order = SEASONS
   const activeIndex = order.indexOf(season)
   // positions around the wheel: top is active, others rotate around
@@ -118,8 +119,12 @@ export default function Navbar({ season, setSeason }) {
       <nav className="relative max-w-6xl mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-14">
           <a href="#start" className="flex items-center gap-2">
-            <img src={logo} alt="Westside-Furs Logo" className="h-7 md:h-8 lg:h-9 w-auto object-contain align-middle shrink-0" />
-            <span className="font-semibold text-slate-800 text-sm md:text-base">Westside-Furs e. V.</span>
+            {/* Mark-only on very small screens */}
+            <img src={logoMark} alt="Westside-Furs Bildmarke" className="h-7 w-auto object-contain align-middle shrink-0 md:hidden" />
+            {/* Full logo on md+ */}
+            <img src={logo} alt="Westside-Furs Logo" className="hidden md:block h-8 lg:h-9 w-auto object-contain align-middle shrink-0" />
+            {/* Title only on md+ to keep tiny displays clean */}
+            <span className="hidden md:inline font-semibold text-slate-800 text-sm md:text-base">Westside-Furs e. V.</span>
           </a>
 
           <div className="hidden md:flex items-center gap-1">
@@ -129,7 +134,7 @@ export default function Navbar({ season, setSeason }) {
             <LinkItem href="#contact" label="Kontakt" onClick={(e) => { e.preventDefault(); document.dispatchEvent(new CustomEvent('open-legal', { detail: { tab: 'contact' } })) }} />
             <LinkItem href="#impressum" label="Impressum" onClick={(e) => { e.preventDefault(); document.dispatchEvent(new CustomEvent('open-legal', { detail: { tab: 'impressum' } })) }} />
             <LinkItem href="#datenschutz" label="Datenschutz" onClick={(e) => { e.preventDefault(); document.dispatchEvent(new CustomEvent('open-legal', { detail: { tab: 'datenschutz' } })) }} />
-            <SeasonWheel season={season} onChange={setSeason} />
+            {/* Season wheel moved out of navbar to avoid clipping */}
           </div>
 
           <button className="md:hidden p-2 rounded-md hover:bg-white/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-800/30" onClick={() => setOpen(!open)} aria-label="Menü">
@@ -140,7 +145,7 @@ export default function Navbar({ season, setSeason }) {
         {open && (
           <div className="md:hidden pb-3 flex flex-col gap-1">
             <div className="flex items-center gap-2 px-1 py-1">
-              <img src={logo} alt="Westside-Furs Logo" className="h-7 w-auto object-contain align-middle shrink-0" />
+              <img src={logoMark} alt="Westside-Furs Bildmarke" className="h-7 w-auto object-contain align-middle shrink-0" />
               <span className="font-semibold text-slate-800">Westside-Furs e. V.</span>
             </div>
             <LinkItem href="#about" label="Über uns" />

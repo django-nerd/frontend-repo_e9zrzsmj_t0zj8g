@@ -6,6 +6,7 @@ import Footer from './components/Footer'
 import ValuesGoals from './components/ValuesGoals'
 import Reviews from './components/Reviews'
 import LegalModal from './components/LegalModal'
+import SeasonDock from './components/SeasonDock'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000'
 
@@ -67,6 +68,8 @@ export default function App() {
     <div className="min-h-screen text-slate-100">
       <AnimatedBackground season={season} />
       <Navbar season={season} setSeason={setSeason} />
+      {/* Dock season switch below header so the wheel is fully visible */}
+      <SeasonDock season={season} setSeason={setSeason} />
 
       <main className="pt-16">
         {/* Hero / Intro */}
