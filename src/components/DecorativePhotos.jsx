@@ -3,8 +3,8 @@ import React, { useEffect, useRef } from 'react'
 // Decorative, blurred, darkened placeholders for future photos with subtle parallax.
 export default function DecorativePhotos() {
   // shared styles
-  const base = 'pointer-events-none select-none fixed rounded-3xl overflow-hidden shadow-xl backdrop-opacity-0 will-change-transform';
-  const fx = 'blur-md md:blur-lg opacity-60 md:opacity-70 brightness-[.65]';
+  const base = 'pointer-events-none select-none fixed rounded-2xl overflow-hidden shadow-xl backdrop-opacity-0 will-change-transform';
+  const fxCommon = 'opacity-70 brightness-[.65]';
   const imgBase = 'w-full h-full bg-cover bg-center';
 
   // simple abstract gradient placeholders
@@ -36,7 +36,6 @@ export default function DecorativePhotos() {
         nodes.forEach((node, idx) => {
           if (!node) return;
           const dy = Math.round(y * factors[idx]);
-          // translate only the inner wrapper to preserve outer rotation class
           node.style.transform = `translate3d(0, ${dy}px, 0)`;
         });
         frame = null;
@@ -55,29 +54,29 @@ export default function DecorativePhotos() {
 
   return (
     <>
-      {/* Top-left card */}
-      <div className={`${base} ${fx} z-[-5] top-24 left-4 sm:left-8 w-40 sm:w-56 md:w-64 aspect-[4/3] -rotate-2 sm:-rotate-3`} aria-hidden>
+      {/* Top-left card (slight blur ~2px) */}
+      <div className={`${base} ${fxCommon} blur-[2px] z-[-5] top-24 left-4 sm:left-8 w-40 sm:w-56 md:w-64 aspect-[4/3] -rotate-2 sm:-rotate-3`} aria-hidden>
         <div ref={p0} className="will-change-transform">
           <div className={imgBase} style={{ backgroundImage: gradients[0] }} />
         </div>
       </div>
 
-      {/* Top-right card */}
-      <div className={`${base} ${fx} z-[-5] top-40 right-2 sm:right-8 w-36 sm:w-52 md:w-64 aspect-[1/1] rotate-3`} aria-hidden>
+      {/* Top-right card (medium blur ~4px) */}
+      <div className={`${base} ${fxCommon} blur-[4px] z-[-5] top-40 right-2 sm:right-8 w-36 sm:w-52 md:w-64 aspect-[1/1] rotate-3`} aria-hidden>
         <div ref={p1} className="will-change-transform">
           <div className={imgBase} style={{ backgroundImage: gradients[1] }} />
         </div>
       </div>
 
-      {/* Middle-left card (hidden on very small screens) */}
-      <div className={`${base} ${fx} z-[-5] hidden sm:block top-1/2 -translate-y-1/2 left-[-20px] sm:left-4 md:left-10 w-40 md:w-56 aspect-[3/4] -rotate-6`} aria-hidden>
+      {/* Middle-left card (stronger blur ~6px) */}
+      <div className={`${base} ${fxCommon} blur-[6px] z-[-5] hidden sm:block top-1/2 -translate-y-1/2 left-[-20px] sm:left-4 md:left-10 w-40 md:w-56 aspect-[3/4] -rotate-6`} aria-hidden>
         <div ref={p2} className="will-change-transform">
           <div className={imgBase} style={{ backgroundImage: gradients[2] }} />
         </div>
       </div>
 
-      {/* Bottom-right card */}
-      <div className={`${base} ${fx} z-[-5] bottom-16 right-4 sm:right-10 w-44 sm:w-60 md:w-72 aspect-[16/10] rotate-2`} aria-hidden>
+      {/* Bottom-right card (deep blur ~8px) */}
+      <div className={`${base} ${fxCommon} blur-[8px] z-[-5] bottom-16 right-4 sm:right-10 w-44 sm:w-60 md:w-72 aspect-[16/10] rotate-2`} aria-hidden>
         <div ref={p3} className="will-change-transform">
           <div className={imgBase} style={{ backgroundImage: gradients[3] }} />
         </div>
