@@ -45,25 +45,83 @@ export function SeasonWheel({ season, onChange }) {
   const step = 360 / SEASONS.length
   const radius = 64 // px for 160px (w-40 h-40) circle
 
+  // SVG helpers for connector positions (expanded size reference 160x160)
+  const cx = 80
+  const cy = 80
+  const pts = SEASONS.map((_, idx) => {
+    const angle = (idx * step) * Math.PI / 180
+    const x = cx + radius * Math.sin(angle)
+    const y = cy - radius * Math.cos(angle)
+    return { x, y }
+  })
+
   return (
     <div className="group relative inline-block select-none">
       {/* Animated container: compact -> expanded */}
       <div
-        className="relative overflow-visible rounded-full transition-all duration-300 ease-out border border-white/20 bg-white/10 backdrop-blur-sm shadow-sm w-12 h-12 group-hover:w-40 group-hover:h-40 group-focus-within:w-40 group-focus-within:h-40 group-hover:[--t:1] group-focus-within:[--t:1]"
+        className="relative overflow-visible rounded-full transition-all duration-300 ease-out border border-cyan-300/20 bg-transparent backdrop-blur-0 shadow-sm w-12 h-12 group-hover:w-40 group-hover:h-40 group-focus-within:w-40 group-focus-within:h-40 group-hover:[--t:1] group-focus-within:[--t:1]"
         aria-label={SEASON_META[season]?.de}
         style={{ '--t': 0 }}
       >
-        {/* Outer ring visible only when expanded */}
-        <div className="absolute inset-1 rounded-full border border-white/10 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100" />
+        {/* Futuristic connectors + ring (only when expanded) */}
+        <svg
+          className="absolute inset-0 w-full h-full opacity-0 transition-opacity duration-300 pointer-events-none group-hover:opacity-100 group-focus-within:opacity-100"
+          viewBox="0 0 160 160"
+          fill="none"
+          aria-hidden
+        >
+          {/* Rotate whole network so active is at top */}
+          <g transform={`rotate(${rotation} 80 80)`}>
+            {/* Outer ring */}
+            <circle
+              cx="80"
+              cy="80"
+              r={radius}
+              className="[filter:drop-shadow(0_0_8px_rgba(34,211,238,0.45))]"
+              stroke="rgba(34,211,238,0.55)"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+            {/* Connectors between nodes */}
+            {pts.map((p, i) => {
+              const q = pts[(i + 1) % pts.length]
+              return (
+                <line
+                  key={`ln-${i}`}
+                  x1={p.x}
+                  y1={p.y}
+                  x2={q.x}
+                  y2={q.y}
+                  stroke="rgba(34,211,238,0.6)"
+                  strokeWidth="1.25"
+                  className="[filter:drop-shadow(0_0_6px_rgba(34,211,238,0.6))]"
+                />
+              )
+            })}
+            {/* Small nodes on ring positions (subtle) */}
+            {pts.map((p, i) => (
+              <circle
+                key={`nd-${i}`}
+                cx={p.x}
+                cy={p.y}
+                r="3.5"
+                fill="rgba(34,211,238,0.25)"
+                stroke="rgba(165,243,252,0.9)"
+                strokeWidth="1"
+                className="[filter:drop-shadow(0_0_5px_rgba(34,211,238,0.7))]"
+              />
+            ))}
+          </g>
+        </svg>
 
         {/* Center content: emoji (idle) -> german text (expanded) */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           {/* Emoji badge (idle) */}
-          <div className="px-0 py-0 w-9 h-9 rounded-full bg-white text-slate-900 shadow ring-1 ring-white/60 text-base font-medium flex items-center justify-center transition-opacity duration-200 group-hover:opacity-0 group-focus-within:opacity-0">
+          <div className="px-0 py-0 w-9 h-9 rounded-full bg-gradient-to-b from-cyan-300/90 to-cyan-400/90 text-slate-900 shadow-[0_0_0_1px_rgba(255,255,255,0.6)] ring-1 ring-cyan-200/60 text-base font-semibold flex items-center justify-center transition-opacity duration-200 group-hover:opacity-0 group-focus-within:opacity-0 [filter:drop-shadow(0_0_10px_rgba(34,211,238,0.65))]">
             <span aria-hidden>{SEASON_META[season]?.emoji}</span>
           </div>
           {/* German label (expanded) */}
-          <div className="px-3 py-1.5 rounded-full bg-white text-slate-900 shadow ring-1 ring-white/60 text-sm font-medium opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
+          <div className="px-3 py-1.5 rounded-full bg-gradient-to-b from-cyan-300/90 to-cyan-400/90 text-slate-900 shadow-[0_0_0_1px_rgba(255,255,255,0.6)] ring-1 ring-cyan-200/60 text-sm font-semibold opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100 [filter:drop-shadow(0_0_12px_rgba(34,211,238,0.65))]">
             {SEASON_META[season]?.de}
           </div>
         </div>
@@ -75,23 +133,24 @@ export function SeasonWheel({ season, onChange }) {
         >
           {SEASONS.map((s, idx) => {
             const angle = idx * step // 0 top, clockwise
-            const delay = `${idx * 70}ms`
+            const delay = `${idx * 80}ms`
+            const active = season === s
             return (
               <button
                 key={s}
                 onClick={() => onChange(s)}
-                className={`absolute left-1/2 top-1/2 w-10 h-10 rounded-full flex items-center justify-center text-base transition-all ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 ${season===s ? 'bg-white text-slate-900 shadow ring-1 ring-white/60' : 'text-white/90 bg-white/0 hover:bg-white/10 border border-white/10'}`}
-                aria-pressed={season===s}
+                className={`absolute left-1/2 top-1/2 w-10 h-10 rounded-full flex items-center justify-center text-base transition-all ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/60 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 border backdrop-blur-sm ${active ? 'bg-gradient-to-b from-cyan-300 to-cyan-400 text-slate-900 border-white/60 shadow-[0_2px_18px_rgba(34,211,238,0.55)]' : 'bg-cyan-300/10 text-cyan-100 border-cyan-200/40 hover:bg-cyan-300/20 shadow-[0_2px_14px_rgba(34,211,238,0.35)]'}`}
+                aria-pressed={active}
                 aria-label={SEASON_META[s].de}
                 title={SEASON_META[s].de}
                 style={{
                   transform: `translate(-50%, -50%) rotate(${angle}deg) translateX(calc(var(--t) * ${radius}px)) rotate(${-angle - rotation}deg)`,
-                  transitionProperty: 'transform, opacity, background-color, border-color, box-shadow',
-                  transitionDuration: '300ms',
+                  transitionProperty: 'transform, opacity, background-color, border-color, box-shadow, color',
+                  transitionDuration: '320ms',
                   transitionDelay: delay,
                 }}
               >
-                <span className="block opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity" style={{ transitionDelay: delay }} aria-hidden>{SEASON_META[s].emoji}</span>
+                <span className="block" aria-hidden>{SEASON_META[s].emoji}</span>
               </button>
             )
           })}
