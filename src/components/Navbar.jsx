@@ -20,6 +20,24 @@ function SeasonPills({ season, onChange }) {
   )
 }
 
+// Desktop season switch (exported for SeasonDock)
+export function SeasonWheel({ season, onChange }) {
+  return (
+    <div className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/20 p-1.5 backdrop-blur">
+      {SEASONS.map((s) => (
+        <button
+          key={s}
+          onClick={() => onChange(s)}
+          className={`px-3 py-1.5 rounded-full text-sm capitalize transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 ${season===s ? 'bg-white text-slate-900' : 'text-white/90 hover:bg-white/10'}`}
+          aria-pressed={season===s}
+        >
+          {s}
+        </button>
+      ))}
+    </div>
+  )
+}
+
 export default function Navbar({ season, setSeason }) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
