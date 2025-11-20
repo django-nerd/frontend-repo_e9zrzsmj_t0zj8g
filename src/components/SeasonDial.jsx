@@ -9,7 +9,7 @@ const META = {
 }
 
 export default function SeasonDial({ season='winter', onChange }) {
-  const size = 200 // px (slightly smaller)
+  const size = 180 // px (reduced)
   const r = size/2
   const innerR = r - 4
 
@@ -53,7 +53,6 @@ export default function SeasonDial({ season='winter', onChange }) {
           {/* Rotating plate */}
           <g style={{ transformOrigin: `${r}px ${r}px`, transform: `rotate(${rotation}deg)`, transition: 'transform 600ms cubic-bezier(.2,.8,.2,1)' }}>
             {wedges.map((w) => {
-              const m = META[w.k]
               const d = buildWedge(w.start, w.end)
               return (
                 <g key={w.k}>
@@ -67,9 +66,9 @@ export default function SeasonDial({ season='winter', onChange }) {
               const angle = i * 90 // winter 0, spring 90, etc.
               const m = META[k]
               const grpStyle = { transformOrigin: `${r}px ${r}px`, transform: `rotate(${angle}deg)` }
-              const emojiSize = 24
-              const iconY = r - innerR + 28 // push towards top edge
-              const labelY = iconY + 24
+              const emojiSize = 22
+              const iconY = r - innerR + 26 // push towards top edge
+              const labelY = iconY + 22
               const handleClick = () => onChange && onChange(k)
               return (
                 <g key={`item-${k}`} style={grpStyle} onClick={handleClick} role="button" tabIndex={0}>
@@ -78,7 +77,7 @@ export default function SeasonDial({ season='winter', onChange }) {
                     {m.emoji}
                   </text>
                   {/* label */}
-                  <text x={r} y={labelY} textAnchor="middle" dominantBaseline="middle" fontSize="13" fill="white" fontWeight="600" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.35)', cursor: 'pointer' }}>
+                  <text x={r} y={labelY} textAnchor="middle" dominantBaseline="middle" fontSize="12" fill="white" fontWeight="600" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.35)', cursor: 'pointer' }}>
                     {m.de}
                   </text>
                 </g>
