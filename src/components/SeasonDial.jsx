@@ -38,6 +38,17 @@ export default function SeasonDial({ season='winter', onChange }) {
     { k: 'autumn', start: 225, end: 315 }, // left
   ]
 
+  const handleActivate = (k) => {
+    if (onChange) onChange(k)
+  }
+
+  const onKey = (k) => (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      handleActivate(k)
+    }
+  }
+
   return (
     <div className="relative inline-block" style={{width: size, height: size}}>
       <div className="relative overflow-visible" style={{width: size, height: size}}>
@@ -54,9 +65,24 @@ export default function SeasonDial({ season='winter', onChange }) {
           <g style={{ transformOrigin: `${r}px ${r}px`, transform: `rotate(${rotation}deg)`, transition: 'transform 600ms cubic-bezier(.2,.8,.2,1)' }}>
             {wedges.map((w) => {
               const d = buildWedge(w.start, w.end)
+              const active = w.k === season
               return (
-                <g key={w.k}>
-                  <path d={d} fill={`url(#grad-${w.k})`} stroke="rgba(255,255,255,0.1)" />
+                <g key={w.k}
+                   onClick={() => handleActivate(w.k)}
+                   role="button"
+                   tabIndex={0}
+                   onKeyDown={onKey(w.k)}
+                   aria-pressed={active}
+                   className="focus:outline-none">
+                  <path
+                    d={d}
+                    fill={`url(#grad-${w.k})`}
+                    stroke={active ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.12)'}
+                    strokeWidth={active ? 1.5 : 1}
+                    filter={active ? 'url(#glow)' : undefined}
+                    style={{ cursor: 'pointer', transition: 'filter 200ms, opacity 200ms, transform 200ms' }}
+                    opacity={active ? 1 : 0.9}
+                  />
                 </g>
               )
             })}
@@ -69,15 +95,42 @@ export default function SeasonDial({ season='winter', onChange }) {
               const emojiSize = 22
               const iconY = r - innerR + 26 // push towards top edge
               const labelY = iconY + 22
-              const handleClick = () => onChange && onChange(k)
+              const active = k === season
+              const hoverScale = active ? 1.08 : 1.0
               return (
-                <g key={`item-${k}`} style={grpStyle} onClick={handleClick} role="button" tabIndex={0}>
+                <g
+                  key={`item-${k}`}
+                  style={grpStyle}
+                  onClick={() => handleActivate(k)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={onKey(k)}
+                  aria-pressed={active}
+                >
                   {/* emoji */}
-                  <text x={r} y={iconY} textAnchor="middle" dominantBaseline="middle" fontSize={emojiSize} style={{ cursor: 'pointer' }}>
+                  <text
+                    x={r}
+                    y={iconY}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fontSize={emojiSize}
+                    style={{ cursor: 'pointer' }}
+                    className={`${active ? '' : 'transition-transform duration-150 ease-out'} ${active ? '' : 'hover:scale-110'}`}
+                  >
                     {m.emoji}
                   </text>
                   {/* label */}
-                  <text x={r} y={labelY} textAnchor="middle" dominantBaseline="middle" fontSize="12" fill="white" fontWeight="600" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.35)', cursor: 'pointer' }}>
+                  <text
+                    x={r}
+                    y={labelY}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fontSize="12"
+                    fill={active ? 'white' : 'rgba(255,255,255,0.9)'}
+                    fontWeight={active ? '800' : '600'}
+                    style={{ textShadow: active ? '0 2px 6px rgba(0,0,0,0.45)' : '0 1px 2px rgba(0,0,0,0.35)', cursor: 'pointer' }}
+                    className={active ? '' : 'transition-opacity duration-150 ease-out hover:opacity-100 opacity-90'}
+                  >
                     {m.de}
                   </text>
                 </g>
@@ -85,7 +138,7 @@ export default function SeasonDial({ season='winter', onChange }) {
             })}
           </g>
 
-          {/* Gradients for wedges */}
+          {/* Gradients and filters */}
           <defs>
             {SEASONS.map((k) => (
               <radialGradient id={`grad-${k}`} key={k} cx="50%" cy="50%" r="70%">
@@ -93,23 +146,32 @@ export default function SeasonDial({ season='winter', onChange }) {
                 <stop offset="100%" stopColor={META[k].color2} stopOpacity="0.95" />
               </radialGradient>
             ))}
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+              <feMerge>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
           </defs>
 
-          {/* Invisible hit areas per quadrant to change season on click */}
+          {/* Invisible hit areas per quadrant to ensure clicks always register */}
           <g style={{ transformOrigin: `${r}px ${r}px`, transform: `rotate(${rotation}deg)` }}>
             {wedges.map((w) => (
               <path
                 key={`hit-${w.k}`}
                 d={buildWedge(w.start, w.end)}
-                fill="transparent"
-                onClick={() => onChange && onChange(w.k)}
+                fill="black"
+                fillOpacity="0.001" /* nearly invisible but pointer-events painted */
+                onClick={() => handleActivate(w.k)}
                 style={{ cursor: 'pointer' }}
+                pointerEvents="all"
               />
             ))}
           </g>
 
           {/* Inner ring */}
-          <circle cx={r} cy={r} r={innerR} fill="transparent" stroke="rgba(255,255,255,0.12)" />
+          <circle cx={r} cy={r} r={innerR} fill="transparent" stroke="rgba(255,255,255,0.16)" />
         </svg>
       </div>
     </div>
