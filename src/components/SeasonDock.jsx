@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import SeasonDial from './SeasonDial'
+import { X } from 'lucide-react'
 
 const DIAL_SIZE = 180
 const ROTATION_MS = 600 // keep in sync with SeasonDial rotation
@@ -109,7 +110,7 @@ export default function SeasonDock({ season, setSeason }) {
                       aria-label="Schließen"
                       title="Schließen"
                     >
-                      ×
+                      <X className="h-4 w-4" aria-hidden="true" />
                     </button>
                   </div>
                   <div className="">
