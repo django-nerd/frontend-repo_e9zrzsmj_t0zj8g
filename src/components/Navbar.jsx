@@ -1,56 +1,29 @@
 import { useEffect, useState } from 'react'
+import { Menu as MenuIcon, X, Home, Users, HelpCircle, Mail } from 'lucide-react'
 
 const SEASONS = ['winter', 'spring', 'summer', 'autumn']
 
-// Reusable season wheel for desktop placement (used by SeasonDock)
-export function SeasonWheel({ season, onChange }) {
-  const order = SEASONS
-  const activeIndex = order.indexOf(season)
-  const labelText = { winter: 'Winter', spring: 'Frühling', summer: 'Sommer', autumn: 'Herbst' }[season] || ''
+function SeasonPills({ season, onChange }) {
   return (
-    <div className="relative hidden md:flex items-center ml-3">
-      <div className="relative w-28 h-28 select-none" aria-label="Saison-Umschalter">
-        <div className="absolute inset-0 rounded-full bg-white/50 backdrop-blur-md border border-white/50 shadow-inner" />
-        <div className="absolute inset-2 rounded-full bg-gradient-to-b from-white/70 to-white/30" />
-        {/* center label */}
-        <div className="absolute inset-6 rounded-full flex items-center justify-center">
-          <span className="px-3 py-1 rounded-md text-xs font-medium capitalize text-slate-800 bg-slate-200/70 shadow-sm border border-white/60">
-            {labelText}
-          </span>
-        </div>
-        {/* markers */}
-        {order.map((s, i) => {
-          const angle = ((i - activeIndex + order.length) % order.length) * 90
-          const rad = (angle - 90) * (Math.PI / 180)
-          const r = 40
-          const cx = 56 + Math.cos(rad) * r
-          const cy = 56 + Math.sin(rad) * r
-          const isActive = i === activeIndex
-          const labelMap = { winter: '❄️', spring: '🌸', summer: '🔥', autumn: '🍁' }
-          return (
-            <button
-              key={s}
-              onClick={() => onChange(s)}
-              className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-800/40 ${isActive ? 'w-10 h-10 bg-slate-800 text-white shadow-lg' : 'w-9 h-9 bg-white text-slate-700 shadow'}`}
-              style={{ left: cx, top: cy }}
-              title={s}
-              aria-pressed={isActive}
-            >
-              <span className="text-base" aria-hidden>{labelMap[s]}</span>
-              <span className="sr-only">{s}</span>
-            </button>
-          )
-        })}
-        {/* pointer */}
-        <div className="absolute left-1/2 -translate-x-1/2 -top-1 w-0 h-0 border-l-4 border-r-4 border-b-8 border-transparent border-b-slate-800" />
-      </div>
+    <div className="flex items-center gap-2">
+      {SEASONS.map((s) => (
+        <button
+          key={s}
+          onClick={() => onChange(s)}
+          className={`px-3 py-1.5 rounded-full text-xs border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 ${season===s ? 'bg-slate-800 text-white border-white/20' : 'bg-white/80 text-slate-700 border-white/40'}`}
+          aria-pressed={season===s}
+        >
+          {s}
+        </button>
+      ))}
     </div>
   )
 }
 
 export default function Navbar({ season, setSeason }) {
-  // Mobile-only header with ONLY the season switch
   const [scrolled, setScrolled] = useState(false)
+  const [open, setOpen] = useState(false)
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
     onScroll()
@@ -58,24 +31,84 @@ export default function Navbar({ season, setSeason }) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // lock body scroll when menu is open
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => { document.body.style.overflow = '' }
+  }, [open])
+
+  const navLinks = [
+    { href: '#start', label: 'Start', Icon: Home },
+    { href: '#about', label: 'Wer wir sind', Icon: Users },
+    { href: '#faq', label: 'FAQ', Icon: HelpCircle },
+    { href: '#contact', label: 'Kontakt', Icon: Mail },
+  ]
+
   return (
     <header className={`fixed top-0 inset-x-0 z-40 transition-all md:hidden ${scrolled ? 'backdrop-blur bg-white/80 shadow-sm' : 'backdrop-blur-sm bg-white/30'}`}>
       <nav className="max-w-6xl mx-auto px-4">
-        <div className="h-14 flex items-center justify-center">
-          <div className="flex items-center gap-2">
-            {SEASONS.map((s) => (
-              <button
-                key={s}
-                onClick={() => setSeason(s)}
-                className={`px-2 py-1 rounded-full text-xs border focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-800/30 ${season===s ? 'bg-slate-800 text-white' : 'bg-white/80 text-slate-700'}`}
-                aria-pressed={season===s}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
+        <div className="h-14 flex items-center justify-between">
+          {/* Hamburger */}
+          <button
+            aria-label="Menü öffnen"
+            className="p-2 rounded-md hover:bg-white/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-800/30"
+            onClick={() => setOpen(true)}
+          >
+            <MenuIcon className="w-5 h-5 text-slate-800" />
+          </button>
+
+          {/* Minimal brand */}
+          <div className="text-slate-800 font-semibold">Westside-Furs</div>
+
+          {/* Right spacer to balance layout */}
+          <div className="w-9" />
         </div>
       </nav>
+
+      {/* Mobile drawer */}
+      {open && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <div
+            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+            onClick={() => setOpen(false)}
+          />
+          <div className="absolute right-0 top-0 h-full w-80 max-w-[85vw] bg-slate-900 text-slate-100 border-l border-slate-700 shadow-xl flex flex-col">
+            <div className="flex items-center justify-between px-4 h-14 border-b border-slate-700">
+              <span className="font-semibold">Menü</span>
+              <button
+                aria-label="Menü schließen"
+                className="p-2 rounded-md hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+                onClick={() => setOpen(false)}
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-3 space-y-1">
+              {navLinks.map(({ href, label, Icon }) => (
+                <a
+                  key={href}
+                  href={href}
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/10"
+                >
+                  <Icon className="w-4 h-4 opacity-80" />
+                  <span>{label}</span>
+                </a>
+              ))}
+            </div>
+
+            <div className="mt-auto p-4 border-t border-slate-700">
+              <div className="text-xs text-slate-300 mb-2">Saison</div>
+              <SeasonPills season={season} onChange={setSeason} />
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   )
 }

@@ -25,7 +25,7 @@ export default function ValuesGoals() {
       title: 'Gemeinschaftsgefühl',
       Icon: Heart,
       desc:
-        'Unsere Treffen bringen Furrys zusammen, stärken das Wir-Gefühl und geben Raum, sich mit anderen auszutauschen, die dieselbe Leidenschaft teilen.'
+        'Unsere Treffen bringen Furries zusammen, stärken das Wir-Gefühl und geben Raum, sich mit anderen auszutauschen, die dieselbe Leidenschaft teilen.'
     }
   ]
 

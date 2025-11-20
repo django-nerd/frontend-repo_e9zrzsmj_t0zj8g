@@ -3,6 +3,7 @@ import { useState } from 'react'
 const Link = ({ href, children }) => (
   <a href={href} target={href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" className="underline decoration-slate-300/70 hover:decoration-white text-slate-100 hover:text-white">
     {children}
+    {href.startsWith('http') && <span className="ml-1 text-[10px] uppercase tracking-wider align-middle opacity-80">(extern)</span>}
   </a>
 )
 
@@ -74,7 +75,7 @@ const categories = [
       { q: 'Was ist ein Fursuit? 👘', a: 'Die anthropomorphen Tierkostüme sind der von der Öffentlichkeit am ehesten wahrgenommene – weil optisch auffälligste – Teil der Furry-Subkultur. Dies variiert von einfachen Masken, falschen Schwänzen, Ohren etc. bis hin zu aufwendig gestalteten Kostümen mit Animatronik (z. B. bewegliche Teile). Das Wort „Fursuit“ bedeutet übersetzt Pelz-Anzug oder Fell-Kleid. Trotzdem stellen Fursuiter nur einen Teil der Furry-Subkultur dar, einer Online-Umfrage zufolge etwa 15 %.' },
       { q: 'Weitere Infos zu Fursuits 📚', a: (
         <span>
-          Fursuits werden überwiegend als Einzelstück individuell geplant und gebaut (meist vom Träger selbst oder aber von internationalen Suitbauern), da industriell hergestellte Kostüme den individuellen Ansprüchen nicht gerecht werden. Die Ausstattung variiert je nach geplantem Einsatzgebiet, etwa was Robustheit, Funktionen und Sichtfeld angeht. Das Tragen der Fursuits wird im deutschsprachigen Raum häufig als Performance-Kunst verstanden. Abseits von Furry-Conventions wie der Eurofurence treten Fursuiter auch im öffentlichen Raum in Erscheinung; sei es als Teil von Paraden oder Umzügen, oder auch in speziellen Aktionen („Suitwalks“). Spirituelle Hintergründe, Rollenspiele (LARP) oder einfach nur die Faszination an der technischen Herausforderung können ebenfalls Anlass sein, einen Fursuit zu bauen und zu tragen. Der berufliche Bezug von Furrys zu Fursuits – z. B. Maskottchen oder Themenparks – ist in Europa eher von untergeordneter Bedeutung oder wird oft sogar abgelehnt. Quelle: <Link href="https://de.wikipedia.org/wiki/Furry#Fursuits">Wikipedia</Link>.
+          Fursuits werden überwiegend als Einzelstück individuell geplant und gebaut (meist vom Träger selbst oder aber von internationalen Suitbauern), da industriell hergestellte Kostüme den individuellen Ansprüchen nicht gerecht werden. Die Ausstattung variiert je nach geplantem Einsatzgebiet, etwa was Robustheit, Funktionen und Sichtfeld angeht. Das Tragen der Fursuits wird im deutschsprachigen Raum häufig als Performance-Kunst verstanden. Abseits von Furry-Conventions wie der Eurofurence treten Fursuiter auch im öffentlichen Raum in Erscheinung; sei es als Teil von Paraden oder Umzügen, oder auch in speziellen Aktionen („Suitwalks“). Spirituelle Hintergründe, Rollenspiele (LARP) oder einfach nur die Faszination an der technischen Herausforderung können ebenfalls Anlass sein, einen Fursuit zu bauen und zu tragen. Der berufliche Bezug von Furries zu Fursuits – z. B. Maskottchen oder Themenparks – ist in Europa eher von untergeordneter Bedeutung oder wird oft sogar abgelehnt. Quelle: <Link href="https://de.wikipedia.org/wiki/Furry#Fursuits">Wikipedia</Link>.
         </span>
       ) }
     ]
