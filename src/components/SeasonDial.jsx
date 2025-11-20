@@ -192,7 +192,7 @@ export default function SeasonDial({ season='winter', onChange }) {
           <g style={{ transformOrigin: `${r}px ${r}px`, transform: `rotate(${rotation}deg)` }}>
             {wedges.map((w) => (
               <path
-                key={`hit-${w.k}`]
+                key={`hit-${w.k}`}
                 d={buildWedgeRing(w.start, w.end, centerBtnR + 6)}
                 fill="#000"
                 fillOpacity="0.001" /* nearly invisible but pointer-events painted */
