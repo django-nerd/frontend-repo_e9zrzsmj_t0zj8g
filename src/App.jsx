@@ -72,6 +72,25 @@ export default function App() {
     return problems
   }
 
+  const openMailClient = () => {
+    const to = 'support@westside-furs.com'
+    const subject = form.subject && form.subject.trim().length > 0 ? form.subject.trim() : 'Kontaktanfrage'
+    const bodyLines = [
+      `Name: ${form.name}`,
+      `E-Mail: ${form.email}`,
+      '',
+      'Nachricht:',
+      form.message,
+      '',
+      '---',
+      'Gesendet über westside-furs.com'
+    ]
+    const body = bodyLines.join('\n')
+    const mailto = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    // Open in the same tab to ensure popups aren't blocked; many browsers handle mailto with the OS mail app
+    window.location.href = mailto
+  }
+
   const onSubmit = async (e) => {
     e.preventDefault()
     setErrorMsg('')
@@ -83,12 +102,18 @@ export default function App() {
     }
 
     setStatus('sending')
+
+    // Try to persist to backend first (honeypot, rate limit, DB), but regardless of outcome open the local mail client
     try {
+      const controller = new AbortController()
+      const t = setTimeout(() => controller.abort(), 8000) // safety timeout
       const res = await fetch(`${effectiveBackendUrl}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
+        body: JSON.stringify(form),
+        signal: controller.signal,
       })
+      clearTimeout(t)
       const data = await res.json().catch(() => ({}))
 
       if (res.status === 422) {
@@ -100,21 +125,30 @@ export default function App() {
         return
       }
 
-      if (!res.ok) {
-        const detail = data?.detail || 'Senden fehlgeschlagen'
-        throw new Error(detail)
-      }
-
       if (data && data.reason === 'rate_limited') {
+        // Even if rate-limited on API, still open the mail client so the user can contact support
         setStatus('rate_limited')
+        openMailClient()
         return
       }
 
+      if (!res.ok) {
+        // Backend failed – still open the mail client so the user can reach us
+        openMailClient()
+        setStatus('error')
+        setErrorMsg(data?.detail || 'Senden fehlgeschlagen – E-Mail-Programm wurde geöffnet')
+        return
+      }
+
+      // Success: reset form and open the mail client
       setStatus('ok')
+      openMailClient()
       setForm({ name: '', email: '', subject: '', message: '', hp: '' })
-    } catch (e) {
+    } catch (e2) {
+      // Network/timeout: open mail client anyway
+      openMailClient()
       setStatus('error')
-      setErrorMsg(e?.message || 'Leider ist ein Fehler aufgetreten')
+      setErrorMsg('Server nicht erreichbar – E-Mail-Programm wurde geöffnet')
     }
   }
 
