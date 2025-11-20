@@ -50,16 +50,17 @@ export default function SeasonDial({ season='winter', onChange }) {
   }
 
   return (
-    <div className="relative inline-block" style={{width: size, height: size}}>
-      <div className="relative overflow-visible" style={{width: size, height: size}}>
+    <div className="relative inline-block" style={{width: size, height: size, pointerEvents: 'auto'}}>
+      <div className="relative overflow-visible" style={{width: size, height: size, pointerEvents: 'auto'}}>
         <svg
           viewBox={`0 0 ${size} ${size}`}
           width={size}
           height={size}
           className="overflow-visible"
+          style={{ pointerEvents: 'auto' }}
         >
-          {/* Outer subtle ring */}
-          <circle cx={r} cy={r} r={r-1} fill="#0b1220" stroke="rgba(255,255,255,0.08)" />
+          {/* Outer subtle ring (non-interactive) */}
+          <circle cx={r} cy={r} r={r-1} fill="#0b1220" stroke="rgba(255,255,255,0.08)" pointerEvents="none" />
 
           {/* Rotating plate */}
           <g style={{ transformOrigin: `${r}px ${r}px`, transform: `rotate(${rotation}deg)`, transition: 'transform 600ms cubic-bezier(.2,.8,.2,1)' }}>
@@ -73,7 +74,8 @@ export default function SeasonDial({ season='winter', onChange }) {
                    tabIndex={0}
                    onKeyDown={onKey(w.k)}
                    aria-pressed={active}
-                   className="focus:outline-none">
+                   className="focus:outline-none"
+                   style={{ cursor: 'pointer', pointerEvents: 'auto' }}>
                   <path
                     d={d}
                     fill={`url(#grad-${w.k})`}
@@ -91,15 +93,14 @@ export default function SeasonDial({ season='winter', onChange }) {
             {SEASONS.map((k, i) => {
               const angle = i * 90 // winter 0, spring 90, etc.
               const m = META[k]
-              const grpStyle = { transformOrigin: `${r}px ${r}px`, transform: `rotate(${angle}deg)` }
+              const grpStyle = { transformOrigin: `${r}px ${r}px`, transform: `rotate(${angle}deg)`, cursor: 'pointer', pointerEvents: 'auto' }
               const emojiSize = 22
               const iconY = r - innerR + 26 // push towards top edge
               const labelY = iconY + 22
               const active = k === season
-              const hoverScale = active ? 1.08 : 1.0
               return (
                 <g
-                  key={`item-${k}`}
+                  key={`item-${k}`]
                   style={grpStyle}
                   onClick={() => handleActivate(k)}
                   role="button"
@@ -155,13 +156,13 @@ export default function SeasonDial({ season='winter', onChange }) {
             </filter>
           </defs>
 
-          {/* Invisible hit areas per quadrant to ensure clicks always register */}
+          {/* Invisible hit areas per quadrant to ensure clicks always register (kept on top of wedges) */}
           <g style={{ transformOrigin: `${r}px ${r}px`, transform: `rotate(${rotation}deg)` }}>
             {wedges.map((w) => (
               <path
                 key={`hit-${w.k}`}
                 d={buildWedge(w.start, w.end)}
-                fill="black"
+                fill="#000"
                 fillOpacity="0.001" /* nearly invisible but pointer-events painted */
                 onClick={() => handleActivate(w.k)}
                 style={{ cursor: 'pointer' }}
@@ -170,8 +171,8 @@ export default function SeasonDial({ season='winter', onChange }) {
             ))}
           </g>
 
-          {/* Inner ring */}
-          <circle cx={r} cy={r} r={innerR} fill="transparent" stroke="rgba(255,255,255,0.16)" />
+          {/* Inner ring (non-interactive) */}
+          <circle cx={r} cy={r} r={innerR} fill="transparent" stroke="rgba(255,255,255,0.16)" pointerEvents="none" />
         </svg>
       </div>
     </div>
