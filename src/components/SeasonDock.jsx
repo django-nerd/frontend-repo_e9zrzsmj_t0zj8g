@@ -62,7 +62,7 @@ export default function SeasonDock({ season, setSeason }) {
   const shown = meta[season] ? season : 'winter'
 
   return (
-    <div className="hidden md:block">
+    <div className="block">
       <div className="relative z-30 pointer-events-auto max-w-6xl mx-auto px-4 md:px-6">
         <div className="flex justify-end pr-14">
           <div className="mt-16 lg:mt-20 xl:mt-24 relative" ref={anchorRef}>
