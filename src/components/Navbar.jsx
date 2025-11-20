@@ -30,7 +30,7 @@ function SeasonPills({ season, onChange }) {
 }
 
 // Desktop season switch (exported for SeasonDock)
-// Idle: compact 48x48 button but the central emoji sits exactly at the future full wheel center
+// Idle: compact 48x48 visual in center of a 160x160 interactive area
 // Hover/Focus: the whole wheel scales up to 160x160, icons fly out to the ring, ring rotates so active is on top
 export function SeasonWheel({ season, onChange }) {
   const rotationBySeason = {
@@ -56,25 +56,17 @@ export function SeasonWheel({ season, onChange }) {
   })
 
   const [expanded, setExpanded] = useState(false)
-  const enter = () => setExpanded(true)
-  const leave = () => setExpanded(false)
 
   return (
-    // Wrapper keeps idle footprint at 48x48 but provides a full-size invisible hotzone for hover/focus
-    <div className="relative inline-block w-12 h-12 overflow-visible select-none">
-      {/* Invisible hotzone matching the expanded wheel size to trigger expand/collapse */}
-      <div
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full"
-        aria-hidden
-        onMouseEnter={enter}
-        onMouseLeave={leave}
-        onFocus={enter}
-        onBlur={leave}
-        tabIndex={0}
-        // ensure it doesn't visually show; still interactive for keyboard focus/blur
-        style={{ outline: 'none' }}
-      />
-
+    // Wrapper is full expanded size so hover area matches the open wheel exactly
+    <div
+      className="relative inline-block w-40 h-40 overflow-visible select-none"
+      onMouseEnter={() => setExpanded(true)}
+      onMouseLeave={() => setExpanded(false)}
+      onFocus={() => setExpanded(true)}
+      onBlur={() => setExpanded(false)}
+      tabIndex={0}
+    >
       {/* Wheel container centered within wrapper; scales from 0.3 (48/160) to 1 */}
       <div
         className="relative overflow-visible rounded-full border border-cyan-300/20 bg-transparent backdrop-blur-0 shadow-sm w-40 h-40 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 absolute transition-transform duration-300 ease-out"
@@ -139,8 +131,9 @@ export function SeasonWheel({ season, onChange }) {
         {/* Center content: emoji (idle) -> german text (expanded) */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           {/* Emoji badge (idle) */}
-          <div className={`px-0 py-0 w-12 h-12 rounded-full bg-gradient-to-b from-cyan-300/90 to-cyan-400/90 text-slate-900 shadow-[0_0_0_1px_rgba(255,255,255,0.6)] ring-1 ring-cyan-200/60 text-2xl font-semibold flex items-center justify-center transition-opacity duration-200 ${expanded ? 'opacity-0' : 'opacity-100'} [filter:drop-shadow(0_0_10px_rgba(34,211,238,0.65))]`}>
-            <span aria-hidden>{SEASON_META[season]?.emoji}</span>
+          <div className={`w-12 h-12 rounded-full bg-gradient-to-b from-cyan-300/90 to-cyan-400/90 text-slate-900 shadow-[0_0_0_1px_rgba(255,255,255,0.6)] ring-1 ring-cyan-200/60 text-3xl leading-none font-semibold flex items-center justify-center transition-opacity duration-200 ${expanded ? 'opacity-0' : 'opacity-100'} [filter:drop-shadow(0_0_10px_rgba(34,211,238,0.65))]`}
+          >
+            <span className="translate-y-[1px]" aria-hidden>{SEASON_META[season]?.emoji}</span>
           </div>
           {/* German label (expanded) */}
           <div className={`px-3 py-1.5 rounded-full bg-gradient-to-b from-cyan-300/90 to-cyan-400/90 text-slate-900 shadow-[0_0_0_1px_rgba(255,255,255,0.6)] ring-1 ring-cyan-200/60 text-sm font-semibold transition-opacity duration-200 ${expanded ? 'opacity-100' : 'opacity-0'} [filter:drop-shadow(0_0_12px_rgba(34,211,238,0.65))]`}>
