@@ -59,9 +59,8 @@ export function SeasonWheel({ season, onChange }) {
     <div className="group relative inline-block select-none">
       {/* Animated container: compact -> expanded */}
       <div
-        className="relative overflow-visible rounded-full transition-all duration-300 ease-out border border-cyan-300/20 bg-transparent backdrop-blur-0 shadow-sm w-12 h-12 group-hover:w-40 group-hover:h-40 group-focus-within:w-40 group-focus-within:h-40 group-hover:[--t:1] group-focus-within:[--t:1]"
+        className="relative overflow-visible rounded-full transition-all duration-300 ease-out border border-cyan-300/20 bg-transparent backdrop-blur-0 shadow-sm w-12 h-12 group-hover:w-40 group-hover:h-40 group-focus-within:w-40 group-focus-within:h-40 [--t:0] group-hover:[--t:1] group-focus-within:[--t:1]"
         aria-label={SEASON_META[season]?.de}
-        style={{ '--t': 0 }}
       >
         {/* Futuristic connectors + ring (only when expanded) */}
         <svg
