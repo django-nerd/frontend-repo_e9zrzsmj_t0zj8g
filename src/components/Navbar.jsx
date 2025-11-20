@@ -30,8 +30,8 @@ function SeasonPills({ season, onChange }) {
 }
 
 // Desktop season switch (exported for SeasonDock)
-// Idle: compact round button showing only the current season emoji
-// Hover/Focus: expands to full wheel; icons fly out from center in sequence; ring rotates so selected season is at top
+// Idle: compact 48x48 button but the central emoji sits exactly at the future full wheel center
+// Hover/Focus: the whole wheel scales up to 160x160, icons fly out to the ring, ring rotates so active is on top
 export function SeasonWheel({ season, onChange }) {
   const rotationBySeason = {
     winter: 0,
@@ -56,13 +56,35 @@ export function SeasonWheel({ season, onChange }) {
   })
 
   return (
-    <div className="group relative inline-block select-none">
-      {/* Animated container: compact -> expanded */}
+    // Wrapper keeps footprint at 48x48 but allows overflow so hover works over expanded wheel
+    <div className="relative inline-block w-12 h-12 overflow-visible select-none">
+      {/* Wheel container centered within wrapper; scales from 0.3 (48/160) to 1 */}
       <div
-        className="relative overflow-visible rounded-full transition-all duration-300 ease-out border border-cyan-300/20 bg-transparent backdrop-blur-0 shadow-sm w-12 h-12 group-hover:w-40 group-hover:h-40 group-focus-within:w-40 group-focus-within:h-40 [--t:0] group-hover:[--t:1] group-focus-within:[--t:1]"
+        className="group relative overflow-visible rounded-full border border-cyan-300/20 bg-transparent backdrop-blur-0 shadow-sm w-40 h-40 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 absolute transition-transform duration-300 ease-out"
         aria-label={SEASON_META[season]?.de}
+        style={{
+          transform: 'translate(-50%, -50%) scale(var(--s))',
+          ['--s']: 0.3, // scale from center so idle emoji is the wheel center
+          ['--t']: 0,   // radial translation factor for icon fly-out (0 idle, 1 expanded)
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.setProperty('--s', '1')
+          e.currentTarget.style.setProperty('--t', '1')
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.setProperty('--s', '0.3')
+          e.currentTarget.style.setProperty('--t', '0')
+        }}
+        onFocus={(e) => {
+          e.currentTarget.style.setProperty('--s', '1')
+          e.currentTarget.style.setProperty('--t', '1')
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.setProperty('--s', '0.3')
+          e.currentTarget.style.setProperty('--t', '0')
+        }}
       >
-        {/* Futuristic connectors + ring (only when expanded) */}
+        {/* Futuristic connectors + ring (only when expanded -> use group-hover to fade in) */}
         <svg
           className="absolute inset-0 w-full h-full opacity-0 transition-opacity duration-300 pointer-events-none group-hover:opacity-100 group-focus-within:opacity-100"
           viewBox="0 0 160 160"
