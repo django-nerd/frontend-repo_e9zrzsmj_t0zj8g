@@ -12,8 +12,6 @@ import Reveal from './components/Reveal'
 import DecorativePhotos from './components/DecorativePhotos'
 import logo from './assets/westside-furs.svg'
 
-const ENV_BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000'
-
 function getSeason(date = new Date()) {
   const m = date.getMonth() + 1
   if (m === 12 || m <= 2) return 'winter'
@@ -44,18 +42,6 @@ export default function App() {
     return () => document.removeEventListener('open-legal', handler)
   }, [])
 
-  // Determine effective backend URL for rate-limit and honeypot check
-  const effectiveBackendUrl = ENV_BACKEND_URL
-
-  useEffect(() => {
-    // Expose and log
-    console.log('Backend URL (env):', ENV_BACKEND_URL)
-    console.log('Backend URL (effective):', effectiveBackendUrl)
-    if (typeof window !== 'undefined') {
-      window.__BACKEND_URL__ = effectiveBackendUrl
-    }
-  }, [effectiveBackendUrl])
-
   const validateClient = () => {
     const problems = []
     if (!form.name || form.name.trim().length < 2) problems.push('Name (mind. 2 Zeichen)')
@@ -80,7 +66,7 @@ export default function App() {
     window.location.href = mailto
   }
 
-  const onSubmit = async (e) => {
+  const onSubmit = (e) => {
     e.preventDefault()
     setErrorMsg('')
     const problems = validateClient()
@@ -90,47 +76,10 @@ export default function App() {
       return
     }
 
-    setStatus('sending')
-
-    // Call backend only for honeypot + rate-limit checks; do not store anything
-    try {
-      const controller = new AbortController()
-      const t = setTimeout(() => controller.abort(), 8000)
-      const res = await fetch(`${effectiveBackendUrl}/api/contact`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-        signal: controller.signal,
-      })
-      clearTimeout(t)
-      const data = await res.json().catch(() => ({}))
-
-      if (res.status === 422) {
-        const detail = Array.isArray(data?.detail)
-          ? data.detail.map(d => d?.msg).filter(Boolean).join('; ')
-          : (data?.detail || 'Ungültige Eingaben')
-        setStatus('error')
-        setErrorMsg(`Bitte Eingaben korrigieren: ${detail}`)
-        return
-      }
-
-      if (data && data.reason === 'rate_limited') {
-        setStatus('rate_limited')
-        // still open email so user can reach out
-        openMailClient()
-        return
-      }
-
-      // No persistence; on success simply open email client and reset form
-      setStatus('ok')
-      openMailClient()
-      setForm({ name: '', subject: '', message: '', hp: '' })
-    } catch (e2) {
-      // Even if backend not reachable, still open mail client
-      openMailClient()
-      setStatus('error')
-      setErrorMsg('Server nicht erreichbar – E-Mail-Programm wurde geöffnet')
-    }
+    // No backend request at all – directly open local mail client
+    setStatus('ok')
+    openMailClient()
+    setForm({ name: '', subject: '', message: '', hp: '' })
   }
 
   const baseTextClass = season === 'spring' ? 'text-slate-100' : 'text-slate-100'
