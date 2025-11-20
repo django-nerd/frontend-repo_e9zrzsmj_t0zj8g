@@ -31,13 +31,6 @@ function SeasonPills({ season, onChange }) {
 
 // Desktop season switch (exported for SeasonDock) — circular wheel with rotation so the selected season is always at the top
 export function SeasonWheel({ season, onChange }) {
-  const positions = {
-    winter: 'top-2 left-1/2 -translate-x-1/2',
-    spring: 'top-1/2 right-2 -translate-y-1/2',
-    summer: 'bottom-2 left-1/2 -translate-x-1/2',
-    autumn: 'top-1/2 left-2 -translate-y-1/2',
-  }
-
   const rotationBySeason = {
     winter: 0,
     spring: -90,
@@ -46,6 +39,10 @@ export function SeasonWheel({ season, onChange }) {
   }
 
   const rotation = rotationBySeason[season] ?? 0
+
+  // Evenly distribute icons around the circle using polar coordinates
+  const step = 360 / SEASONS.length
+  const radius = 64 // px distance from center for a 160px circle (w-40 h-40)
 
   return (
     <div className="relative w-40 h-40 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm shadow-sm select-none">
@@ -64,19 +61,23 @@ export function SeasonWheel({ season, onChange }) {
         className="absolute inset-0 transition-transform duration-500 ease-out will-change-transform"
         style={{ transform: `rotate(${rotation}deg)` }}
       >
-        {SEASONS.map((s) => (
-          <button
-            key={s}
-            onClick={() => onChange(s)}
-            className={`absolute ${positions[s]} w-10 h-10 rounded-full flex items-center justify-center text-base transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 ${season===s ? 'bg-white text-slate-900 shadow ring-1 ring-white/60' : 'text-white/90 bg-white/0 hover:bg-white/10 border border-white/10'}`}
-            aria-pressed={season===s}
-            aria-label={SEASON_META[s].de}
-            title={SEASON_META[s].de}
-            style={{ transform: `rotate(${-rotation}deg)` }}
-          >
-            <span aria-hidden>{SEASON_META[s].emoji}</span>
-          </button>
-        ))}
+        {SEASONS.map((s, idx) => {
+          // angles: 0deg at top, then clockwise
+          const angle = idx * step
+          return (
+            <button
+              key={s}
+              onClick={() => onChange(s)}
+              className={`absolute left-1/2 top-1/2 w-10 h-10 rounded-full flex items-center justify-center text-base transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 ${season===s ? 'bg-white text-slate-900 shadow ring-1 ring-white/60' : 'text-white/90 bg-white/0 hover:bg-white/10 border border-white/10'}`}
+              aria-pressed={season===s}
+              aria-label={SEASON_META[s].de}
+              title={SEASON_META[s].de}
+              style={{ transform: `translate(-50%, -50%) rotate(${angle}deg) translate(${radius}px) rotate(${-angle - rotation}deg)` }}
+            >
+              <span aria-hidden>{SEASON_META[s].emoji}</span>
+            </button>
+          )
+        })}
       </div>
     </div>
   )
