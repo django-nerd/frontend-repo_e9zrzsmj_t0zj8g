@@ -3,6 +3,13 @@ import { Menu as MenuIcon, X, Home, Users, HelpCircle, Mail } from 'lucide-react
 
 const SEASONS = ['winter', 'spring', 'summer', 'autumn']
 
+const SEASON_META = {
+  winter: { emoji: '❄️', de: 'Winter' },
+  spring: { emoji: '🌸', de: 'Frühling' },
+  summer: { emoji: '☀️', de: 'Sommer' },
+  autumn: { emoji: '🍂', de: 'Herbst' },
+}
+
 function SeasonPills({ season, onChange }) {
   return (
     <div className="flex items-center gap-2">
@@ -12,8 +19,10 @@ function SeasonPills({ season, onChange }) {
           onClick={() => onChange(s)}
           className={`px-3 py-1.5 rounded-full text-xs border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 ${season===s ? 'bg-slate-800 text-white border-white/20' : 'bg-white/80 text-slate-700 border-white/40'}`}
           aria-pressed={season===s}
+          title={SEASON_META[s].de}
         >
-          {s}
+          <span className="mr-1" aria-hidden>{SEASON_META[s].emoji}</span>
+          {SEASON_META[s].de}
         </button>
       ))}
     </div>
@@ -29,23 +38,31 @@ export function SeasonWheel({ season, onChange }) {
     autumn: 'top-1/2 left-2 -translate-y-1/2',
   }
 
-  const label = (s) => s.charAt(0).toUpperCase() + s.slice(1)
-
   return (
     <div className="relative w-40 h-40 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm shadow-sm select-none">
-      {/* subtle center dot */}
+      {/* ring */}
       <div className="absolute inset-1 rounded-full border border-white/10" />
+
+      {/* center label showing current season in German */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="px-3 py-1.5 rounded-full bg-white text-slate-900 shadow ring-1 ring-white/60 text-sm font-medium">
+          <span className="mr-1" aria-hidden>{SEASON_META[season]?.emoji}</span>
+          <span>{SEASON_META[season]?.de}</span>
+        </div>
+      </div>
+
+      {/* buttons around the circle with emojis */}
       <div className="absolute inset-0">
         {SEASONS.map((s) => (
           <button
             key={s}
             onClick={() => onChange(s)}
-            className={`absolute ${positions[s]} w-10 h-10 rounded-full flex items-center justify-center text-xs capitalize transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 ${season===s ? 'bg-white text-slate-900 shadow ring-1 ring-white/60' : 'text-white/90 bg-white/0 hover:bg-white/10 border border-white/10'}`}
+            className={`absolute ${positions[s]} w-10 h-10 rounded-full flex items-center justify-center text-base transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 ${season===s ? 'bg-white text-slate-900 shadow ring-1 ring-white/60' : 'text-white/90 bg-white/0 hover:bg-white/10 border border-white/10'}`}
             aria-pressed={season===s}
-            aria-label={label(s)}
-            title={label(s)}
+            aria-label={SEASON_META[s].de}
+            title={SEASON_META[s].de}
           >
-            {s.slice(0,1)}
+            <span aria-hidden>{SEASON_META[s].emoji}</span>
           </button>
         ))}
       </div>
