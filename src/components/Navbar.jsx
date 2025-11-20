@@ -69,7 +69,7 @@ export function SeasonWheel({ season, onChange }) {
     >
       {/* Wheel container centered within wrapper; scales from 0.3 (48/160) to 1 */}
       <div
-        className="relative overflow-visible rounded-full border border-cyan-300/20 bg-transparent backdrop-blur-0 shadow-sm w-40 h-40 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 absolute transition-transform duration-300 ease-out"
+        className="relative overflow-visible rounded-full border border-cyan-300/20 bg-transparent backdrop-blur-0 shadow-sm w-40 h-40 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 absolute transition-transform duration-600 ease-out"
         aria-label={SEASON_META[season]?.de}
         style={{
           transform: 'translate(-50%, -50%) scale(var(--s))',
@@ -79,7 +79,7 @@ export function SeasonWheel({ season, onChange }) {
       >
         {/* Futuristic connectors + ring */}
         <svg
-          className={`absolute inset-0 w-full h-full transition-opacity duration-300 pointer-events-none ${expanded ? 'opacity-100' : 'opacity-0'}`}
+          className={`absolute inset-0 w-full h-full transition-opacity duration-400 pointer-events-none ${expanded ? 'opacity-100' : 'opacity-0'}`}
           viewBox="0 0 160 160"
           fill="none"
           aria-hidden
@@ -131,24 +131,23 @@ export function SeasonWheel({ season, onChange }) {
         {/* Center content: emoji (idle) -> german text (expanded) */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           {/* Emoji badge (idle) */}
-          <div className={`w-12 h-12 rounded-full bg-gradient-to-b from-cyan-300/90 to-cyan-400/90 text-slate-900 shadow-[0_0_0_1px_rgba(255,255,255,0.6)] ring-1 ring-cyan-200/60 text-3xl leading-none font-semibold flex items-center justify-center transition-opacity duration-200 ${expanded ? 'opacity-0' : 'opacity-100'} [filter:drop-shadow(0_0_10px_rgba(34,211,238,0.65))]`}
-          >
-            <span className="translate-y-[1px]" aria-hidden>{SEASON_META[season]?.emoji}</span>
+          <div className={`w-12 h-12 rounded-full bg-gradient-to-b from-cyan-300/90 to-cyan-400/90 text-slate-900 shadow-[0_0_0_1px_rgba(255,255,255,0.6)] ring-1 ring-cyan-200/60 text-3xl leading-none font-semibold inline-flex items-center justify-center transition-opacity duration-250 ${expanded ? 'opacity-0' : 'opacity-100'} [filter:drop-shadow(0_0_10px_rgba(34,211,238,0.65))]`}>
+            <span aria-hidden>{SEASON_META[season]?.emoji}</span>
           </div>
           {/* German label (expanded) */}
-          <div className={`px-3 py-1.5 rounded-full bg-gradient-to-b from-cyan-300/90 to-cyan-400/90 text-slate-900 shadow-[0_0_0_1px_rgba(255,255,255,0.6)] ring-1 ring-cyan-200/60 text-sm font-semibold transition-opacity duration-200 ${expanded ? 'opacity-100' : 'opacity-0'} [filter:drop-shadow(0_0_12px_rgba(34,211,238,0.65))]`}>
+          <div className={`px-3 py-1.5 rounded-full bg-gradient-to-b from-cyan-300/90 to-cyan-400/90 text-slate-900 shadow-[0_0_0_1px_rgba(255,255,255,0.6)] ring-1 ring-cyan-200/60 text-sm font-semibold transition-opacity duration-250 ${expanded ? 'opacity-100' : 'opacity-0'} [filter:drop-shadow(0_0_12px_rgba(34,211,238,0.65))]`}>
             {SEASON_META[season]?.de}
           </div>
         </div>
 
         {/* Buttons ring: rotates so active is on top. Icons fly out from center with staggered delay. */}
         <div
-          className={`absolute inset-0 will-change-transform transition-transform duration-500 ease-out ${expanded ? 'pointer-events-auto' : 'pointer-events-none'}`}
+          className={`absolute inset-0 will-change-transform transition-transform duration-700 ease-out ${expanded ? 'pointer-events-auto' : 'pointer-events-none'}`}
           style={{ transform: `rotate(${rotation}deg)` }}
         >
           {SEASONS.map((s, idx) => {
             const angle = idx * step // 0 top, clockwise
-            const delay = `${idx * 80}ms`
+            const delay = `${idx * 100}ms`
             const active = season === s
             return (
               <button
@@ -161,7 +160,7 @@ export function SeasonWheel({ season, onChange }) {
                 style={{
                   transform: `translate(-50%, -50%) rotate(${angle}deg) translateX(calc(var(--t) * ${radius}px)) rotate(${-angle - rotation}deg)`,
                   transitionProperty: 'transform, opacity, background-color, border-color, box-shadow, color',
-                  transitionDuration: '320ms',
+                  transitionDuration: '500ms',
                   transitionDelay: delay,
                 }}
               >
