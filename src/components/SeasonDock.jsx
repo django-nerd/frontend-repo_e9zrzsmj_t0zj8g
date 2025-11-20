@@ -105,7 +105,7 @@ export default function SeasonDock({ season, setSeason }) {
                     <button
                       type="button"
                       onClick={() => startClose()}
-                      className="h-8 w-8 rounded-full flex items-center justify-center text-white/80 hover:text-white focus:outline-none focus:ring-0 bg-transparent"
+                      className="h-8 w-8 rounded-full bg-slate-800/80 hover:bg-slate-700/80 text-slate-100 shadow ring-1 ring-white/10 flex items-center justify-center"
                       aria-label="Schließen"
                       title="Schließen"
                     >
