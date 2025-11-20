@@ -102,11 +102,11 @@ export default function SeasonDock({ season, setSeason }) {
                     (show ? 'opacity-100 scale-100 ease-out' : 'opacity-0 scale-95 ease-in')
                   }
                 >
-                  <div className="absolute -top-3 -right-3">
+                  <div className="absolute -top-3 -right-3 pointer-events-none">
                     <button
                       type="button"
                       onClick={() => startClose()}
-                      className="h-8 w-8 rounded-full bg-slate-800/80 hover:bg-slate-700/80 text-slate-100 shadow ring-1 ring-white/10 flex items-center justify-center"
+                      className="pointer-events-auto inline-flex h-8 w-8 p-0 items-center justify-center rounded-full bg-slate-800/80 hover:bg-slate-700/80 text-slate-100 shadow ring-1 ring-white/10"
                       aria-label="Schließen"
                       title="Schließen"
                     >
