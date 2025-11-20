@@ -20,20 +20,35 @@ function SeasonPills({ season, onChange }) {
   )
 }
 
-// Desktop season switch (exported for SeasonDock)
+// Desktop season switch (exported for SeasonDock) — circular "old" style wheel
 export function SeasonWheel({ season, onChange }) {
+  const positions = {
+    winter: 'top-2 left-1/2 -translate-x-1/2',
+    spring: 'top-1/2 right-2 -translate-y-1/2',
+    summer: 'bottom-2 left-1/2 -translate-x-1/2',
+    autumn: 'top-1/2 left-2 -translate-y-1/2',
+  }
+
+  const label = (s) => s.charAt(0).toUpperCase() + s.slice(1)
+
   return (
-    <div className="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/20 p-1.5 backdrop-blur">
-      {SEASONS.map((s) => (
-        <button
-          key={s}
-          onClick={() => onChange(s)}
-          className={`px-3 py-1.5 rounded-full text-sm capitalize transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 ${season===s ? 'bg-white text-slate-900' : 'text-white/90 hover:bg-white/10'}`}
-          aria-pressed={season===s}
-        >
-          {s}
-        </button>
-      ))}
+    <div className="relative w-40 h-40 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm shadow-sm select-none">
+      {/* subtle center dot */}
+      <div className="absolute inset-1 rounded-full border border-white/10" />
+      <div className="absolute inset-0">
+        {SEASONS.map((s) => (
+          <button
+            key={s}
+            onClick={() => onChange(s)}
+            className={`absolute ${positions[s]} w-10 h-10 rounded-full flex items-center justify-center text-xs capitalize transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 ${season===s ? 'bg-white text-slate-900 shadow ring-1 ring-white/60' : 'text-white/90 bg-white/0 hover:bg-white/10 border border-white/10'}`}
+            aria-pressed={season===s}
+            aria-label={label(s)}
+            title={label(s)}
+          >
+            {s.slice(0,1)}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }
@@ -67,31 +82,31 @@ export default function Navbar({ season, setSeason }) {
   ]
 
   return (
-    <header className={`fixed top-0 inset-x-0 z-40 transition-all md:hidden ${scrolled ? 'backdrop-blur bg-white/80 shadow-sm' : 'backdrop-blur-sm bg-white/30'}`}>
+    <header className={`fixed top-0 inset-x-0 z-40 transition-all md:hidden ${scrolled ? '' : ''}`}>
       <nav className="max-w-6xl mx-auto px-4">
         <div className="h-14 flex items-center justify-end">
-          {/* Right-aligned Hamburger only on mobile */}
+          {/* Right-aligned Hamburger only on mobile; no white header */}
           <button
             aria-label="Menü öffnen"
             aria-expanded={open}
-            className="p-2 rounded-md hover:bg-white/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-800/30"
+            className="p-2 rounded-md bg-black/0 hover:bg-black/10 text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/30"
             onClick={() => setOpen(true)}
           >
-            <MenuIcon className="w-5 h-5 text-slate-800" />
+            <MenuIcon className="w-6 h-6" />
           </button>
         </div>
       </nav>
 
-      {/* Mobile drawer with smooth slide-in */}
+      {/* Mobile drawer with stronger background for contrast */}
       <div className={`fixed inset-0 z-50 md:hidden transition-opacity duration-300 ${open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}> 
         {/* Backdrop */}
         <div
-          className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+          className="absolute inset-0 bg-slate-900/70 backdrop-blur-sm"
           onClick={() => setOpen(false)}
         />
         {/* Panel */}
-        <div className={`absolute right-0 top-0 h-full w-80 max-w-[85vw] bg-slate-900 text-slate-100 border-l border-slate-700 shadow-xl flex flex-col transform transition-transform duration-300 ${open ? 'translate-x-0' : 'translate-x-full'}`}>
-          <div className="flex items-center justify-between px-4 h-14 border-b border-slate-700">
+        <div className={`absolute right-0 top-0 h-full w-80 max-w-[85vw] bg-slate-950 text-white border-l border-white/10 shadow-xl flex flex-col transform transition-transform duration-300 ${open ? 'translate-x-0' : 'translate-x-full'}`}>
+          <div className="flex items-center justify-between px-4 h-14 border-b border-white/10">
             <span className="font-semibold">Menü</span>
             <button
               aria-label="Menü schließen"
@@ -108,16 +123,16 @@ export default function Navbar({ season, setSeason }) {
                 key={href}
                 href={href}
                 onClick={() => setOpen(false)}
-                className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/10"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/10 text-white"
               >
-                <Icon className="w-4 h-4 opacity-80" />
-                <span>{label}</span>
+                <Icon className="w-4 h-4 opacity-90" />
+                <span className="font-medium">{label}</span>
               </a>
             ))}
           </div>
 
-          <div className="mt-auto p-4 border-top border-slate-700">
-            <div className="text-xs text-slate-300 mb-2">Saison</div>
+          <div className="mt-auto p-4 border-t border-white/10">
+            <div className="text-xs text-white/70 mb-2">Saison</div>
             <SeasonPills season={season} onChange={setSeason} />
           </div>
         </div>
