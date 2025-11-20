@@ -55,38 +55,39 @@ export function SeasonWheel({ season, onChange }) {
     return { x, y }
   })
 
+  const [expanded, setExpanded] = useState(false)
+  const enter = () => setExpanded(true)
+  const leave = () => setExpanded(false)
+
   return (
-    // Wrapper keeps footprint at 48x48 but allows overflow so hover works over expanded wheel
+    // Wrapper keeps idle footprint at 48x48 but provides a full-size invisible hotzone for hover/focus
     <div className="relative inline-block w-12 h-12 overflow-visible select-none">
+      {/* Invisible hotzone matching the expanded wheel size to trigger expand/collapse */}
+      <div
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full"
+        aria-hidden
+        onMouseEnter={enter}
+        onMouseLeave={leave}
+        onFocus={enter}
+        onBlur={leave}
+        tabIndex={0}
+        // ensure it doesn't visually show; still interactive for keyboard focus/blur
+        style={{ outline: 'none' }}
+      />
+
       {/* Wheel container centered within wrapper; scales from 0.3 (48/160) to 1 */}
       <div
-        className="group relative overflow-visible rounded-full border border-cyan-300/20 bg-transparent backdrop-blur-0 shadow-sm w-40 h-40 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 absolute transition-transform duration-300 ease-out"
+        className="relative overflow-visible rounded-full border border-cyan-300/20 bg-transparent backdrop-blur-0 shadow-sm w-40 h-40 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 absolute transition-transform duration-300 ease-out"
         aria-label={SEASON_META[season]?.de}
         style={{
           transform: 'translate(-50%, -50%) scale(var(--s))',
-          ['--s']: 0.3, // scale from center so idle emoji is the wheel center
-          ['--t']: 0,   // radial translation factor for icon fly-out (0 idle, 1 expanded)
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.setProperty('--s', '1')
-          e.currentTarget.style.setProperty('--t', '1')
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.setProperty('--s', '0.3')
-          e.currentTarget.style.setProperty('--t', '0')
-        }}
-        onFocus={(e) => {
-          e.currentTarget.style.setProperty('--s', '1')
-          e.currentTarget.style.setProperty('--t', '1')
-        }}
-        onBlur={(e) => {
-          e.currentTarget.style.setProperty('--s', '0.3')
-          e.currentTarget.style.setProperty('--t', '0')
+          ['--s']: expanded ? 1 : 0.3,
+          ['--t']: expanded ? 1 : 0,
         }}
       >
-        {/* Futuristic connectors + ring (only when expanded -> use group-hover to fade in) */}
+        {/* Futuristic connectors + ring */}
         <svg
-          className="absolute inset-0 w-full h-full opacity-0 transition-opacity duration-300 pointer-events-none group-hover:opacity-100 group-focus-within:opacity-100"
+          className={`absolute inset-0 w-full h-full transition-opacity duration-300 pointer-events-none ${expanded ? 'opacity-100' : 'opacity-0'}`}
           viewBox="0 0 160 160"
           fill="none"
           aria-hidden
@@ -138,18 +139,18 @@ export function SeasonWheel({ season, onChange }) {
         {/* Center content: emoji (idle) -> german text (expanded) */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           {/* Emoji badge (idle) */}
-          <div className="px-0 py-0 w-9 h-9 rounded-full bg-gradient-to-b from-cyan-300/90 to-cyan-400/90 text-slate-900 shadow-[0_0_0_1px_rgba(255,255,255,0.6)] ring-1 ring-cyan-200/60 text-base font-semibold flex items-center justify-center transition-opacity duration-200 group-hover:opacity-0 group-focus-within:opacity-0 [filter:drop-shadow(0_0_10px_rgba(34,211,238,0.65))]">
+          <div className={`px-0 py-0 w-12 h-12 rounded-full bg-gradient-to-b from-cyan-300/90 to-cyan-400/90 text-slate-900 shadow-[0_0_0_1px_rgba(255,255,255,0.6)] ring-1 ring-cyan-200/60 text-2xl font-semibold flex items-center justify-center transition-opacity duration-200 ${expanded ? 'opacity-0' : 'opacity-100'} [filter:drop-shadow(0_0_10px_rgba(34,211,238,0.65))]`}>
             <span aria-hidden>{SEASON_META[season]?.emoji}</span>
           </div>
           {/* German label (expanded) */}
-          <div className="px-3 py-1.5 rounded-full bg-gradient-to-b from-cyan-300/90 to-cyan-400/90 text-slate-900 shadow-[0_0_0_1px_rgba(255,255,255,0.6)] ring-1 ring-cyan-200/60 text-sm font-semibold opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100 [filter:drop-shadow(0_0_12px_rgba(34,211,238,0.65))]">
+          <div className={`px-3 py-1.5 rounded-full bg-gradient-to-b from-cyan-300/90 to-cyan-400/90 text-slate-900 shadow-[0_0_0_1px_rgba(255,255,255,0.6)] ring-1 ring-cyan-200/60 text-sm font-semibold transition-opacity duration-200 ${expanded ? 'opacity-100' : 'opacity-0'} [filter:drop-shadow(0_0_12px_rgba(34,211,238,0.65))]`}>
             {SEASON_META[season]?.de}
           </div>
         </div>
 
         {/* Buttons ring: rotates so active is on top. Icons fly out from center with staggered delay. */}
         <div
-          className="absolute inset-0 will-change-transform transition-transform duration-500 ease-out pointer-events-none group-hover:pointer-events-auto group-focus-within:pointer-events-auto"
+          className={`absolute inset-0 will-change-transform transition-transform duration-500 ease-out ${expanded ? 'pointer-events-auto' : 'pointer-events-none'}`}
           style={{ transform: `rotate(${rotation}deg)` }}
         >
           {SEASONS.map((s, idx) => {
@@ -160,7 +161,7 @@ export function SeasonWheel({ season, onChange }) {
               <button
                 key={s}
                 onClick={() => onChange(s)}
-                className={`absolute left-1/2 top-1/2 w-10 h-10 rounded-full flex items-center justify-center text-base transition-all ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/60 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 border backdrop-blur-sm ${active ? 'bg-gradient-to-b from-cyan-300 to-cyan-400 text-slate-900 border-white/60 shadow-[0_2px_18px_rgba(34,211,238,0.55)]' : 'bg-cyan-300/10 text-cyan-100 border-cyan-200/40 hover:bg-cyan-300/20 shadow-[0_2px_14px_rgba(34,211,238,0.35)]'}`}
+                className={`absolute left-1/2 top-1/2 w-10 h-10 rounded-full flex items-center justify-center text-base transition-all ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/60 ${expanded ? 'opacity-100' : 'opacity-0'} border backdrop-blur-sm ${active ? 'bg-gradient-to-b from-cyan-300 to-cyan-400 text-slate-900 border-white/60 shadow-[0_2px_18px_rgba(34,211,238,0.55)]' : 'bg-cyan-300/10 text-cyan-100 border-cyan-200/40 hover:bg-cyan-300/20 shadow-[0_2px_14px_rgba(34,211,238,0.35)]'}`}
                 aria-pressed={active}
                 aria-label={SEASON_META[s].de}
                 title={SEASON_META[s].de}
