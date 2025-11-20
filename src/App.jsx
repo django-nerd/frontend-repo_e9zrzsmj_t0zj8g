@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Navbar from './components/Navbar'
 import AnimatedBackground from './components/AnimatedBackground'
 import FAQ from './components/FAQ'
@@ -30,13 +30,6 @@ export default function App() {
   const [legalOpen, setLegalOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('contact')
 
-  // Debug connection tester + backend URL override
-  const [connState, setConnState] = useState({ checked: false, ok: false, msg: '' })
-  const [backendOverride, setBackendOverride] = useState('')
-  const effectiveBackendUrl = useMemo(() => {
-    return (backendOverride && backendOverride.trim()) || (typeof window !== 'undefined' && window.localStorage?.getItem('backendUrlOverride')) || ENV_BACKEND_URL
-  }, [backendOverride])
-
   // Season state
   const [season, setSeason] = useState(getSeason())
   useEffect(() => { setSeason(getSeason()) }, [])
@@ -51,18 +44,17 @@ export default function App() {
     return () => document.removeEventListener('open-legal', handler)
   }, [])
 
-  useEffect(() => {
-    // Initialize override from localStorage on mount
-    const saved = typeof window !== 'undefined' ? window.localStorage.getItem('backendUrlOverride') : ''
-    if (saved) setBackendOverride(saved)
+  // Determine effective backend URL (honors optional localStorage override if set elsewhere)
+  const effectiveBackendUrl = (typeof window !== 'undefined' && window.localStorage?.getItem('backendUrlOverride')) || ENV_BACKEND_URL
 
+  useEffect(() => {
     // Expose and log
     console.log('Backend URL (env):', ENV_BACKEND_URL)
-    console.log('Backend URL (effective):', saved || ENV_BACKEND_URL)
+    console.log('Backend URL (effective):', effectiveBackendUrl)
     if (typeof window !== 'undefined') {
-      window.__BACKEND_URL__ = saved || ENV_BACKEND_URL
+      window.__BACKEND_URL__ = effectiveBackendUrl
     }
-  }, [])
+  }, [effectiveBackendUrl])
 
   const validateClient = () => {
     const problems = []
@@ -150,39 +142,6 @@ export default function App() {
       setStatus('error')
       setErrorMsg('Server nicht erreichbar – E-Mail-Programm wurde geöffnet')
     }
-  }
-
-  const checkConnection = async () => {
-    setConnState({ checked: true, ok: false, msg: 'Prüfe Verbindung…' })
-    try {
-      const res = await fetch(`${effectiveBackendUrl}/test`)
-      if (!res.ok) throw new Error(`Status ${res.status}`)
-      const data = await res.json()
-      setConnState({ checked: true, ok: true, msg: `OK – Backend erreichbar (${data?.backend || 'Running'})` })
-    } catch (err) {
-      setConnState({ checked: true, ok: false, msg: `Nicht erreichbar (${err?.message || 'Fehler'})` })
-    }
-  }
-
-  const saveOverride = () => {
-    try {
-      const value = (backendOverride && backendOverride.trim()) || ''
-      if (value) {
-        window.localStorage.setItem('backendUrlOverride', value)
-      } else {
-        window.localStorage.removeItem('backendUrlOverride')
-      }
-      // Force re-run of connection state by resetting checked
-      setConnState({ checked: false, ok: false, msg: '' })
-    } catch {}
-  }
-
-  const resetOverride = () => {
-    try {
-      window.localStorage.removeItem('backendUrlOverride')
-      setBackendOverride('')
-      setConnState({ checked: false, ok: false, msg: '' })
-    } catch {}
   }
 
   const baseTextClass = season === 'spring' ? 'text-slate-100' : 'text-slate-100'
@@ -279,37 +238,6 @@ export default function App() {
       />
 
       <BackToTop />
-
-      {/* Small floating connection/override panel */}
-      <div className="fixed bottom-4 right-4 w-[22rem] max-w-[90vw] text-sm">
-        <div className="backdrop-blur bg-slate-900/70 border border-slate-700/60 text-slate-200 rounded-xl p-3 shadow-lg">
-          <div className="font-medium mb-1">Backend</div>
-          <div className="text-xs mb-2">
-            <div className="opacity-80">Aktiv: <span className="break-all">{effectiveBackendUrl}</span></div>
-            <div className="opacity-60">Vorgabe: <span className="break-all">{ENV_BACKEND_URL}</span></div>
-          </div>
-          <div className="flex gap-2 mb-2">
-            <input
-              type="text"
-              placeholder="Backend-URL überschreiben (https://...)"
-              value={backendOverride}
-              onChange={(e) => setBackendOverride(e.target.value)}
-              className="flex-1 px-2 py-1 rounded-md bg-slate-800 border border-slate-700 text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-            />
-            <button onClick={saveOverride} className="px-2 py-1 rounded-md bg-indigo-600 hover:bg-indigo-500">Nutzen</button>
-            <button onClick={resetOverride} className="px-2 py-1 rounded-md bg-slate-700 hover:bg-slate-600">Reset</button>
-          </div>
-          <button
-            onClick={checkConnection}
-            className="w-full px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 transition-colors text-white"
-          >Verbindung testen</button>
-          {connState.checked && (
-            <div className={`mt-2 text-xs ${connState.ok ? 'text-emerald-400' : 'text-rose-400'}`}>
-              {connState.msg}
-            </div>
-          )}
-        </div>
-      </div>
     </div>
   )
 }
