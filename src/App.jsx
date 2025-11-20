@@ -9,6 +9,7 @@ import LegalModal from './components/LegalModal'
 import SeasonDock from './components/SeasonDock'
 import BackToTop from './components/BackToTop'
 import Reveal from './components/Reveal'
+import DecorativePhotos from './components/DecorativePhotos'
 import logo from './assets/westside-furs.svg'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000'
@@ -65,6 +66,8 @@ export default function App() {
   return (
     <div className={`min-h-screen ${baseTextClass}`}>
       <AnimatedBackground season={season} />
+      {/* Decorative blurred placeholders behind content */}
+      <DecorativePhotos />
       {/* Mobile-only header (desktop nav removed) */}
       <Navbar season={season} setSeason={setSeason} />
       {/* Align the desktop Season switch with the hero logo height by adjusting margins in SeasonDock */}
