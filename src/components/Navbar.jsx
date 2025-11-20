@@ -29,7 +29,7 @@ function SeasonPills({ season, onChange }) {
   )
 }
 
-// Desktop season switch (exported for SeasonDock) — circular "old" style wheel
+// Desktop season switch (exported for SeasonDock) — circular wheel with rotation so the selected season is always at the top
 export function SeasonWheel({ season, onChange }) {
   const positions = {
     winter: 'top-2 left-1/2 -translate-x-1/2',
@@ -38,21 +38,32 @@ export function SeasonWheel({ season, onChange }) {
     autumn: 'top-1/2 left-2 -translate-y-1/2',
   }
 
+  const rotationBySeason = {
+    winter: 0,
+    spring: -90,
+    summer: -180,
+    autumn: -270,
+  }
+
+  const rotation = rotationBySeason[season] ?? 0
+
   return (
     <div className="relative w-40 h-40 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm shadow-sm select-none">
-      {/* ring */}
+      {/* outer ring */}
       <div className="absolute inset-1 rounded-full border border-white/10" />
 
-      {/* center label showing current season in German */}
-      <div className="absolute inset-0 flex items-center justify-center">
+      {/* center label showing current season in German (no emoji) */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div className="px-3 py-1.5 rounded-full bg-white text-slate-900 shadow ring-1 ring-white/60 text-sm font-medium">
-          <span className="mr-1" aria-hidden>{SEASON_META[season]?.emoji}</span>
-          <span>{SEASON_META[season]?.de}</span>
+          {SEASON_META[season]?.de}
         </div>
       </div>
 
-      {/* buttons around the circle with emojis */}
-      <div className="absolute inset-0">
+      {/* buttons around the circle with emojis; rotate the ring so the selected season is always on top */}
+      <div
+        className="absolute inset-0 transition-transform duration-500 ease-out will-change-transform"
+        style={{ transform: `rotate(${rotation}deg)` }}
+      >
         {SEASONS.map((s) => (
           <button
             key={s}
@@ -61,6 +72,7 @@ export function SeasonWheel({ season, onChange }) {
             aria-pressed={season===s}
             aria-label={SEASON_META[s].de}
             title={SEASON_META[s].de}
+            style={{ transform: `rotate(${-rotation}deg)` }}
           >
             <span aria-hidden>{SEASON_META[s].emoji}</span>
           </button>
@@ -102,11 +114,11 @@ export default function Navbar({ season, setSeason }) {
     <header className={`fixed top-0 inset-x-0 z-40 transition-all md:hidden ${scrolled ? '' : ''}`}>
       <nav className="max-w-6xl mx-auto px-4">
         <div className="h-14 flex items-center justify-end">
-          {/* Right-aligned Hamburger only on mobile; no white header */}
+          {/* Right-aligned Hamburger only on mobile; now with a background */}
           <button
             aria-label="Menü öffnen"
             aria-expanded={open}
-            className="p-2 rounded-md bg-black/0 hover:bg-black/10 text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/30"
+            className="p-2 rounded-full bg-slate-900/80 text-white shadow-md backdrop-blur-sm border border-white/10 hover:bg-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
             onClick={() => setOpen(true)}
           >
             <MenuIcon className="w-6 h-6" />
