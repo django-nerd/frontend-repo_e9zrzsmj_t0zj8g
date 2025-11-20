@@ -119,7 +119,7 @@ export default function SeasonDial({ season='winter', onChange }) {
               const active = k === season
               return (
                 <g
-                  key={`item-${k}`]
+                  key={`item-${k}`}
                   style={grpStyle}
                   onClick={() => handleActivate(k)}
                   role="button"
