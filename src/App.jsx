@@ -82,12 +82,13 @@ export default function App() {
             <p className={`mt-4 text-lg max-w-2xl md:text-left mx-auto md:mx-0 text-center text-slate-200/90`}>
               Wir vernetzen die Furry-Community im Westen: mit Events, kreativen Projekten und einem starken Miteinander.
             </p>
-            <div className="mt-7 flex items-center gap-3 text-base md:text-lg justify-center md:justify-start">
+            {/* Links row: equal heights even when wrapping */}
+            <div className="mt-7 flex flex-wrap items-stretch gap-3 text-base md:text-lg justify-center md:justify-start">
               <a
                 href="https://events.westside-furs.com/events/1/westside-furs-ev"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md hover:from-blue-500 hover:to-indigo-500 hover:shadow-lg transition-all duration-200 ease-out transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900/20"
+                className="group flex flex-1 items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md hover:from-blue-500 hover:to-indigo-500 hover:shadow-lg transition-all duration-200 ease-out transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900/20 h-full min-w-[12rem] text-center"
               >
                 Zu unseren Events
               </a>
@@ -95,7 +96,7 @@ export default function App() {
                 href="https://cloud.westside-furs.com/index.php/apps/memories/s/galerie"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-5 py-3 rounded-xl border bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/30 transition-all duration-200 ease-out transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+                className="flex flex-1 items-center justify-center px-5 py-3 rounded-xl border bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/30 transition-all duration-200 ease-out transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 h-full min-w-[12rem] text-center"
               >
                 Galerie
               </a>
@@ -103,16 +104,12 @@ export default function App() {
                 href="https://socials.westside-furs.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-5 py-3 rounded-xl border bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/30 transition-all duration-200 ease-out transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+                className="flex flex-1 items-center justify-center px-5 py-3 rounded-xl border bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/30 transition-all duration-200 ease-out transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 h-full min-w-[12rem] text-center"
               >
                 weitere Links
               </a>
             </div>
-            {/* cue to scroll */}
-            <div className="mt-10 flex flex-col items-center text-slate-200/80">
-              <span className="text-xs uppercase tracking-widest">Scroll</span>
-              <span className={`mt-1 inline-block w-0.5 h-6 rounded-full animate-pulse bg-slate-200/60`} />
-            </div>
+            {/* Scroll indicator removed as requested */}
           </div>
         </section>
 
