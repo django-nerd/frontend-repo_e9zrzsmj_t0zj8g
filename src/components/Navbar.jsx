@@ -31,7 +31,7 @@ function SeasonPills({ season, onChange }) {
 
 // Desktop season switch (exported for SeasonDock)
 // Idle: compact round button showing only the current season emoji
-// Hover/Focus: expands to full wheel with evenly spaced icons; ring rotates so selected season is at top
+// Hover/Focus: expands to full wheel; icons fly out from center in sequence; ring rotates so selected season is at top
 export function SeasonWheel({ season, onChange }) {
   const rotationBySeason = {
     winter: 0,
@@ -49,8 +49,9 @@ export function SeasonWheel({ season, onChange }) {
     <div className="group relative inline-block select-none">
       {/* Animated container: compact -> expanded */}
       <div
-        className="relative overflow-visible rounded-full transition-all duration-300 ease-out border border-white/20 bg-white/10 backdrop-blur-sm shadow-sm w-12 h-12 group-hover:w-40 group-hover:h-40 group-focus-within:w-40 group-focus-within:h-40"
+        className="relative overflow-visible rounded-full transition-all duration-300 ease-out border border-white/20 bg-white/10 backdrop-blur-sm shadow-sm w-12 h-12 group-hover:w-40 group-hover:h-40 group-focus-within:w-40 group-focus-within:h-40 group-hover:[--t:1] group-focus-within:[--t:1]"
         aria-label={SEASON_META[season]?.de}
+        style={{ '--t': 0 }}
       >
         {/* Outer ring visible only when expanded */}
         <div className="absolute inset-1 rounded-full border border-white/10 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100" />
@@ -67,24 +68,30 @@ export function SeasonWheel({ season, onChange }) {
           </div>
         </div>
 
-        {/* Buttons ring: appears on hover/focus, with rotation so active is on top */}
+        {/* Buttons ring: rotates so active is on top. Icons fly out from center with staggered delay. */}
         <div
-          className="absolute inset-0 transition-transform duration-500 ease-out will-change-transform opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 group-focus-within:opacity-100 group-focus-within:scale-100"
+          className="absolute inset-0 will-change-transform transition-transform duration-500 ease-out pointer-events-none group-hover:pointer-events-auto group-focus-within:pointer-events-auto"
           style={{ transform: `rotate(${rotation}deg)` }}
         >
           {SEASONS.map((s, idx) => {
             const angle = idx * step // 0 top, clockwise
+            const delay = `${idx * 70}ms`
             return (
               <button
                 key={s}
                 onClick={() => onChange(s)}
-                className={`absolute left-1/2 top-1/2 w-10 h-10 rounded-full flex items-center justify-center text-base transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 ${season===s ? 'bg-white text-slate-900 shadow ring-1 ring-white/60' : 'text-white/90 bg-white/0 hover:bg-white/10 border border-white/10'}`}
+                className={`absolute left-1/2 top-1/2 w-10 h-10 rounded-full flex items-center justify-center text-base transition-all ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 ${season===s ? 'bg-white text-slate-900 shadow ring-1 ring-white/60' : 'text-white/90 bg-white/0 hover:bg-white/10 border border-white/10'}`}
                 aria-pressed={season===s}
                 aria-label={SEASON_META[s].de}
                 title={SEASON_META[s].de}
-                style={{ transform: `translate(-50%, -50%) rotate(${angle}deg) translate(${radius}px) rotate(${-angle - rotation}deg)` }}
+                style={{
+                  transform: `translate(-50%, -50%) rotate(${angle}deg) translateX(calc(var(--t) * ${radius}px)) rotate(${-angle - rotation}deg)`,
+                  transitionProperty: 'transform, opacity, background-color, border-color, box-shadow',
+                  transitionDuration: '300ms',
+                  transitionDelay: delay,
+                }}
               >
-                <span aria-hidden>{SEASON_META[s].emoji}</span>
+                <span className="block opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity" style={{ transitionDelay: delay }} aria-hidden>{SEASON_META[s].emoji}</span>
               </button>
             )
           })}
