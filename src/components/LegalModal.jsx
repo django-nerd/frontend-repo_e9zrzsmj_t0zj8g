@@ -49,10 +49,6 @@ export default function LegalModal({ open, onClose, activeTab = 'contact', setAc
                     <label className="block text-sm mb-1">Name</label>
                     <input required value={form.name} onChange={e=>setForm({...form, name:e.target.value})} className="w-full bg-slate-950/40 border border-slate-700/60 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Dein Name" />
                   </div>
-                  <div className="md:col-span-1">
-                    <label className="block text-sm mb-1">E‑Mail</label>
-                    <input type="email" required value={form.email} onChange={e=>setForm({...form, email:e.target.value})} className="w-full bg-slate-950/40 border border-slate-700/60 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="name@beispiel.de" />
-                  </div>
                   <div className="md:col-span-2">
                     <label className="block text-sm mb-1">Betreff</label>
                     <input value={form.subject} onChange={e=>setForm({...form, subject:e.target.value})} className="w-full bg-slate-950/40 border border-slate-700/60 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Worum geht es?" />

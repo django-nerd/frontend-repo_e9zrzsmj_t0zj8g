@@ -25,7 +25,7 @@ function getSeason(date = new Date()) {
 export default function App() {
   const [status, setStatus] = useState(null)
   const [errorMsg, setErrorMsg] = useState('')
-  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '', hp: '' })
+  const [form, setForm] = useState({ name: '', subject: '', message: '', hp: '' })
 
   const [legalOpen, setLegalOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('contact')
@@ -44,8 +44,8 @@ export default function App() {
     return () => document.removeEventListener('open-legal', handler)
   }, [])
 
-  // Determine effective backend URL (honors optional localStorage override if set elsewhere)
-  const effectiveBackendUrl = (typeof window !== 'undefined' && window.localStorage?.getItem('backendUrlOverride')) || ENV_BACKEND_URL
+  // Determine effective backend URL for rate-limit and honeypot check
+  const effectiveBackendUrl = ENV_BACKEND_URL
 
   useEffect(() => {
     // Expose and log
@@ -59,7 +59,6 @@ export default function App() {
   const validateClient = () => {
     const problems = []
     if (!form.name || form.name.trim().length < 2) problems.push('Name (mind. 2 Zeichen)')
-    if (!form.email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) problems.push('E‑Mail (gültig)')
     if (!form.message || form.message.trim().length < 10) problems.push('Nachricht (mind. 10 Zeichen)')
     return problems
   }
@@ -69,7 +68,6 @@ export default function App() {
     const subject = form.subject && form.subject.trim().length > 0 ? form.subject.trim() : 'Kontaktanfrage'
     const bodyLines = [
       `Name: ${form.name}`,
-      `E-Mail: ${form.email}`,
       '',
       'Nachricht:',
       form.message,
@@ -79,7 +77,6 @@ export default function App() {
     ]
     const body = bodyLines.join('\n')
     const mailto = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-    // Open in the same tab to ensure popups aren't blocked; many browsers handle mailto with the OS mail app
     window.location.href = mailto
   }
 
@@ -95,10 +92,10 @@ export default function App() {
 
     setStatus('sending')
 
-    // Try to persist to backend first (honeypot, rate limit, DB), but regardless of outcome open the local mail client
+    // Call backend only for honeypot + rate-limit checks; do not store anything
     try {
       const controller = new AbortController()
-      const t = setTimeout(() => controller.abort(), 8000) // safety timeout
+      const t = setTimeout(() => controller.abort(), 8000)
       const res = await fetch(`${effectiveBackendUrl}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -118,26 +115,18 @@ export default function App() {
       }
 
       if (data && data.reason === 'rate_limited') {
-        // Even if rate-limited on API, still open the mail client so the user can contact support
         setStatus('rate_limited')
+        // still open email so user can reach out
         openMailClient()
         return
       }
 
-      if (!res.ok) {
-        // Backend failed – still open the mail client so the user can reach us
-        openMailClient()
-        setStatus('error')
-        setErrorMsg(data?.detail || 'Senden fehlgeschlagen – E-Mail-Programm wurde geöffnet')
-        return
-      }
-
-      // Success: reset form and open the mail client
+      // No persistence; on success simply open email client and reset form
       setStatus('ok')
       openMailClient()
-      setForm({ name: '', email: '', subject: '', message: '', hp: '' })
+      setForm({ name: '', subject: '', message: '', hp: '' })
     } catch (e2) {
-      // Network/timeout: open mail client anyway
+      // Even if backend not reachable, still open mail client
       openMailClient()
       setStatus('error')
       setErrorMsg('Server nicht erreichbar – E-Mail-Programm wurde geöffnet')
