@@ -85,14 +85,14 @@ export default function SeasonDock({ season, setSeason }) {
               </button>
             )}
 
-            {/* Popup: only as big as the dial, anchored to this spot */}
+            {/* Popup: transparent container sized exactly to the dial */}
             {mounted && (
               <div
                 id="season-dial-popup"
                 ref={panelRef}
                 role="dialog"
                 aria-modal="true"
-                className="absolute top-0 right-0 rounded-xl shadow-2xl ring-1 ring-white/10 bg-slate-900/80 backdrop-blur-md"
+                className="absolute top-0 right-0"
                 style={{ width: DIAL_SIZE, height: DIAL_SIZE, zIndex: 60 }}
               >
                 <div
@@ -105,14 +105,14 @@ export default function SeasonDock({ season, setSeason }) {
                     <button
                       type="button"
                       onClick={() => startClose()}
-                      className="h-8 w-8 rounded-full bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 shadow ring-1 ring-white/10 flex items-center justify-center"
+                      className="h-8 w-8 rounded-full flex items-center justify-center text-white/80 hover:text-white focus:outline-none focus:ring-0 bg-transparent"
                       aria-label="Schließen"
                       title="Schließen"
                     >
                       ×
                     </button>
                   </div>
-                  <div className="p-2">
+                  <div className="">
                     <SeasonDial
                       season={season}
                       onChange={(k) => {
