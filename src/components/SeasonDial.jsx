@@ -12,6 +12,7 @@ export default function SeasonDial({ season='winter', onChange }) {
   const size = 180 // px (reduced)
   const r = size/2
   const innerR = r - 4
+  const centerBtnR = 18 // radius of the central static button
 
   const rotation = useMemo(() => {
     const idx = SEASONS.indexOf(season)
@@ -19,7 +20,7 @@ export default function SeasonDial({ season='winter', onChange }) {
     return map[idx] ?? 0
   }, [season])
 
-  // Build 4 wedge paths
+  // Build 4 wedge paths (from center to outer innerR circle)
   const buildWedge = (startDeg, endDeg) => {
     const start = (startDeg-90) * Math.PI / 180
     const end = (endDeg-90) * Math.PI / 180
@@ -29,6 +30,22 @@ export default function SeasonDial({ season='winter', onChange }) {
     const y2 = r + innerR * Math.sin(end)
     const largeArc = endDeg - startDeg > 180 ? 1 : 0
     return `M ${r} ${r} L ${x1} ${y1} A ${innerR} ${innerR} 0 ${largeArc} 1 ${x2} ${y2} Z`
+  }
+
+  // Build ring sector that avoids the center by cutting out a hole radius (for hit areas)
+  const buildWedgeRing = (startDeg, endDeg, holeR) => {
+    const start = (startDeg-90) * Math.PI / 180
+    const end = (endDeg-90) * Math.PI / 180
+    const x1o = r + innerR * Math.cos(start)
+    const y1o = r + innerR * Math.sin(start)
+    const x2o = r + innerR * Math.cos(end)
+    const y2o = r + innerR * Math.sin(end)
+    const x2i = r + holeR * Math.cos(end)
+    const y2i = r + holeR * Math.sin(end)
+    const x1i = r + holeR * Math.cos(start)
+    const y1i = r + holeR * Math.sin(start)
+    const largeArc = endDeg - startDeg > 180 ? 1 : 0
+    return `M ${x1o} ${y1o} A ${innerR} ${innerR} 0 ${largeArc} 1 ${x2o} ${y2o} L ${x2i} ${y2i} A ${holeR} ${holeR} 0 ${largeArc} 0 ${x1i} ${y1i} Z`
   }
 
   const wedges = [
@@ -48,6 +65,8 @@ export default function SeasonDial({ season='winter', onChange }) {
       handleActivate(k)
     }
   }
+
+  const isStatic = season === 'static'
 
   return (
     <div className="relative inline-block" style={{width: size, height: size, pointerEvents: 'auto'}}>
@@ -100,7 +119,7 @@ export default function SeasonDial({ season='winter', onChange }) {
               const active = k === season
               return (
                 <g
-                  key={`item-${k}`}
+                  key={`item-${k}`]
                   style={grpStyle}
                   onClick={() => handleActivate(k)}
                   role="button"
@@ -137,6 +156,19 @@ export default function SeasonDial({ season='winter', onChange }) {
                 </g>
               )
             })}
+
+            {/* Center static toggle button: red X */}
+            <g
+              onClick={() => handleActivate('static')}
+              role="button"
+              tabIndex={0}
+              onKeyDown={onKey('static')}
+              aria-pressed={isStatic}
+              style={{ cursor: 'pointer', pointerEvents: 'auto' }}
+            >
+              <circle cx={r} cy={r} r={centerBtnR} fill={isStatic ? '#ef4444' : 'rgba(239,68,68,0.9)'} stroke="rgba(0,0,0,0.45)" strokeWidth="1" />
+              <text x={r} y={r} textAnchor="middle" dominantBaseline="central" fontSize="16" fontWeight="700" fill="#fff">✖</text>
+            </g>
           </g>
 
           {/* Gradients and filters */}
@@ -156,12 +188,12 @@ export default function SeasonDial({ season='winter', onChange }) {
             </filter>
           </defs>
 
-          {/* Invisible hit areas per quadrant to ensure clicks always register (kept on top of wedges) */}
+          {/* Invisible hit areas per quadrant to ensure clicks always register (avoid the center for static button) */}
           <g style={{ transformOrigin: `${r}px ${r}px`, transform: `rotate(${rotation}deg)` }}>
             {wedges.map((w) => (
               <path
-                key={`hit-${w.k}`}
-                d={buildWedge(w.start, w.end)}
+                key={`hit-${w.k}`]
+                d={buildWedgeRing(w.start, w.end, centerBtnR + 6)}
                 fill="#000"
                 fillOpacity="0.001" /* nearly invisible but pointer-events painted */
                 onClick={() => handleActivate(w.k)}

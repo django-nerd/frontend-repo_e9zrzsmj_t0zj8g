@@ -56,7 +56,10 @@ export default function SeasonDock({ season, setSeason }) {
     spring: { label: 'Frühling', emoji: '🌸' },
     summer: { label: 'Sommer', emoji: '☀️' },
     autumn: { label: 'Herbst', emoji: '🍂' },
+    static: { label: 'Statisch', emoji: '❌' },
   }
+
+  const shown = meta[season] ? season : 'winter'
 
   return (
     <div className="hidden md:block">
@@ -77,10 +80,10 @@ export default function SeasonDock({ season, setSeason }) {
                 aria-controls="season-dial-popup"
               >
                 <span className="text-3xl leading-none transition-transform group-hover:scale-110">
-                  {meta[season].emoji}
+                  {meta[shown].emoji}
                 </span>
                 <span className="text-xs font-medium text-slate-200/90 group-hover:text-white">
-                  {meta[season].label}
+                  {meta[shown].label}
                 </span>
               </button>
             )}
@@ -105,11 +108,16 @@ export default function SeasonDock({ season, setSeason }) {
                     <SeasonDial
                       season={season}
                       onChange={(k) => {
-                        // update season then delay close until the rotation animation finishes
                         if (k !== season) setSeason(k)
-                        window.setTimeout(() => {
+                        if (k === 'static') {
+                          // no rotation needed, close immediately
                           startClose()
-                        }, ROTATION_MS + 50)
+                        } else {
+                          // delay close until the rotation animation finishes
+                          window.setTimeout(() => {
+                            startClose()
+                          }, ROTATION_MS + 50)
+                        }
                       }}
                     />
                   </div>

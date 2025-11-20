@@ -89,7 +89,7 @@ export default function AnimatedBackground({ season: controlledSeason }) {
           alpha: rand(0.6, 0.85),
           sheen: rand(0.2, 0.4),
         }))
-      } else {
+      } else if (season === 'summer') {
         // summer: fireflies
         const count = Math.floor(70 * (W() / 1440))
         particles = Array.from({ length: count }).map(() => ({
@@ -101,6 +101,9 @@ export default function AnimatedBackground({ season: controlledSeason }) {
           glow: rand(0.5, 1),
           t: Math.random() * 1000,
         }))
+      } else {
+        // static theme: no particles
+        particles = []
       }
     }
 
@@ -111,8 +114,8 @@ export default function AnimatedBackground({ season: controlledSeason }) {
       const g = ctx.createLinearGradient(0, 0, 0, h)
       if (season === 'winter') {
         // frostier, icier blues
-        g.addColorStop(0, 'rgba(30, 58, 138, 1)') // blue-800
-        g.addColorStop(1, 'rgba(15, 23, 42, 1)') // slate-900
+        g.addColorStop(0, 'rgba(15, 23, 42, 1)') // slate-900 darker for static feel
+        g.addColorStop(1, 'rgba(2, 6, 23, 1)')  // slate-950
       } else if (season === 'autumn') {
         g.addColorStop(0, 'rgba(30,27,75,1)') // indigo-950
         g.addColorStop(1, 'rgba(88,28,135,1)') // purple-900
@@ -121,9 +124,13 @@ export default function AnimatedBackground({ season: controlledSeason }) {
         g.addColorStop(0, 'rgba(2, 6, 23, 1)')   // slate-950
         g.addColorStop(0.6, 'rgba(15, 23, 42, 1)') // slate-900
         g.addColorStop(1, 'rgba(20, 83, 45, 1)')  // emerald-800
-      } else {
+      } else if (season === 'summer') {
         g.addColorStop(0, 'rgba(7,89,133,1)') // cyan-800
         g.addColorStop(1, 'rgba(2,44,34,1)') // emerald-950
+      } else {
+        // static: very dark wintry slate tones, no extra effects
+        g.addColorStop(0, 'rgba(2, 6, 23, 1)')   // slate-950
+        g.addColorStop(1, 'rgba(15, 23, 42, 1)') // slate-900
       }
       ctx.fillStyle = g
       ctx.fillRect(0, 0, w, h)
@@ -212,7 +219,7 @@ export default function AnimatedBackground({ season: controlledSeason }) {
           ctx.fill()
           ctx.restore()
         }
-      } else {
+      } else if (season === 'summer') {
         for (const p of particles) {
           p.x += p.vx
           p.y += p.vy
@@ -235,6 +242,8 @@ export default function AnimatedBackground({ season: controlledSeason }) {
         ctx.fillStyle = beam
         ctx.fillRect(0, 0, W(), H())
         ctx.restore()
+      } else {
+        // static: draw only the dark gradient; no particles, no overlays
       }
 
       raf = requestAnimationFrame(draw)
