@@ -24,7 +24,7 @@ function getSeason(date = new Date()) {
 
 export default function App() {
   const [status, setStatus] = useState(null)
-  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
+  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '', hp: '' })
 
   const [legalOpen, setLegalOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('contact')
@@ -52,9 +52,14 @@ export default function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form)
       })
+      const data = await res.json().catch(() => ({}))
       if (!res.ok) throw new Error('Senden fehlgeschlagen')
+      if (data && data.reason === 'rate_limited') {
+        setStatus('rate_limited')
+        return
+      }
       setStatus('ok')
-      setForm({ name: '', email: '', subject: '', message: '' })
+      setForm({ name: '', email: '', subject: '', message: '', hp: '' })
     } catch (e) {
       setStatus('error')
     }
