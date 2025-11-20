@@ -30,6 +30,9 @@ export default function App() {
   const [legalOpen, setLegalOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('contact')
 
+  // Debug connection tester
+  const [connState, setConnState] = useState({ checked: false, ok: false, msg: '' })
+
   // Season state: defaults to detected season, can be changed manually via Navbar wheel
   const [season, setSeason] = useState(getSeason())
   useEffect(() => { setSeason(getSeason()) }, [])
@@ -42,6 +45,14 @@ export default function App() {
     }
     document.addEventListener('open-legal', handler)
     return () => document.removeEventListener('open-legal', handler)
+  }, [])
+
+  useEffect(() => {
+    // Expose and log backend URL to help diagnose env issues
+    console.log('Backend URL in UI:', backendUrl)
+    if (typeof window !== 'undefined') {
+      window.__BACKEND_URL__ = backendUrl
+    }
   }, [])
 
   const validateClient = () => {
@@ -99,6 +110,18 @@ export default function App() {
     }
   }
 
+  const checkConnection = async () => {
+    setConnState({ checked: true, ok: false, msg: 'Prüfe Verbindung…' })
+    try {
+      const res = await fetch(`${backendUrl}/test`)
+      if (!res.ok) throw new Error(`Status ${res.status}`)
+      const data = await res.json()
+      setConnState({ checked: true, ok: true, msg: `OK – Backend erreichbar (${data?.backend || 'Running'})` })
+    } catch (err) {
+      setConnState({ checked: true, ok: false, msg: `Nicht erreichbar (${err?.message || 'Fehler'})` })
+    }
+  }
+
   // Spring: invert to light text globally as requested
   const baseTextClass = season === 'spring' ? 'text-slate-100' : 'text-slate-100'
 
@@ -138,7 +161,7 @@ export default function App() {
                 href="https://cloud.westside-furs.com/index.php/apps/memories/s/galerie"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-1 items-center justify-center px-5 py-3 rounded-xl border bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/30 transition-all duration-200 ease-out transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 h-full min-w-[12rem] text-center"
+                className="flex flex-1 items-center justify-center px-5 py-3 rounded-xl border bg-white/10 border-white/20 text-white hover:bg白/20 hover:border-white/30 transition-all duration-200 ease-out transform hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring白/50 h-full min-w-[12rem] text-center"
               >
                 Galerie
               </a>
@@ -205,6 +228,23 @@ export default function App() {
 
       {/* Back to top button */}
       <BackToTop />
+
+      {/* Small floating connection indicator for quick diagnostics */}
+      <div className="fixed bottom-4 right-4 max-w-xs text-sm">
+        <div className="backdrop-blur bg-slate-900/70 border border-slate-700/60 text-slate-200 rounded-xl p-3 shadow-lg">
+          <div className="font-medium mb-1">Backend</div>
+          <div className="text-xs break-all opacity-80 mb-2">{backendUrl}</div>
+          <button
+            onClick={checkConnection}
+            className="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition-colors text-white"
+          >Verbindung testen</button>
+          {connState.checked && (
+            <div className={`mt-2 text-xs ${connState.ok ? 'text-emerald-400' : 'text-rose-400'}`}>
+              {connState.msg}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   )
 }
