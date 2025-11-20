@@ -39,12 +39,6 @@ export default function LegalModal({ open, onClose, activeTab = 'contact', setAc
               <div>
                 <h2 className="text-xl font-semibold mb-4 text-white">Kontakt</h2>
                 <form onSubmit={onSubmitContact} className="grid md:grid-cols-2 gap-4" noValidate>
-                  {/* Honeypot field: should remain empty; hidden from users */}
-                  <div aria-hidden="true" className="absolute -left-[9999px] top-auto w-px h-px overflow-hidden">
-                    <label>Bitte nichts hier eintragen</label>
-                    <input value={form.hp} onChange={e=>setForm({...form, hp:e.target.value})} tabIndex={-1} autoComplete="off" />
-                  </div>
-
                   <div className="md:col-span-1">
                     <label className="block text-sm mb-1">Name</label>
                     <input required value={form.name} onChange={e=>setForm({...form, name:e.target.value})} className="w-full bg-slate-950/40 border border-slate-700/60 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Dein Name" />

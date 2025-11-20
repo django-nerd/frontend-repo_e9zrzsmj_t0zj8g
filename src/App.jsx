@@ -23,7 +23,7 @@ function getSeason(date = new Date()) {
 export default function App() {
   const [status, setStatus] = useState(null)
   const [errorMsg, setErrorMsg] = useState('')
-  const [form, setForm] = useState({ name: '', subject: '', message: '', hp: '' })
+  const [form, setForm] = useState({ name: '', subject: '', message: '' })
 
   const [legalOpen, setLegalOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('contact')
@@ -79,7 +79,7 @@ export default function App() {
     // No backend request at all – directly open local mail client
     setStatus('ok')
     openMailClient()
-    setForm({ name: '', subject: '', message: '', hp: '' })
+    setForm({ name: '', subject: '', message: '' })
   }
 
   const baseTextClass = season === 'spring' ? 'text-slate-100' : 'text-slate-100'
