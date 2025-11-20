@@ -24,6 +24,7 @@ function getSeason(date = new Date()) {
 
 export default function App() {
   const [status, setStatus] = useState(null)
+  const [errorMsg, setErrorMsg] = useState('')
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '', hp: '' })
 
   const [legalOpen, setLegalOpen] = useState(false)
@@ -43,8 +44,24 @@ export default function App() {
     return () => document.removeEventListener('open-legal', handler)
   }, [])
 
+  const validateClient = () => {
+    const problems = []
+    if (!form.name || form.name.trim().length < 2) problems.push('Name (mind. 2 Zeichen)')
+    if (!form.email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) problems.push('E‑Mail (gültig)')
+    if (!form.message || form.message.trim().length < 10) problems.push('Nachricht (mind. 10 Zeichen)')
+    return problems
+  }
+
   const onSubmit = async (e) => {
     e.preventDefault()
+    setErrorMsg('')
+    const problems = validateClient()
+    if (problems.length) {
+      setStatus('error')
+      setErrorMsg(`Bitte prüfen: ${problems.join(', ')}`)
+      return
+    }
+
     setStatus('sending')
     try {
       const res = await fetch(`${backendUrl}/api/contact`, {
@@ -53,15 +70,32 @@ export default function App() {
         body: JSON.stringify(form)
       })
       const data = await res.json().catch(() => ({}))
-      if (!res.ok) throw new Error('Senden fehlgeschlagen')
+
+      if (res.status === 422) {
+        // Validation error from backend (Pydantic)
+        const detail = Array.isArray(data?.detail)
+          ? data.detail.map(d => d?.msg).filter(Boolean).join('; ')
+          : (data?.detail || 'Ungültige Eingaben')
+        setStatus('error')
+        setErrorMsg(`Bitte Eingaben korrigieren: ${detail}`)
+        return
+      }
+
+      if (!res.ok) {
+        const detail = data?.detail || 'Senden fehlgeschlagen'
+        throw new Error(detail)
+      }
+
       if (data && data.reason === 'rate_limited') {
         setStatus('rate_limited')
         return
       }
+
       setStatus('ok')
       setForm({ name: '', email: '', subject: '', message: '', hp: '' })
     } catch (e) {
       setStatus('error')
+      setErrorMsg(e?.message || 'Leider ist ein Fehler aufgetreten')
     }
   }
 
@@ -164,6 +198,7 @@ export default function App() {
         setActiveTab={setActiveTab}
         onSubmitContact={onSubmit}
         status={status}
+        errorMsg={errorMsg}
         form={form}
         setForm={setForm}
       />

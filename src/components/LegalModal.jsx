@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-export default function LegalModal({ open, onClose, activeTab = 'contact', setActiveTab, onSubmitContact, status, form, setForm }) {
+export default function LegalModal({ open, onClose, activeTab = 'contact', setActiveTab, onSubmitContact, status, errorMsg, form, setForm }) {
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === 'Escape') onClose()
@@ -65,7 +65,9 @@ export default function LegalModal({ open, onClose, activeTab = 'contact', setAc
                     <button type="submit" className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500">Absenden</button>
                     {status === 'sending' && <span className="text-slate-300 text-sm">Wird gesendet…</span>}
                     {status === 'ok' && <span className="text-green-300 text-sm">Danke! Wir melden uns bald.</span>}
-                    {status === 'error' && <span className="text-red-300 text-sm">Leider ist ein Fehler aufgetreten.</span>}
+                    {status === 'error' && (
+                      <span className="text-red-300 text-sm">{errorMsg || 'Leider ist ein Fehler aufgetreten.'}</span>
+                    )}
                     {status === 'rate_limited' && <span className="text-yellow-300 text-sm">Zu viele Anfragen. Bitte in einer Minute erneut versuchen.</span>}
                   </div>
                 </form>
