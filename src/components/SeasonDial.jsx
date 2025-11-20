@@ -1,19 +1,15 @@
 import React, { useMemo } from 'react'
-import winterIcon from '../assets/season-winter.svg'
-import springIcon from '../assets/season-spring.svg'
-import summerIcon from '../assets/season-summer.svg'
-import autumnIcon from '../assets/season-autumn.svg'
 
 const SEASONS = ['winter','spring','summer','autumn']
 const META = {
-  winter: { de: 'Winter', color: '#60a5fa', color2: '#1e3a8a', icon: winterIcon },
-  spring: { de: 'Frühling', color: '#34d399', color2: '#065f46', icon: springIcon },
-  summer: { de: 'Sommer', color: '#facc15', color2: '#b45309', icon: summerIcon },
-  autumn: { de: 'Herbst', color: '#f59e0b', color2: '#7c2d12', icon: autumnIcon },
+  winter: { de: 'Winter', color: '#60a5fa', color2: '#1e3a8a', emoji: '❄️' },
+  spring: { de: 'Frühling', color: '#34d399', color2: '#065f46', emoji: '🌸' },
+  summer: { de: 'Sommer', color: '#facc15', color2: '#b45309', emoji: '☀️' },
+  autumn: { de: 'Herbst', color: '#f59e0b', color2: '#7c2d12', emoji: '🍂' },
 }
 
 export default function SeasonDial({ season='winter', onChange }) {
-  const size = 240 // px
+  const size = 200 // px (slightly smaller)
   const r = size/2
   const innerR = r - 4
 
@@ -43,14 +39,7 @@ export default function SeasonDial({ season='winter', onChange }) {
   ]
 
   return (
-    <div className="relative inline-block" style={{width: size, height: size + 28}}>
-      {/* Arrow indicator above, pointing down to top center */}
-      <div className="absolute left-1/2 -translate-x-1/2 -top-6 select-none" aria-hidden>
-        <svg width="24" height="24" viewBox="0 0 24 24" className="drop-shadow" fill="none">
-          <path d="M12 4 L6 10 H10 V20 H14 V10 H18 Z" fill="white" opacity="0.95" />
-        </svg>
-      </div>
-
+    <div className="relative inline-block" style={{width: size, height: size}}>
       <div className="relative overflow-visible" style={{width: size, height: size}}>
         <svg
           viewBox={`0 0 ${size} ${size}`}
@@ -63,7 +52,7 @@ export default function SeasonDial({ season='winter', onChange }) {
 
           {/* Rotating plate */}
           <g style={{ transformOrigin: `${r}px ${r}px`, transform: `rotate(${rotation}deg)`, transition: 'transform 600ms cubic-bezier(.2,.8,.2,1)' }}>
-            {wedges.map((w, idx) => {
+            {wedges.map((w) => {
               const m = META[w.k]
               const d = buildWedge(w.start, w.end)
               return (
@@ -73,20 +62,23 @@ export default function SeasonDial({ season='winter', onChange }) {
               )
             })}
 
-            {/* Icons + labels positioned for the top orientation; they rotate with the plate */}
+            {/* Emojis + labels positioned for the top orientation; they rotate with the plate */}
             {SEASONS.map((k, i) => {
               const angle = i * 90 // winter 0, spring 90, etc.
               const m = META[k]
               const grpStyle = { transformOrigin: `${r}px ${r}px`, transform: `rotate(${angle}deg)` }
-              const iconSize = 36
-              const iconY = r - innerR + 30 // push towards top edge
-              const labelY = iconY + 28
+              const emojiSize = 24
+              const iconY = r - innerR + 28 // push towards top edge
+              const labelY = iconY + 24
+              const handleClick = () => onChange && onChange(k)
               return (
-                <g key={`item-${k}`} style={grpStyle}>
-                  {/* icon */}
-                  <image href={m.icon} x={r - iconSize/2} y={iconY - iconSize/2} width={iconSize} height={iconSize} opacity="0.95" />
+                <g key={`item-${k}`} style={grpStyle} onClick={handleClick} role="button" tabIndex={0}>
+                  {/* emoji */}
+                  <text x={r} y={iconY} textAnchor="middle" dominantBaseline="middle" fontSize={emojiSize} style={{ cursor: 'pointer' }}>
+                    {m.emoji}
+                  </text>
                   {/* label */}
-                  <text x={r} y={labelY} textAnchor="middle" dominantBaseline="middle" fontSize="14" fill="white" fontWeight="600" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.35)'}}>
+                  <text x={r} y={labelY} textAnchor="middle" dominantBaseline="middle" fontSize="13" fill="white" fontWeight="600" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.35)', cursor: 'pointer' }}>
                     {m.de}
                   </text>
                 </g>
