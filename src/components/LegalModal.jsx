@@ -66,82 +66,122 @@ export default function LegalModal({ open, onClose, activeTab = 'contact', setAc
             )}
 
             {activeTab === 'impressum' && (
-              <div className="prose prose-invert max-w-none">
-                <h2>Impressum</h2>
+              <div className="space-y-6">
+                <div className="flex items-center gap-4">
+                  <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-sky-300">Impressum</h2>
+                  <div className="flex-1 h-px bg-slate-700/60" />
+                </div>
 
-                <h3>Angaben gemäß § 5 TMG</h3>
-                <p>
-                  Westside-Furs e.V.<br/>
-                  Wallstr. 7<br/>
-                  42897 Remscheid
-                </p>
+                <div className="grid md:grid-cols-2 gap-8">
+                  {/* Left column */}
+                  <div className="prose prose-invert max-w-none prose-h2:text-sky-300 prose-h2:text-xl md:prose-h2:text-2xl prose-h3:text-sky-300 prose-h3:text-lg md:prose-h3:text-xl prose-a:text-sky-300 prose-strong:text-white">
+                    <div className="space-y-6">
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>Angaben gemäß § 5 TMG</h3>
+                        <p>
+                          Westside-Furs e.V.<br/>
+                          Wallstr. 7<br/>
+                          42897 Remscheid
+                        </p>
+                      </div>
 
-                <h3>Vertreten durch</h3>
-                <p>Felix Gilmozzi</p>
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>Vertreten durch</h3>
+                        <p>Felix Gilmozzi</p>
+                      </div>
 
-                <h3>Kontakt</h3>
-                <ul>
-                  <li>Telefon: +49 (0) 170 6129211</li>
-                  <li>E-Mail: <a href="mailto:imiakwolf@westside-furs.com">imiakwolf@westside-furs.com</a></li>
-                </ul>
+                      <div className="border-b md:border-b-0 border-slate-700/60 pb-6 md:pb-0">
+                        <h3>Kontakt</h3>
+                        <ul>
+                          <li>Telefon: +49 (0) 170 6129211</li>
+                          <li>E-Mail: <a href="mailto:imiakwolf@westside-furs.com">imiakwolf@westside-furs.com</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
 
-                <h3>Bankverbindung</h3>
-                <ul>
-                  <li>Kontoname: Westside-Furs</li>
-                  <li>Inhaber: WESTSIDE FURS</li>
-                  <li>IBAN: DE71 3405 0000 0012 1078 35</li>
-                  <li>BIC: WELADEDRXXX</li>
-                </ul>
+                  {/* Right column */}
+                  <div className="prose prose-invert max-w-none prose-h2:text-sky-300 prose-h2:text-xl md:prose-h2:text-2xl prose-h3:text-sky-300 prose-h3:text-lg md:prose-h3:text-xl prose-a:text-sky-300 prose-strong:text-white md:border-l md:border-slate-700/60 md:pl-8">
+                    <div className="space-y-6">
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>Bankverbindung</h3>
+                        <ul>
+                          <li>Kontoname: Westside-Furs</li>
+                          <li>Inhaber: WESTSIDE FURS</li>
+                          <li>IBAN: DE71 3405 0000 0012 1078 35</li>
+                          <li>BIC: WELADEDRXXX</li>
+                        </ul>
+                      </div>
 
-                <h3>Redaktionell verantwortlich</h3>
-                <p>
-                  1. Vorsitzender<br/>
-                  Felix Gilmozzi<br/>
-                  Wallstr. 7<br/>
-                  42897 Remscheid
-                </p>
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>Redaktionell verantwortlich</h3>
+                        <p>
+                          1. Vorsitzender<br/>
+                          Felix Gilmozzi<br/>
+                          Wallstr. 7<br/>
+                          42897 Remscheid
+                        </p>
+                      </div>
 
-                <h3>Schatzmeister</h3>
-                <p>
-                  Joel Werner<br/>
-                  Wallstr. 7<br/>
-                  42897 Remscheid
-                </p>
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>Schatzmeister</h3>
+                        <p>
+                          Joel Werner<br/>
+                          Wallstr. 7<br/>
+                          42897 Remscheid
+                        </p>
+                      </div>
 
-                <h3>Vorstandsvertretung</h3>
-                <p>
-                  Bennet Weisheit<br/>
-                  Terofalstraße 13<br/>
-                  80689 München, Hadern
-                </p>
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>Vorstandsvertretung</h3>
+                        <p>
+                          Bennet Weisheit<br/>
+                          Terofalstraße 13<br/>
+                          80689 München, Hadern
+                        </p>
+                      </div>
 
-                <h3>Geltungsbereich</h3>
-                <p>Das Impressum gilt für: <a href="https://westside-furs.com" target="_blank" rel="noopener noreferrer">https://westside-furs.com</a></p>
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>Geltungsbereich</h3>
+                        <p>Das Impressum gilt für: <a href="https://westside-furs.com" target="_blank" rel="noopener noreferrer">https://westside-furs.com</a></p>
+                      </div>
 
-                <h3>Registereintrag</h3>
-                <ul>
-                  <li>Registergericht: Amtsgericht Wuppertal</li>
-                  <li>Registernummer: VR 31452</li>
-                </ul>
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>Registereintrag</h3>
+                        <ul>
+                          <li>Registergericht: Amtsgericht Wuppertal</li>
+                          <li>Registernummer: VR 31452</li>
+                        </ul>
+                      </div>
 
-                <h3>Umsatzsteuer</h3>
-                <p>Umsatzsteuer-Identifikationsnummer gem. § 27 a Umsatzsteuergesetz: (wird demnächst ergänzt)</p>
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>Umsatzsteuer</h3>
+                        <p>Umsatzsteuer-Identifikationsnummer gem. § 27 a Umsatzsteuergesetz: (wird demnächst ergänzt)</p>
+                      </div>
 
-                <h3>Verantwortliche i.S.d. § 55 Abs. 2 RStV</h3>
-                <p>Felix Gilmozzi, Wallstr. 7, 42897 Remscheid</p>
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>Verantwortliche i.S.d. § 55 Abs. 2 RStV</h3>
+                        <p>Felix Gilmozzi, Wallstr. 7, 42897 Remscheid</p>
+                      </div>
 
-                <h3>EU-Streitschlichtung</h3>
-                <p>
-                  Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: 
-                  <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer">https://ec.europa.eu/consumers/odr/</a>.
-                </p>
-                <p>Unsere E-Mail-Adresse finden Sie oben im Impressum.</p>
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>EU-Streitschlichtung</h3>
+                        <p>
+                          Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: 
+                          <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer">https://ec.europa.eu/consumers/odr/</a>.
+                        </p>
+                        <p>Unsere E-Mail-Adresse finden Sie oben im Impressum.</p>
+                      </div>
 
-                <h3>Verbraucher­streit­beilegung / Universal­schlichtungs­stelle</h3>
-                <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
-
-                <hr />
-                <p className="text-xs opacity-70">Quelle: <a href="https://www.e-recht24.de/impressum-generator.html" target="_blank" rel="noopener noreferrer">https://www.e-recht24.de/impressum-generator.html</a></p>
+                      <div>
+                        <h3>Verbraucher­streit­beilegung / Universal­schlichtungs­stelle</h3>
+                        <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+                        <hr className="border-slate-700/60 my-6" />
+                        <p className="text-xs opacity-70">Quelle: <a href="https://www.e-recht24.de/impressum-generator.html" target="_blank" rel="noopener noreferrer">https://www.e-recht24.de/impressum-generator.html</a></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
 
