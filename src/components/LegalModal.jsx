@@ -226,8 +226,9 @@ export default function LegalModal({ open, onClose, activeTab = 'contact', setAc
                       </div>
 
                       <div className="border-b md:border-b-0 border-slate-700/60 pb-6 md:pb-0">
-                        <h3>4. Cookies und Einwilligung</h3>
-                        <p>Unsere Website verwendet derzeit nur technisch notwendige Cookies bzw. kann auch ohne Cookies ausgeliefert werden. Sofern zukünftig optionale Cookies (z. B. für Analyse) eingesetzt werden, holen wir vorab Ihre Einwilligung ein (Art. 6 Abs. 1 lit. a DSGVO) und informieren transparent.</p>
+                        <h3>4. Cookies, Client‑Storage und Einwilligung</h3>
+                        <p>Wir setzen keine Cookies ein und verwenden keine clientseitigen Speichertechniken wie LocalStorage oder SessionStorage. Es findet kein Tracking, keine Profilbildung und kein geräteübergreifendes Wiedererkennen statt. Externe Inhalte und Schriften werden nicht automatisch von Drittservern geladen.</p>
+                        <p className="mt-3">Sollten wir zukünftig optionale Funktionen integrieren, die Cookies oder ähnliche Technologien erfordern (z. B. eingebettete Karten, Videos oder Analyse), holen wir vorab Ihre ausdrückliche Einwilligung ein (Art. 6 Abs. 1 lit. a DSGVO) und informieren transparent.</p>
                       </div>
                     </div>
                   </div>
