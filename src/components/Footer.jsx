@@ -15,7 +15,7 @@ export default function Footer() {
         </div>
         <div>
           <h5 className="font-medium text-slate-200 mb-2">Kontakt</h5>
-          <p className="text-sm opacity-80">E‑Mail: kontakt@westside-furs.com</p>
+          <p className="text-sm opacity-80">E‑Mail: support@westside-furs.com</p>
           <button onClick={() => document.dispatchEvent(new CustomEvent('open-legal', { detail: { tab: 'contact' } }))} className="mt-2 text-sm underline hover:text-white">Kontaktformular öffnen</button>
         </div>
       </div>

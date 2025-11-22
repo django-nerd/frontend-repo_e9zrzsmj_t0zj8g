@@ -60,16 +60,88 @@ export default function LegalModal({ open, onClose, activeTab = 'contact', setAc
                     )}
                     {status === 'rate_limited' && <span className="text-yellow-300 text-sm">Zu viele Anfragen. Bitte in einer Minute erneut versuchen.</span>}
                   </div>
+                  <p className="text-xs text-slate-400 md:col-span-2">Oder direkt per E‑Mail: <a href="mailto:support@westside-furs.com" className="underline hover:text-white">support@westside-furs.com</a></p>
                 </form>
               </div>
             )}
 
             {activeTab === 'impressum' && (
-              <div>
-                <h2 className="text-xl font-semibold mb-2 text-white">Impressum</h2>
-                <p className="text-slate-300 text-sm leading-relaxed">
-                  Angaben gemäß § 5 TMG – Platzhalter. Sobald ihr mir die offiziellen Angaben sendet, trage ich alles ein.
+              <div className="prose prose-invert max-w-none">
+                <h2>Impressum</h2>
+
+                <h3>Angaben gemäß § 5 TMG</h3>
+                <p>
+                  Westside-Furs e.V.<br/>
+                  Wallstr. 7<br/>
+                  42897 Remscheid
                 </p>
+
+                <h3>Vertreten durch</h3>
+                <p>Felix Gilmozzi</p>
+
+                <h3>Kontakt</h3>
+                <ul>
+                  <li>Telefon: +49 (0) 170 6129211</li>
+                  <li>E-Mail: <a href="mailto:imiakwolf@westside-furs.com">imiakwolf@westside-furs.com</a></li>
+                </ul>
+
+                <h3>Bankverbindung</h3>
+                <ul>
+                  <li>Kontoname: Westside-Furs</li>
+                  <li>Inhaber: WESTSIDE FURS</li>
+                  <li>IBAN: DE71 3405 0000 0012 1078 35</li>
+                  <li>BIC: WELADEDRXXX</li>
+                </ul>
+
+                <h3>Redaktionell verantwortlich</h3>
+                <p>
+                  1. Vorsitzender<br/>
+                  Felix Gilmozzi<br/>
+                  Wallstr. 7<br/>
+                  42897 Remscheid
+                </p>
+
+                <h3>Schatzmeister</h3>
+                <p>
+                  Joel Werner<br/>
+                  Wallstr. 7<br/>
+                  42897 Remscheid
+                </p>
+
+                <h3>Vorstandsvertretung</h3>
+                <p>
+                  Bennet Weisheit<br/>
+                  Terofalstraße 13<br/>
+                  80689 München, Hadern
+                </p>
+
+                <h3>Geltungsbereich</h3>
+                <p>Das Impressum gilt für: <a href="https://westside-furs.com" target="_blank" rel="noopener noreferrer">https://westside-furs.com</a></p>
+
+                <h3>Registereintrag</h3>
+                <ul>
+                  <li>Registergericht: Amtsgericht Wuppertal</li>
+                  <li>Registernummer: VR 31452</li>
+                </ul>
+
+                <h3>Umsatzsteuer</h3>
+                <p>Umsatzsteuer-Identifikationsnummer gem. § 27 a Umsatzsteuergesetz: (wird demnächst ergänzt)</p>
+
+                <h3>Verantwortliche i.S.d. § 55 Abs. 2 RStV</h3>
+                <p>Felix Gilmozzi, Wallstr. 7, 42897 Remscheid</p>
+
+                <h3>EU-Streitschlichtung</h3>
+                <p>
+                  Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: 
+                  <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer">https://ec.europa.eu/consumers/odr/</a>.
+                </p>
+                <p>Unsere E-Mail-Adresse finden Sie oben im Impressum.</p>
+
+                <h3>Verbraucher­streit­beilegung / Universal­schlichtungs­stelle</h3>
+                <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+
+                <hr />
+                <p className="text-xs opacity-70">Quelle: <a href="https://www.e-recht24.de/impressum-generator.html" target="_blank" rel="noopener noreferrer">https://www.e-recht24.de/impressum-generator.html</a></p>
               </div>
             )}
 
