@@ -186,11 +186,114 @@ export default function LegalModal({ open, onClose, activeTab = 'contact', setAc
             )}
 
             {activeTab === 'datenschutz' && (
-              <div>
-                <h2 className="text-xl font-semibold mb-2 text-white">Datenschutz</h2>
-                <p className="text-slate-300 text-sm leading-relaxed">
-                  Hinweise nach DSGVO – Platzhalter. Ich übernehme den Text aus eurer bisherigen Seite, sobald ihr ihn freigebt.
-                </p>
+              <div className="space-y-6">
+                <div className="flex items-center gap-4">
+                  <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-sky-300">Datenschutz</h2>
+                  <div className="flex-1 h-px bg-slate-700/60" />
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-8">
+                  {/* Left column */}
+                  <div className="prose prose-invert max-w-none prose-h2:text-sky-300 prose-h2:text-xl md:prose-h2:text-2xl prose-h3:text-sky-300 prose-h3:text-lg md:prose-h3:text-xl prose-a:text-sky-300 prose-strong:text-white">
+                    <div className="space-y-6">
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>1. Verantwortlicher</h3>
+                        <p>
+                          Westside-Furs e.V.<br />
+                          Wallstr. 7<br />
+                          42897 Remscheid<br />
+                          E-Mail: <a href="mailto:imiakwolf@westside-furs.com">imiakwolf@westside-furs.com</a><br />
+                          Support: <a href="mailto:support@westside-furs.com">support@westside-furs.com</a>
+                        </p>
+                      </div>
+
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>2. Zwecke und Rechtsgrundlagen</h3>
+                        <p>Wir verarbeiten personenbezogene Daten zur Bereitstellung und Sicherheit dieser Website, zur Bearbeitung von Anfragen sowie zur Erfüllung unserer satzungsgemäßen Vereinszwecke.</p>
+                        <ul>
+                          <li>Website-Bereitstellung und Sicherheit (Art. 6 Abs. 1 lit. f DSGVO – berechtigtes Interesse)</li>
+                          <li>Kontaktanfragen per E‑Mail/ Formular (Art. 6 Abs. 1 lit. b oder f DSGVO)</li>
+                          <li>Erfüllung gesetzlicher Pflichten (Art. 6 Abs. 1 lit. c DSGVO)</li>
+                        </ul>
+                      </div>
+
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>3. Kategorien von Daten</h3>
+                        <ul>
+                          <li>Server- und Zugriffsdaten (IP‑Adresse, Datum/Uhrzeit, Referrer, User-Agent, besuchte Seiten)</li>
+                          <li>Kommunikationsdaten (Name, E‑Mail, Inhalte Ihrer Nachricht)</li>
+                        </ul>
+                      </div>
+
+                      <div className="border-b md:border-b-0 border-slate-700/60 pb-6 md:pb-0">
+                        <h3>4. Cookies und Einwilligung</h3>
+                        <p>Unsere Website verwendet derzeit nur technisch notwendige Cookies bzw. kann auch ohne Cookies ausgeliefert werden. Sofern zukünftig optionale Cookies (z. B. für Analyse) eingesetzt werden, holen wir vorab Ihre Einwilligung ein (Art. 6 Abs. 1 lit. a DSGVO) und informieren transparent.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right column */}
+                  <div className="prose prose-invert max-w-none prose-h2:text-sky-300 prose-h2:text-xl md:prose-h2:text-2xl prose-h3:text-sky-300 prose-h3:text-lg md:prose-h3:text-xl prose-a:text-sky-300 prose-strong:text-white md:border-l md:border-slate-700/60 md:pl-8">
+                    <div className="space-y-6">
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>5. Hosting und Server-Logs</h3>
+                        <p>Die Website wird bei einem externen Dienstleister gehostet. Beim Aufruf werden Server-Logfiles verarbeitet, um einen sicheren und stabilen Betrieb zu gewährleisten. Diese Daten werden automatisch erfasst und nach einer angemessenen Frist gelöscht oder anonymisiert.</p>
+                        <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der technischen Bereitstellung und Sicherheit).</p>
+                      </div>
+
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>6. Kontaktaufnahme</h3>
+                        <p>Bei der Kontaktaufnahme per E‑Mail oder Formular verarbeiten wir Ihre Angaben zur Bearbeitung der Anfrage und etwaiger Anschlussfragen. Die Angaben können in unserem Verein zur internen Vorgangsbearbeitung weitergegeben werden.</p>
+                        <p>Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Kommunikation) oder lit. f DSGVO (berechtigtes Interesse an effektiver Kommunikation).</p>
+                      </div>
+
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>7. Empfänger und Drittlandtransfer</h3>
+                        <p>Empfänger der Daten sind interne Stellen des Vereins sowie technische Dienstleister (z. B. Hosting). Eine Übermittlung in Drittländer findet nur statt, soweit dies erforderlich ist und die Anforderungen der Art. 44 ff. DSGVO erfüllt sind.</p>
+                      </div>
+
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>8. Speicherdauer</h3>
+                        <p>Wir verarbeiten und speichern personenbezogene Daten nur so lange, wie es für die jeweiligen Zwecke erforderlich ist oder gesetzliche Aufbewahrungspflichten bestehen. Danach werden die Daten gelöscht oder anonymisiert.</p>
+                      </div>
+
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>9. Sicherheit</h3>
+                        <p>Wir treffen technische und organisatorische Maßnahmen, um personenbezogene Daten vor Verlust, Missbrauch und unbefugtem Zugriff zu schützen und passen diese Maßnahmen dem Stand der Technik an.</p>
+                      </div>
+
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>10. Ihre Rechte</h3>
+                        <ul>
+                          <li>Auskunft (Art. 15 DSGVO)</li>
+                          <li>Berichtigung (Art. 16 DSGVO)</li>
+                          <li>Löschung (Art. 17 DSGVO)</li>
+                          <li>Einschränkung der Verarbeitung (Art. 18 DSGVO)</li>
+                          <li>Datenübertragbarkeit (Art. 20 DSGVO)</li>
+                          <li>Widerspruch (Art. 21 DSGVO)</li>
+                          <li>Widerruf erteilter Einwilligungen (Art. 7 Abs. 3 DSGVO)</li>
+                        </ul>
+                        <p>Zur Ausübung Ihrer Rechte kontaktieren Sie uns bitte unter <a href="mailto:support@westside-furs.com">support@westside-furs.com</a> oder <a href="mailto:imiakwolf@westside-furs.com">imiakwolf@westside-furs.com</a>.</p>
+                      </div>
+
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>11. Beschwerderecht</h3>
+                        <p>Sie haben das Recht, sich bei einer Datenschutzaufsichtsbehörde zu beschweren, insbesondere in dem Mitgliedstaat Ihres Aufenthaltsorts, Ihres Arbeitsplatzes oder des Orts des mutmaßlichen Verstoßes (Art. 77 DSGVO).</p>
+                      </div>
+
+                      <div className="border-b border-slate-700/60 pb-6">
+                        <h3>12. Minderjährige</h3>
+                        <p>Unser Angebot richtet sich nicht an Personen unter 16 Jahren. Wir verarbeiten wissentlich keine Daten von Minderjährigen ohne entsprechende Einwilligung der Sorgeberechtigten.</p>
+                      </div>
+
+                      <div>
+                        <h3>13. Änderungen dieser Datenschutzhinweise</h3>
+                        <p>Wir passen diese Hinweise an, sobald dies aufgrund technischer Änderungen, neuer rechtlicher Anforderungen oder unserer Vereinsaktivitäten erforderlich ist. Es gilt die jeweils aktuelle Fassung.</p>
+                        <p className="mt-4 text-xs opacity-70">Geltungsbereich: <a href="https://westside-furs.com" target="_blank" rel="noopener noreferrer">https://westside-furs.com</a> • Letzte Aktualisierung: {new Date().toLocaleDateString('de-DE')}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
