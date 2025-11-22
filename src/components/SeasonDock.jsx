@@ -66,27 +66,31 @@ export default function SeasonDock({ season, setSeason }) {
       <div className="relative z-30 pointer-events-auto max-w-6xl mx-auto px-4 md:px-6">
         <div className="flex justify-end pr-14">
           <div className="mt-16 lg:mt-20 xl:mt-24 relative" ref={anchorRef}>
-            {/* Trigger: when closed show emoji icon with text below */}
-            {!open && (
-              <button
-                type="button"
-                onClick={() => {
-                  setOpen(true)
-                  startOpen()
-                }}
-                className="group flex flex-col items-center gap-1"
-                aria-haspopup="dialog"
-                aria-expanded={open}
-                aria-controls="season-dial-popup"
-              >
-                <span className="text-3xl leading-none transition-transform group-hover:scale-110">
-                  {meta[shown].emoji}
-                </span>
-                <span className="text-xs font-medium text-slate-200/90 group-hover:text-white">
-                  {meta[shown].label}
-                </span>
-              </button>
-            )}
+            {/* Trigger: keep icon space even when open to prevent layout jump */}
+            <button
+              type="button"
+              onClick={() => {
+                if (open) return
+                setOpen(true)
+                startOpen()
+              }}
+              className={
+                'group flex flex-col items-center gap-1 ' +
+                (open ? 'invisible' : '')
+              }
+              aria-haspopup="dialog"
+              aria-expanded={open}
+              aria-controls="season-dial-popup"
+              aria-hidden={open}
+              tabIndex={open ? -1 : 0}
+            >
+              <span className="text-3xl leading-none transition-transform group-hover:scale-110">
+                {meta[shown].emoji}
+              </span>
+              <span className="text-xs font-medium text-slate-200/90 group-hover:text-white">
+                {meta[shown].label}
+              </span>
+            </button>
 
             {/* Popup: transparent container sized exactly to the dial */}
             {mounted && (
