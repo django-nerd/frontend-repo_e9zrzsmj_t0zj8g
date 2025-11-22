@@ -154,46 +154,49 @@ export default function FAQ() {
 
   return (
     <div id="faq" className="space-y-4">
-      {categories.map((cat, ci) => (
-        <div key={ci} className="rounded-2xl border border-slate-700/60 bg-slate-900/70 overflow-hidden">
-          <button
-            onClick={() => setOpenCat(openCat === ci ? -1 : ci)}
-            className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-slate-800/60"
-            aria-expanded={openCat === ci}
-            aria-controls={`cat-panel-${ci}`}
-          >
-            <span className="font-semibold text-slate-100">{cat.title}</span>
-            <span className="text-slate-300 text-sm">{openCat === ci ? '–' : '+'}</span>
-          </button>
+      {categories.map((cat, ci) => {
+        const catOpen = openCat === ci
+        return (
+          <div key={ci} className="rounded-2xl border border-slate-700/60 bg-slate-900/70 overflow-hidden">
+            <button
+              onClick={() => setOpenCat(catOpen ? -1 : ci)}
+              className={`w-full flex items-center justify-between px-4 py-3 text-left transition-colors duration-200 ${catOpen ? 'bg-slate-800/70 text-white ring-1 ring-sky-500/40' : 'hover:bg-slate-800/60'}`}
+              aria-expanded={catOpen}
+              aria-controls={`cat-panel-${ci}`}
+            >
+              <span className={`font-semibold ${catOpen ? 'text-white' : 'text-slate-100'}`}>{cat.title}</span>
+              <span className={`text-sm ${catOpen ? 'text-sky-300' : 'text-slate-300'}`}>{catOpen ? '–' : '+'}</span>
+            </button>
 
-          <Collapsible isOpen={openCat === ci}>
-            <div id={`cat-panel-${ci}`} className="divide-y divide-slate-700/60">
-              {cat.items.map((it, ii) => {
-                const isOpen = openItem[ci] === ii
-                return (
-                  <div key={ii}>
-                    <button
-                      onClick={() => setOpenItem({ ...openItem, [ci]: isOpen ? -1 : ii })}
-                      className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-slate-800/70"
-                      aria-expanded={isOpen}
-                      aria-controls={`item-panel-${ci}-${ii}`}
-                    >
-                      <span className="text-slate-100">{it.q}</span>
-                      <span className="text-slate-300 text-sm">{isOpen ? '–' : '+'}</span>
-                    </button>
+            <Collapsible isOpen={catOpen}>
+              <div id={`cat-panel-${ci}`} className="divide-y divide-slate-700/60">
+                {cat.items.map((it, ii) => {
+                  const isOpen = openItem[ci] === ii
+                  return (
+                    <div key={ii}>
+                      <button
+                        onClick={() => setOpenItem({ ...openItem, [ci]: isOpen ? -1 : ii })}
+                        className={`w-full flex items-center justify-between px-4 py-3 text-left transition-colors duration-200 ${isOpen ? 'bg-slate-800/60' : 'hover:bg-slate-800/70'}`}
+                        aria-expanded={isOpen}
+                        aria-controls={`item-panel-${ci}-${ii}`}
+                      >
+                        <span className={`${isOpen ? 'text-sky-300 font-semibold' : 'text-slate-100'}`}>{it.q}</span>
+                        <span className={`text-sm ${isOpen ? 'text-sky-300' : 'text-slate-300'}`}>{isOpen ? '–' : '+'}</span>
+                      </button>
 
-                    <Collapsible isOpen={isOpen}>
-                      <div id={`item-panel-${ci}-${ii}`} className="px-4 pb-4 text-slate-200 text-sm leading-relaxed">
-                        {it.a}
-                      </div>
-                    </Collapsible>
-                  </div>
-                )
-              })}
-            </div>
-          </Collapsible>
-        </div>
-      ))}
+                      <Collapsible isOpen={isOpen}>
+                        <div id={`item-panel-${ci}-${ii}`} className="px-4 pb-4 text-slate-200 text-sm leading-relaxed">
+                          {it.a}
+                        </div>
+                      </Collapsible>
+                    </div>
+                  )
+                })}
+              </div>
+            </Collapsible>
+          </div>
+        )
+      })}
     </div>
   )
 }
